@@ -1,4 +1,7 @@
 # 한강나우 백엔드 서버
 
-## 클래스 다이어그램
+## Class Diagram
 <img width="739" alt="image" src="https://user-images.githubusercontent.com/59243761/174078323-72ba3b97-2ee1-4567-b497-b8cab0d7fd26.png">
+
+## ERD
+![한강나우_ERD](https://user-images.githubusercontent.com/68818952/174089789-284283b6-a5a7-461b-8a18-37640fab4d73.png)
