@@ -4,10 +4,7 @@ import com.hangangnow.mainserver.domain.photo.EventPhoto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,5 +22,7 @@ public class Event {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String describe;
+
+    @OneToMany(mappedBy = "event")
     private List<EventPhoto> photos;
 }

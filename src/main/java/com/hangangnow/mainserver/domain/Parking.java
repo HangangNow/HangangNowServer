@@ -15,13 +15,16 @@ public class Parking {
     @GeneratedValue
     @Column(name = "parking_id")
     private Long id;
+
     private String name;
+
     private Local local;
     private Address address;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "park_id")
     private Park park;
+
     private Integer totalCount;
     private Integer availableCount;
 }

@@ -29,9 +29,14 @@ public class Park {
     private String describe;
 
     @OneToMany(mappedBy = "park")
-    private Parking parking;
-
-    @OneToMany(mappedBy = "park")
     private List<ParkPhoto> photos = new ArrayList<>();
 
+    public Park() {}
+
+    public Park(String name, Local local, Address address, String describe) {
+        this.name = name;
+        this.local = local;
+        this.address = address;
+        this.describe = describe;
+    }
 }
