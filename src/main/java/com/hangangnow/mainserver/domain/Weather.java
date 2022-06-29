@@ -1,22 +1,22 @@
 package com.hangangnow.mainserver.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
-public class Whether {
+public class Weather {
 
     @Id
-    @GeneratedValue
-    @Column(name = "whether_id")
+    @Column(name = "park_id")
     private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "park_id")
     private Park park;
+
     private Double temperature;
     private Double windPower;
     private Double rainPercent;
