@@ -3,8 +3,10 @@ package com.hangangnow.mainserver.api.controller;
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
 import com.hangangnow.mainserver.domain.Park;
+import com.hangangnow.mainserver.domain.Weather;
 import com.hangangnow.mainserver.domain.photo.ParkPhoto;
 import com.hangangnow.mainserver.service.ParkService;
+import com.hangangnow.mainserver.service.WeatherService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class ParkApiController {
 
     private final ParkService parkService;
+    private final WeatherService weatherService;
 
     @GetMapping("/api/parks")
     public Result parks(){
@@ -45,9 +48,17 @@ public class ParkApiController {
         );
     }
 
-    @GetMapping("api/parks/{parkid}/flyer")
+    @GetMapping("api/parks/{parkid}/weather")
     public ParkWeatherResponse parkWeather(@PathVariable Long parkid) {
-        parkService.findOne(parkid)
+
+        Weather findParkWeather = weatherService.findOne(parkid);
+
+        return new ParkWeatherResponse(
+                findParkWeather.getTemperature(),
+                findParkWeather.getWindPower(),
+                findParkWeather.getRainPercent(),
+                findParkWeather.getDust()
+        );
     }
 
     @PostMapping("api/parks")
