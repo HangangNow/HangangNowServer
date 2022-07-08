@@ -3,7 +3,6 @@ package com.hangangnow.mainserver.service;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
-import com.hangangnow.mainserver.repository.MemberDataRepository;
 import com.hangangnow.mainserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,18 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
     private final AuthenticationManagerBuilder managerBuilder;
     private final MemberRepository memberRepository;
-    private final MemberDataRepository memberDataRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
 
     public MemberSignupResponseDto signup(MemberSignupRequestDto memberSignupRequestDto){
-        if (memberDataRepository.existsByLoginId(memberSignupRequestDto.getLoginId())){
+        if (memberRepository.findByLoginId(memberSignupRequestDto.getLoginId()).isPresent()){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
 
         Member member = memberSignupRequestDto.toMember(passwordEncoder);
-        return MemberSignupResponseDto.of(memberDataRepository.save(member));
+        return MemberSignupResponseDto.of(memberRepository.save(member));
     }
 
     public MemberLoginTokenDto login(MemberLoginRequestDto memberLoginRequestDto) {
@@ -42,6 +40,7 @@ public class AuthService {
     }
 
 
+    @Transactional(readOnly = true)
     public boolean duplicateCheckByLoginId(MemberDuplicateDto memberDuplicateDto){
         if(memberRepository.findByLoginId(memberDuplicateDto.getLoginId()).isPresent()){
             return true;
@@ -51,6 +50,7 @@ public class AuthService {
         }
     }
 
+    @Transactional(readOnly = true)
     public boolean duplicateCheckByEmail(MemberDuplicateDto memberDuplicateDto){
         if(memberRepository.findByEmail(memberDuplicateDto.getEmail()).isPresent()){
             return true;
