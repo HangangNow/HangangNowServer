@@ -1,7 +1,6 @@
 package com.hangangnow.mainserver.domain.member.dto;
 
 import lombok.Data;
-import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @Data

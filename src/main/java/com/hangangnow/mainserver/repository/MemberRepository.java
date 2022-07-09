@@ -4,26 +4,28 @@ import com.hangangnow.mainserver.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MemberRepository {
 
-    @PersistenceContext
     private final EntityManager em;
 
-    @Transactional
     public Member save(Member member){
         em.persist(member);
         return member;
+    }
+
+
+    public void delete(Long id){
+        em.createQuery("delete from Member m where m.id =:id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     
@@ -53,9 +55,4 @@ public class MemberRepository {
                 .getResultList();
         return members.stream().findAny();
     }
-
-
-
-
-
 }
