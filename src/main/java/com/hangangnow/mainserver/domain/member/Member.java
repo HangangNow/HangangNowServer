@@ -41,6 +41,9 @@ public class Member{
     @Enumerated(EnumType.STRING)
     private MemberMBTI memberMBTI;
 
+//    @OneToOne(fetch = FetchType.LAZY)
+//    private RefreshToken refreshToken;
+
 
     @Builder
     public Member(Long id, String loginId, String email, String password, String name, Authority authority) {
@@ -52,8 +55,16 @@ public class Member{
         this.authority = authority;
     }
 
+    public void createMember(String loginId, String email, String password, String name){
+        this.loginId = loginId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.authority = Authority.ROLE_USER;
+    }
 
-    public void changePassword(String password){
+
+    public void updatePassword(String password){
         this.password = password;
     }
 

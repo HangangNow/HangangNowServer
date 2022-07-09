@@ -8,14 +8,14 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberSignupResponseDto {
+public class MemberResponseDto {
     private Long id;
     private String loginId;
     private String email;
     private String name;
 
-    public static MemberSignupResponseDto of(Member member){
-        return MemberSignupResponseDto.builder()
+    public static MemberResponseDto of(Member member){
+        return MemberResponseDto.builder()
                 .id(member.getId())
                 .loginId(member.getLoginId())
                 .email(member.getEmail())
