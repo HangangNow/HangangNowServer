@@ -22,6 +22,29 @@ public class AuthController {
         return "ok";
     }
 
+    @PostMapping("/api/v1/auth/signup")
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto) {
+        return ResponseEntity.ok(authService.signup(memberSignupRequestDto));
+    }
+
+
+    @PostMapping("/api/v1/auth/login")
+    public ResponseEntity<MemberTokenDto> login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
+        return ResponseEntity.ok(authService.login(memberLoginRequestDto));
+    }
+
+
+    @PutMapping("/api/v1/auth/password")
+    public ResponseEntity<String> changePassword(@RequestBody PasswordRequestDto passwordRequestDto){
+        return ResponseEntity.ok(authService.changePassword(passwordRequestDto));
+    }
+
+
+    @PostMapping("api/v1/auth/reissue")
+    public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto){
+        return ResponseEntity.ok(authService.reissue(memberTokenRequestDto));
+    }
+
 
     @PostMapping("/api/v1/auth/loginId")
     public ResponseEntity<Boolean> loginIdCheck(@RequestBody MemberDuplicateDto memberDuplicateDto){
@@ -35,19 +58,6 @@ public class AuthController {
         log.info("loginId : " + memberDuplicateDto.getEmail());
         return ResponseEntity.ok(authService.duplicateCheckByEmail(memberDuplicateDto));
     }
-
-
-    @PostMapping("/api/v1/auth/signup")
-    public ResponseEntity<MemberSignupResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto) {
-        return ResponseEntity.ok(authService.signup(memberSignupRequestDto));
-    }
-
-
-    @PostMapping("/api/v1/auth/login")
-    public ResponseEntity<MemberLoginTokenDto> login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
-        return ResponseEntity.ok(authService.login(memberLoginRequestDto));
-    }
-
 
 
 
