@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.config.jwt;
 
-import com.hangangnow.mainserver.domain.member.dto.MemberLoginTokenDto;
+import com.hangangnow.mainserver.domain.member.dto.MemberTokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -26,7 +26,8 @@ public class TokenProvider{
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final Key key;
 
 
@@ -36,30 +37,38 @@ public class TokenProvider{
     }
 
 
-    public MemberLoginTokenDto generateTokenDto(Authentication authentication) {
-
+    public MemberTokenDto generateTokenDto(Authentication authentication) {
+        // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
-
-        Date tokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-
         // authentication.getName()은 Member PK
         log.info("LOGIN REQUEST MEMBER ID: " + authentication.getName());
 
+        long now = (new Date()).getTime();
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+
+        // Access Token 생성
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
-                .setExpiration(tokenExpiresIn)
+                .setSubject(authentication.getName()) // "sub" : "memberId"
+                .claim(AUTHORITIES_KEY, authorities) // "auth" : "ROLE_USER"
+                .setExpiration(accessTokenExpiresIn) // "exp" : "1515162432"
+                .signWith(key, SignatureAlgorithm.HS512) //
+                .compact();
+
+        // Refresh Token 생성
+        String refreshToken = Jwts.builder()
+                .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return MemberLoginTokenDto.builder()
+        return MemberTokenDto.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
-                .tokenExpiresIn(tokenExpiresIn.getTime())
+                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -82,12 +91,14 @@ public class TokenProvider{
 
 
     public Authentication getAuthentication(String accessToken) {
+        // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
         if (claims.get(AUTHORITIES_KEY) == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
+        // 클레임에서 권한 가져오기
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
