@@ -2,17 +2,19 @@ package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.service.AuthService;
+import com.hangangnow.mainserver.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RestController
+@RestController()
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+    private final MailService mailService;
 
 
     // 카카오 로그인 code 받기
@@ -40,7 +42,7 @@ public class AuthController {
     }
 
 
-    @PostMapping("api/v1/auth/reissue")
+    @PostMapping("/api/v1/auth/reissue")
     public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto){
         return ResponseEntity.ok(authService.reissue(memberTokenRequestDto));
     }
@@ -56,7 +58,14 @@ public class AuthController {
     @PostMapping("/api/v1/auth/email")
     public ResponseEntity<Boolean> emailCheck(@RequestBody MemberDuplicateDto memberDuplicateDto){
         log.info("loginId : " + memberDuplicateDto.getEmail());
-        return ResponseEntity.ok(authService.duplicateCheckByEmail(memberDuplicateDto));
+        return ResponseEntity.ok(authService.duplicateCheckByEmail(memberDuplicateDto.getEmail()));
+    }
+
+
+    @PostMapping("/api/v1/auth/emailAuth")
+    public String emailAuthenticate(@RequestBody EmailAuthRequestDto emailAuthDto){
+        authService.duplicateCheckByEmail(emailAuthDto.getEmail());
+        return mailService.authEmail(emailAuthDto);
     }
 
 
