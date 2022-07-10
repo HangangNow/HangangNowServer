@@ -95,8 +95,8 @@ public class AuthService {
     }
 
 
-    public boolean duplicateCheckByEmail(MemberDuplicateDto memberDuplicateDto){
-        if(memberRepository.findByEmail(memberDuplicateDto.getEmail()).isPresent()){
+    public boolean duplicateCheckByEmail(String email){
+        if(memberRepository.findByEmail(email).isPresent()){
             return true;
         }
         else{
