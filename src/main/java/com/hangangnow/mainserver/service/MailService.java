@@ -41,7 +41,7 @@ public class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
             helper.setTo(email);
             helper.setSubject(subject);
-            helper.setFrom("hangangnow@naver.com");
+            helper.setFrom("한강나우 <hangangnow@naver.com>");
             helper.setText(text, true);
             javaMailSender.send(mimeMessage);
 
