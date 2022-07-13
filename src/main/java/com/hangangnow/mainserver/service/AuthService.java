@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.service;
 
+import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.RefreshToken;
 import com.hangangnow.mainserver.domain.member.dto.*;
@@ -30,7 +31,7 @@ public class AuthService {
     @Transactional
     public MemberResponseDto signup(MemberSignupRequestDto memberSignupRequestDto){
         if (memberRepository.findByLoginId(memberSignupRequestDto.getLoginId()).isPresent()){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new IllegalArgumentException("이미 가입되어 있는 유저입니다.");
         }
 
         Member member = memberSignupRequestDto.toMember(passwordEncoder);
@@ -62,14 +63,14 @@ public class AuthService {
     public MemberTokenDto reissue(MemberTokenRequestDto memberTokenRequestDto){
         // 1. Refresh Token 검증
         if(!tokenProvider.validateToken(memberTokenRequestDto.getRefreshToken())){
-            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
+            throw new IllegalArgumentException("Refresh Token 이 유효하지 않습니다.");
         }
 
-        // 2. Access Token 에서 memberId 가져오기
+        // 2. Access Token 에서 member 가져오기
         Authentication authentication = tokenProvider.getAuthentication(memberTokenRequestDto.getAccessToken());
 
         // 3. 저장소에서 memberId 기반으로 RefreshToken 객체 가져옴
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(Long.parseLong(authentication.getName()))
                 .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
         // 4. Refresh Token 일치하는지 검사
@@ -106,7 +107,7 @@ public class AuthService {
     }
 
     @Transactional
-    public String changePassword(PasswordRequestDto passwordRequestDto) {
+    public ResponseDto changePassword(PasswordRequestDto passwordRequestDto) {
         Member member = memberRepository.findByLoginId(passwordRequestDto.getLoginId())
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
 
@@ -123,6 +124,15 @@ public class AuthService {
 
         member.updatePassword(passwordEncoder.encode(password1));
 
-        return "비밀번호가 정상적으로 변경되었습니다.";
+        return new ResponseDto("비밀번호가 정상적으로 변경되었습니다.");
+    }
+
+
+
+    public ResponseDto findLoginIdByEmail(String email) {
+        Member findMember = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 아이디가 존재하지 않습니다"));
+
+        return new ResponseDto(findMember.getLoginId());
     }
 }

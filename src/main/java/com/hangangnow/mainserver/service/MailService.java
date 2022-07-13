@@ -1,12 +1,9 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.domain.member.dto.EmailAuthRequestDto;
-import lombok.NoArgsConstructor;
+import com.hangangnow.mainserver.domain.member.dto.EmailAuthDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +21,15 @@ public class MailService {
     private final JavaMailSender javaMailSender;
 
 
-    public String authEmail(EmailAuthRequestDto emailAuthDto){
+    public EmailAuthDto authEmail(EmailAuthDto emailAuthDto){
         Random random = new Random();
         String code = String.valueOf(random.nextInt(888888) + 111111);
 
-        return sendAuthEmail(emailAuthDto.getEmail(), code);
+//        log.info(emailAuthDto.getEmail());
+
+        sendAuthEmail(emailAuthDto.getEmail(), code);
+
+        return new EmailAuthDto(emailAuthDto.getEmail(), code);
     }
 
 
