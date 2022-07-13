@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.config.SecurityUtil;
+import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.dto.*;

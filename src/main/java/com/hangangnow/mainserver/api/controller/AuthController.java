@@ -4,6 +4,9 @@ import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.service.AuthService;
 import com.hangangnow.mainserver.service.MailService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,13 @@ public class AuthController {
     private final MailService mailService;
 
 
+    @Operation(summary = "회원가입", description = "loginId, password, email, username")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+
+    })
     @PostMapping("/api/v1/auth/signup")
     public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberSignupRequestDto memberSignupRequestDto) {
         return new ResponseEntity<>(authService.signup(memberSignupRequestDto), HttpStatus.OK);

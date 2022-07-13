@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.config;
+package com.hangangnow.mainserver.config.jwt;
 
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemberTokenDto {
     private String grantType;
     private String accessToken;
-    private Long accessTokenExpiresIn;
     private String refreshToken;
+    private Long accessTokenExpiresIn;
+
 }
