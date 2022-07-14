@@ -13,7 +13,7 @@ import java.util.List;
 public class Event {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long id;
     private String title;
@@ -21,7 +21,7 @@ public class Event {
     private Address address;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String describe;
+    private String content;
 
     @OneToMany(mappedBy = "event")
     private List<EventPhoto> photos;

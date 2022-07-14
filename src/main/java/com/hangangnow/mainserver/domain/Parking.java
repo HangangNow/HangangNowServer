@@ -12,10 +12,11 @@ import static javax.persistence.FetchType.LAZY;
 public class Parking {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "parking_id")
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     private Local local;
