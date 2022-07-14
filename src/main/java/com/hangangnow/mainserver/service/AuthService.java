@@ -127,8 +127,6 @@ public class AuthService {
         return new ResponseDto("비밀번호가 정상적으로 변경되었습니다.");
     }
 
-
-
     public ResponseDto findLoginIdByEmail(String email) {
         Member findMember = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 아이디가 존재하지 않습니다"));

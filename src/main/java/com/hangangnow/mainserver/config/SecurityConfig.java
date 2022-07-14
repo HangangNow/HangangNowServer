@@ -71,8 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(new JwtSecurityConfig(tokenProvider));
     }
 
+
     private static final String[] PERMIT_URL_ARRAY = {
             "/api/v1/auth/**",
+            
             /* swagger v2 */
             "/v2/api-docs",
             "/swagger-resources",
@@ -81,6 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
+            
             /* swagger v3 */
             "/v3/api-docs/**",
             "/swagger-ui/**"
