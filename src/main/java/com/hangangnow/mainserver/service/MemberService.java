@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.config.SecurityUtil;
+import com.hangangnow.mainserver.config.jwt.SecurityUtil;
+import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.repository.MemberRepository;
@@ -24,38 +25,40 @@ public class MemberService {
 
 
     @Transactional
-    public String deleteMember(){
+    public ResponseDto deleteMember(){
         refreshTokenRepository.delete(SecurityUtil.getCurrentMemberId());
         memberRepository.delete(SecurityUtil.getCurrentMemberId());
-        return "회원탈퇴 완료.";
+        return new ResponseDto("회원탈퇴가 정상적으로 처리되었습니다.");
     }
 
 
     @Transactional
-    public String logout() {
+    public ResponseDto logout() {
         refreshTokenRepository.delete(SecurityUtil.getCurrentMemberId());
-        return "로그아웃 완료";
+        return new ResponseDto("로그아웃이 정상적으로 처리되었습니다.");
     }
 
 
     public MemberResponseDto getMemberInfoByEmail(String email){
         return memberRepository.findByEmail(email)
                 .map(MemberResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
     }
 
 
     public MemberResponseDto getLoginMemberInfo() {
         return memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .map(MemberResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
+                .orElseThrow(() -> new IllegalArgumentException("로그인 유저 정보가 없습니다"));
     }
 
 
     @Transactional
-    public String changePassword(PasswordRequestDto passwordRequestDto) {
+    public ResponseDto changePassword(PasswordRequestDto passwordRequestDto) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
+
+        // System.out.println("passwordRequestDto = " + passwordRequestDto.getPassword1());
 
 
         if (!passwordRequestDto.getPassword1().equals(passwordRequestDto.getPassword2())){
@@ -66,11 +69,13 @@ public class MemberService {
             throw new IllegalArgumentException("기존 비밀번호와 일치합니다.");
         }
 
-        // 로그인 되어있는 토큰 삭제 -> 로그아웃
+        // 로그인 되어있는 refresh 토큰 삭제 -> 로그아웃
+        // 클라이언트와 협의 해야함.
         refreshTokenRepository.delete(findMember.getId());
 
-        findMember.updatePassword(passwordRequestDto.getPassword1());
+        findMember.updatePassword(passwordEncoder.encode(passwordRequestDto.getPassword1()));
 
-        return "비밀번호 변경 성공";
+        return new ResponseDto("비밀번호가 정상적으로 변경되었습니다.");
+
     }
 }

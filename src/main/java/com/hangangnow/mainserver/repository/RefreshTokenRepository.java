@@ -29,7 +29,7 @@ public class RefreshTokenRepository {
     }
 
 
-    public Optional<RefreshToken> findByKey(String key){
+    public Optional<RefreshToken> findByKey(Long key){
         List<RefreshToken> refreshTokens = em.createQuery("select r from RefreshToken r where r.key =:key", RefreshToken.class)
                 .setParameter("key", key)
                 .getResultList();

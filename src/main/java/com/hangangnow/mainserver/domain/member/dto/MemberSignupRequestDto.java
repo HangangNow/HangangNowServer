@@ -2,6 +2,7 @@ package com.hangangnow.mainserver.domain.member.dto;
 
 import com.hangangnow.mainserver.domain.member.Authority;
 import com.hangangnow.mainserver.domain.member.Member;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
