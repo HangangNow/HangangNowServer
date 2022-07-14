@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 public class InitDB {
 
     private final InitService initService;
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         initService.dbInit1();
     }
@@ -30,7 +30,6 @@ public class InitDB {
             Member member = new Member();
             member.createMember("kosa0914", "kosa0914@naver.com", passwordEncoder.encode("helloWorld"), "김동욱");
             em.persist(member);
-
         }
     }
 }

@@ -43,7 +43,7 @@ public class ParkApiController {
                 findPark.getName(),
                 findPark.getLocal(),
                 findPark.getAddress(),
-                findPark.getDescribe(),
+                findPark.getContent(),
                 findPark.getPhotos()
         );
     }
@@ -67,7 +67,7 @@ public class ParkApiController {
                 request.getName(),
                 new Local(request.getLocalname(), request.x_pos, request.y_pos),
                 new Address(request.getSido(), request.getGu(), request.getGil(), request.getDetail()),
-                request.getDescribe()
+                request.getContent()
         );
 
         Long id = parkService.addPark(park);
@@ -109,7 +109,7 @@ public class ParkApiController {
         private String gil;
         private String detail;
 
-        private String describe;
+        private String content;
     }
 
     @Data
@@ -122,7 +122,7 @@ public class ParkApiController {
         @Embedded
         private Address address;
 
-        private String describe;
+        private String content;
         private List<ParkPhoto> photos = new ArrayList<>();
     }
 

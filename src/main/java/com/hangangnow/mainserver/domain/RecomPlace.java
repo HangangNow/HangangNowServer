@@ -13,13 +13,13 @@ import java.util.List;
 public class RecomPlace {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recom_place_id")
     private Long id;
     private String name;
     private Local local;
     private Address address;
-    private String describe;
+    private String content;
     private Mbti mbti;
 
     @OneToMany(mappedBy = "recomPlace")
