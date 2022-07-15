@@ -4,8 +4,10 @@ import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.MemberResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.PasswordRequestDto;
 import com.hangangnow.mainserver.service.MemberService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +47,4 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email){
         return new ResponseEntity<>(memberService.getMemberInfoByEmail(email), HttpStatus.OK);
     }
-
-
-
-
 }

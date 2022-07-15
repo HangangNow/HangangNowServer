@@ -58,7 +58,8 @@ public class MemberService {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
 
-        System.out.println("passwordRequestDto = " + passwordRequestDto.getPassword1());
+        // System.out.println("passwordRequestDto = " + passwordRequestDto.getPassword1());
+
 
         if (!passwordRequestDto.getPassword1().equals(passwordRequestDto.getPassword2())){
             throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다");
@@ -75,5 +76,6 @@ public class MemberService {
         findMember.updatePassword(passwordEncoder.encode(passwordRequestDto.getPassword1()));
 
         return new ResponseDto("비밀번호가 정상적으로 변경되었습니다.");
+
     }
 }
