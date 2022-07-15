@@ -25,7 +25,11 @@ public class AuthController {
     private final AuthService authService;
     private final MailService mailService;
 
-    @Operation(summary = "회원가입", description = "회원가입 요청 URL. 모든 변수 필수")
+    @Operation(summary = "회원가입", description = "회원가입 요청 URL. " +
+            "\n### 요청변수: 모든 변수. " +
+            "\n birthday type: **yyyy-mm-dd**  " +
+            "\n gender: **MALE** or **FEMALE**"
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
