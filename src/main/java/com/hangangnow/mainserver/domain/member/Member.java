@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.domain.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hangangnow.mainserver.domain.member.dto.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +36,11 @@ public class Member{
     @Column(nullable = false)
     private String name;
 
+    private LocalDate birthday;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
@@ -46,12 +52,15 @@ public class Member{
 
 
     @Builder
-    public Member(Long id, String loginId, String email, String password, String name, Authority authority) {
+    public Member(Long id, String loginId, String email, String password, String name,
+                  LocalDate birthday, Gender gender, Authority authority) {
         this.id = id;
         this.loginId = loginId;
         this.email = email;
         this.name = name;
         this.password = password;
+        this.birthday = birthday;
+        this.gender = gender;
         this.authority = authority;
     }
 
