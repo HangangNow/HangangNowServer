@@ -1,11 +1,18 @@
 package com.hangangnow.mainserver.api.controller;
 
-import com.hangangnow.mainserver.exception.ErrorResult;
+import com.hangangnow.mainserver.exception.GeneralException;
+import com.hangangnow.mainserver.exception.MethodArgsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Slf4j
 @RestControllerAdvice
@@ -13,17 +20,32 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResult illegalExHandle(IllegalArgumentException e) {
+    public GeneralException illegalExHandle(IllegalArgumentException e) {
         log.error("[IllegalArgument ExceptionHandle] ex" + e.getMessage());
-        return new ErrorResult("BAD", e.getMessage());
+        return new GeneralException("BAD", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public MethodArgsException methodValidExceptionHandle(MethodArgumentNotValidException e){
+        LinkedHashMap<String, String> errors = new LinkedHashMap<>();
+        List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+
+        for (ObjectError error : allErrors) {
+            FieldError field = (FieldError) error;
+            errors.put(field.getField(), error.getDefaultMessage());
+            log.error("[IllegalArgument ExceptionHandle] ex " + error.getDefaultMessage());
+        }
+
+        return new MethodArgsException("BAD", errors);
     }
 
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(RuntimeException.class)
-    public ErrorResult illegalExHandle(RuntimeException e) {
+    public GeneralException illegalExHandle(RuntimeException e) {
         log.error("[Runtime ExceptionHandle] ex" + e.getMessage());
-        return new ErrorResult("BAD", e.getMessage());
+        return new GeneralException("BAD", e.getMessage());
     }
 
 }

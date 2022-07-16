@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +39,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/signup")
-    public ResponseEntity<MemberResponseDto> signup(
-            @RequestBody MemberSignupRequestDto memberSignupRequestDto) {
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody @Valid MemberSignupRequestDto memberSignupRequestDto) {
         return new ResponseEntity<>(authService.signup(memberSignupRequestDto), HttpStatus.OK);
     }
 

@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -16,10 +19,19 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Builder
 public class MemberSignupRequestDto {
+    @NotBlank(message = "아이디는 필수 값 입니다.")
     private String loginId;
+
+    @NotBlank
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,15}", message = "비밀번호는 영문 대,소문자와 숫자가 포함된 8자 ~ 15자의 비밀번호입니다.")
     private String password;
+
+    @Email
     private String email;
+    @NotBlank(message = "이름은 필수 값 입니다.")
     private String name;
+
+    @Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$", message = "생년월일은 yyyy-mm-dd 타입입니다.")
     private String birthday;
     private String gender;
 
