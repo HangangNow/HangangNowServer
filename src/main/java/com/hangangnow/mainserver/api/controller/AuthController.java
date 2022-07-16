@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.api.controller;
 
+
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.service.AuthService;
@@ -22,6 +23,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final MailService mailService;
+
 
 
     @Operation(summary = "회원가입", description = "loginId, password, email, username")
@@ -80,7 +82,4 @@ public class AuthController {
         }
         return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.CREATED);
     }
-
-
-
 }

@@ -14,5 +14,4 @@ public class MemberTokenDto {
     private String accessToken;
     private String refreshToken;
     private Long accessTokenExpiresIn;
-
 }
