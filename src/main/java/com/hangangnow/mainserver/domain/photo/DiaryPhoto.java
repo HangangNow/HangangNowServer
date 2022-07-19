@@ -1,8 +1,7 @@
 package com.hangangnow.mainserver.domain.photo;
 
-import com.hangangnow.mainserver.domain.Diary;
+import com.hangangnow.mainserver.domain.mypage.Diary;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

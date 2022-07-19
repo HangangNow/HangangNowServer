@@ -1,5 +1,5 @@
 package com.hangangnow.mainserver.domain;
 
 public enum Mbti {
-    A,B,C,D
+    INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST
 }
