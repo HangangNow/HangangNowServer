@@ -1,7 +1,9 @@
 package com.hangangnow.mainserver.service;
 
+import com.hangangnow.mainserver.config.MemberAuthenticationProvider;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
+import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.RefreshToken;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
@@ -10,7 +12,6 @@ import com.hangangnow.mainserver.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthService {
-    private final AuthenticationManagerBuilder managerBuilder;
+
+    private final MemberAuthenticationProvider memberAuthenticationProvider;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final MailService mailService;
 
 
     @Transactional
@@ -44,7 +47,7 @@ public class AuthService {
 
         UsernamePasswordAuthenticationToken authenticationToken = memberLoginRequestDto.toAuthentication();
 
-        Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
+        Authentication authentication = memberAuthenticationProvider.authenticate(authenticationToken);
 
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication);
 
@@ -96,14 +99,23 @@ public class AuthService {
     }
 
 
-    public boolean duplicateCheckByEmail(String email){
-        if(memberRepository.findByEmail(email).isPresent()){
-            return true;
-        }
-        else{
-            return false;
+    public ResponseDto duplicateCheckByEmail(String email){
+        Member member = memberRepository.findByEmail(email)
+                .orElse(new Member());
+
+        if (member.getId() == null){
+            return new ResponseDto("0, 가입된 이메일이 존재하지 않습니다.");
         }
 
+        else{
+            if(member.getMemberProvider() == MemberProvider.KAKAO){
+                return new ResponseDto("1, 카카오 로그인으로 가입된 이메일입니다. 카카오 로그인을 이용하세요");
+            }
+
+            else{
+                return new ResponseDto("2, 이미 가입된 이메일입니다.");
+            }
+        }
     }
 
     @Transactional
@@ -127,10 +139,11 @@ public class AuthService {
         return new ResponseDto("비밀번호가 정상적으로 변경되었습니다.");
     }
 
-    public ResponseDto findLoginIdByEmail(String email) {
-        Member findMember = memberRepository.findByEmail(email)
+    public ResponseDto findLoginIdByEmail(LoginIdRequestDto loginIdRequestDto) {
+        Member findMember = memberRepository.findByEmail(loginIdRequestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 아이디가 존재하지 않습니다"));
 
-        return new ResponseDto(findMember.getLoginId());
+        mailService.authLoginId(loginIdRequestDto.getEmail(), loginIdRequestDto.getName(), findMember.getLoginId());
+        return new ResponseDto(loginIdRequestDto.getName() + "님 이메일로 아이디가 전송되었습니다.");
     }
 }
