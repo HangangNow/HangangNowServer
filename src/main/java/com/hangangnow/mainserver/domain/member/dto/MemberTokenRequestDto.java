@@ -6,5 +6,6 @@ import lombok.Data;
 public class MemberTokenRequestDto {
     private String accessToken;
     private String refreshToken;
+    private Boolean autoLogin;
 
 }

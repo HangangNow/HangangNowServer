@@ -10,7 +10,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.validation.constraints.Null;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class ExControllerAdvice {
         for (ObjectError error : allErrors) {
             FieldError field = (FieldError) error;
             errors.put(field.getField(), error.getDefaultMessage());
-            log.error("[IllegalArgument ExceptionHandle] ex " + error.getDefaultMessage());
+            log.error("[IllegalArgument ExceptionHandle] ex: " + error.getDefaultMessage());
         }
 
         return new MethodArgsException("BAD", errors);
@@ -44,7 +46,22 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(RuntimeException.class)
     public GeneralException illegalExHandle(RuntimeException e) {
-        log.error("[Runtime ExceptionHandle] ex" + e.getMessage());
+        log.error("[Runtime ExceptionHandle] ex: " + e.getMessage());
+        return new GeneralException("FORBIDDEN", e.getMessage());
+    }
+
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public GeneralException handleNotFoundError(NoHandlerFoundException e) {
+        log.error("[NoHandlerFound ExceptionHandle] ex: " + e.getMessage());
+        return new GeneralException("NOT FOUND", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NullPointerException.class)
+    public GeneralException NullPointerExHandle(NullPointerException e) {
+        log.error("[NullPointer ExceptionHandle] ex" + e.getMessage());
         return new GeneralException("BAD", e.getMessage());
     }
 

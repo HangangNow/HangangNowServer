@@ -27,7 +27,7 @@ public class TokenProvider{
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
 
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 100; // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final Key key;
 
@@ -38,7 +38,7 @@ public class TokenProvider{
     }
 
 
-    public MemberTokenDto generateTokenDto(Authentication authentication) {
+    public MemberTokenDto generateTokenDto(Authentication authentication, Boolean autoLogin) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -47,9 +47,19 @@ public class TokenProvider{
         // authentication.getName()은 Member PK
         log.info("LOGIN REQUEST MEMBER ID: " + authentication.getName());
 
+
         long now = (new Date()).getTime();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-        Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+        Date refreshTokenExpiresIn;
+
+        if (autoLogin == null) autoLogin = false;
+
+
+        if (autoLogin) {
+            refreshTokenExpiresIn = new Date(now + (1000 * 60 * 60 * 24 * 90));
+        }
+
+        else refreshTokenExpiresIn = new Date(now + (REFRESH_TOKEN_EXPIRE_TIME));
 
         // Access Token 생성
         String accessToken = Jwts.builder()
