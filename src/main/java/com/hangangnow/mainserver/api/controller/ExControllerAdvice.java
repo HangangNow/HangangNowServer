@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.validation.constraints.Null;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -55,6 +56,13 @@ public class ExControllerAdvice {
     public GeneralException handleNotFoundError(NoHandlerFoundException e) {
         log.error("[NoHandlerFound ExceptionHandle] ex: " + e.getMessage());
         return new GeneralException("NOT FOUND", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NullPointerException.class)
+    public GeneralException NullPointerExHandle(NullPointerException e) {
+        log.error("[NullPointer ExceptionHandle] ex" + e.getMessage());
+        return new GeneralException("BAD", e.getMessage());
     }
 
 }

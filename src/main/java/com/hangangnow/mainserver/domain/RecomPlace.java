@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.domain;
 
+import com.hangangnow.mainserver.domain.member.MemberMBTI;
 import com.hangangnow.mainserver.domain.photo.RecomPlacePhoto;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +18,16 @@ public class RecomPlace {
     @Column(name = "recom_place_id")
     private Long id;
     private String name;
+
+    @Embedded
     private Local local;
+
+    @Embedded
     private Address address;
     private String content;
-    private Mbti mbti;
+
+    @Enumerated(EnumType.STRING)
+    private MemberMBTI mbti;
 
     @OneToMany(mappedBy = "recomPlace")
     private List<RecomPlacePhoto> photos;

@@ -2,6 +2,8 @@ package com.hangangnow.mainserver.domain.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hangangnow.mainserver.domain.member.dto.Gender;
+import com.hangangnow.mainserver.domain.mypage.Diary;
+import com.hangangnow.mainserver.domain.mypage.Memo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -50,8 +54,15 @@ public class Member{
     @Enumerated(EnumType.STRING)
     private MemberMBTI memberMBTI;
 
+    @OneToMany(mappedBy = "member")
+    List<Memo> Memos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    List<Diary> Diaries = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private MemberProvider memberProvider;
+
 
 //    @OneToOne(fetch = FetchType.LAZY)
 //    private RefreshToken refreshToken;
