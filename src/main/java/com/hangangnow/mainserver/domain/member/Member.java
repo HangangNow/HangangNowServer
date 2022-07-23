@@ -27,6 +27,9 @@ public class Member{
     @Column(name = "member_id")
     private Long id;
 
+    @Column(name = "kakao_id")
+    private Long kakaoId;
+
     @Column(nullable = false, unique = true)
     private String loginId;
 
@@ -57,14 +60,17 @@ public class Member{
     @OneToMany(mappedBy = "member")
     List<Diary> Diaries = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private MemberProvider memberProvider;
+
+
 //    @OneToOne(fetch = FetchType.LAZY)
 //    private RefreshToken refreshToken;
 
 
     @Builder
-    public Member(Long id, String loginId, String email, String password, String name,
-                  LocalDate birthday, Gender gender, Authority authority) {
-        this.id = id;
+    public Member(String loginId, String email, String password, String name,
+                  LocalDate birthday, Gender gender, Authority authority, MemberProvider memberProvider) {
         this.loginId = loginId;
         this.email = email;
         this.name = name;
@@ -72,14 +78,16 @@ public class Member{
         this.birthday = birthday;
         this.gender = gender;
         this.authority = authority;
+        this.memberProvider = memberProvider;
     }
 
-    public void createMember(String loginId, String email, String password, String name){
+    public void createMemberByKakao(String loginId, String email, String password, String name){
         this.loginId = loginId;
         this.email = email;
         this.password = password;
         this.name = name;
         this.authority = Authority.ROLE_USER;
+        this.memberProvider = MemberProvider.KAKAO;
     }
 
 

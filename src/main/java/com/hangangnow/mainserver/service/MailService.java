@@ -25,18 +25,33 @@ public class MailService {
         Random random = new Random();
         String code = String.valueOf(random.nextInt(888888) + 111111);
 
-//        log.info(emailAuthDto.getEmail());
-
         sendAuthEmail(emailAuthDto.getEmail(), code);
 
         return new EmailAuthDto(emailAuthDto.getEmail(), code);
     }
 
 
-    private String sendAuthEmail(String email, String code) {
-        String subject = "한강나우 이메일 인증코드입니다.";
+    public void authLoginId(String email, String name, String loginId){
+        sendLoginId(email, name, loginId);
+    }
+
+
+    private void sendAuthEmail(String email, String code) {
+        String subject = "[한강나우] 이메일 인증코드입니다.";
         String text = "회원인증을 위한 인증코드는 " + code + "입니다. <br/>";
 
+        send(email, subject, text);
+    }
+
+    private void sendLoginId(String email, String name, String loginId) {
+        String subject = "[한강나우] 아이디 찾기 메일입니다.";
+        String text = name + "회원님의 한강나우 아이디는 " + loginId + "입니다. <br/>";
+
+        send(email, subject, text);
+    }
+
+
+    private void send(String email, String subject, String text) {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
@@ -49,7 +64,5 @@ public class MailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-
-        return code;
     }
 }
