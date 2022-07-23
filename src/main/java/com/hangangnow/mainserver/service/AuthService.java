@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.MemberAuthenticationProvider;
+import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,10 @@ public class AuthService {
                 .key(Long.parseLong(authentication.getName()))
                 .value(memberTokenDto.getRefreshToken())
                 .build();
+
+
+
+        memberTokenDto.setProvider("GENERAL");
 
         refreshTokenRepository.save(refreshToken);
 

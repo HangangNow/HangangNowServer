@@ -3,6 +3,7 @@ package com.hangangnow.mainserver.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.hangangnow.mainserver.config.KakaoAuthenticationProvider;
+import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
 import com.hangangnow.mainserver.domain.member.Authority;
 import com.hangangnow.mainserver.domain.member.Member;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -133,6 +135,9 @@ public class SocialAuthService {
                 .build();
 
         refreshTokenRepository.save(refreshToken);
+
+
+        memberTokenDto.setProvider("KAKAO");
 
         return memberTokenDto;
     }
