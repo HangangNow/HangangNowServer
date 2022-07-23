@@ -30,8 +30,8 @@ public class MemoRepository {
 
     public List<Memo> findAllByMemberAndYearAndMonth(Member member,int year, int month){
         String jpql = "select m from Memo m where m.member =: member " +
-                "and FUNCTION('year',m.date) =: year " +
-                "and FUNCTION('month',m.date) =: month ";
+                "and FUNCTION('year',m.memoDate) =: year " +
+                "and FUNCTION('month',m.memoDate) =: month ";
 
         return em.createQuery(jpql, Memo.class)
                 .setParameter("member", member)

@@ -34,7 +34,7 @@ public class DiaryRepository {
     }
 
     public List<Diary> findAllByMemberAndMonth(Member member, int month){
-        String jpql = "select d from Diary d where d.member =: member and FUNCTION('month',d.date) =: month";
+        String jpql = "select d from Diary d where d.member =: member and FUNCTION('month',d.diaryDate) =: month";
         return em.createQuery(jpql, Diary.class)
                 .setParameter("member", member)
                 .setParameter("month", month)
@@ -44,8 +44,8 @@ public class DiaryRepository {
     public List<Diary> findAllByMemberAndYearAndMonth(Member member, int year, int month) {
         String jpql = "select d from Diary d " +
                 "where d.member =: member " +
-                "and FUNCTION('year',d.date) =: year " +
-                "and FUNCTION('month',d.date) =: month";
+                "and FUNCTION('year',d.diaryDate) =: year " +
+                "and FUNCTION('month',d.diaryDate) =: month";
 
         return em.createQuery(jpql, Diary.class)
                 .setParameter("member", member)
@@ -57,9 +57,9 @@ public class DiaryRepository {
     public List<Diary> findAllByMemberAndWrittenDateTime(Member member, int year, int month, int day){
         String jpql = "select d from Diary d " +
                 "where d.member =: member " +
-                "and FUNCTION('year',d.date) =: year " +
-                "and FUNCTION('month',d.date) =: month " +
-                "and FUNCTION('day',d.date) =: day";
+                "and FUNCTION('year',d.diaryDate) =: year " +
+                "and FUNCTION('month',d.diaryDate) =: month " +
+                "and FUNCTION('day',d.diaryDate) =: day";
         return em.createQuery(jpql, Diary.class)
                 .setParameter("member", member)
                 .setParameter("year", year)
