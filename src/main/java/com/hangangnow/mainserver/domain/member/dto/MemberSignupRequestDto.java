@@ -2,6 +2,7 @@ package com.hangangnow.mainserver.domain.member.dto;
 
 import com.hangangnow.mainserver.domain.member.Authority;
 import com.hangangnow.mainserver.domain.member.Member;
+import com.hangangnow.mainserver.domain.member.MemberProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +21,10 @@ import java.time.format.DateTimeFormatter;
 @Builder
 public class MemberSignupRequestDto {
     @NotBlank(message = "아이디는 필수 값 입니다.")
+    @Pattern(regexp = "^[a-z0-9]{5,20}$", message = "아이디는 5~20자의 영문 소문자, 숫자만 사용 가능합니다.")
     private String loginId;
 
-    @NotBlank
+    @NotBlank(message = "비밀번호는 필수 값 입니다.")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,15}", message = "비밀번호는 영문 대,소문자와 숫자가 포함된 8자 ~ 15자의 비밀번호입니다.")
     private String password;
 
@@ -46,6 +48,7 @@ public class MemberSignupRequestDto {
                     .gender(Gender.MALE)
                     .birthday(LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE))
                     .authority(Authority.ROLE_USER)
+                    .memberProvider(MemberProvider.GENERAL)
                     .build();
         }
         else{
@@ -57,6 +60,7 @@ public class MemberSignupRequestDto {
                     .gender(Gender.FEMALE)
                     .birthday(LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE))
                     .authority(Authority.ROLE_USER)
+                    .memberProvider(MemberProvider.GENERAL)
                     .build();
         }
     }
