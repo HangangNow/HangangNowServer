@@ -4,8 +4,10 @@ import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
 import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
 import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +36,7 @@ public class Diary {
     private String content;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDate diaryDate;
 
     @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
@@ -46,12 +50,15 @@ public class Diary {
     @OneToOne(mappedBy = "diary")
     private DiaryPhoto photo;
 
+
+
+
     static public Diary of(DiaryDto diaryDto, Member member){
         return Diary.builder()
                 .member(member)
                 .title(diaryDto.getTitle())
                 .content(diaryDto.getContent())
-                .date(LocalDate.parse(diaryDto.getDate(), DateTimeFormatter.ISO_DATE))
+                .diaryDate(LocalDate.parse(diaryDto.getDiaryDate(), DateTimeFormatter.ISO_DATE))
                 .diaryWeather(diaryDto.getDiaryWeather())
                 .emotion(diaryDto.getEmotion())
                 .lastModifiedDateTime(LocalDateTime.now())

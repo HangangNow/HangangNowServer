@@ -33,7 +33,7 @@ public class MemberSignupRequestDto {
     @NotBlank(message = "이름은 필수 값 입니다.")
     private String name;
 
-    @Pattern(regexp = "^(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$", message = "생년월일은 yyyy-mm-dd 타입입니다.")
+    @Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$", message = "생년월일은 yyyy-mm-dd 타입입니다.")
     private String birthday;
     private String gender;
 

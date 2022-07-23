@@ -25,7 +25,7 @@ public class Memo {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDate memoDate;
 
     @Column(nullable = false)
     private LocalDateTime lastModifiedDateTime;
@@ -52,7 +52,7 @@ public class Memo {
                 .color(FromStringToMemoColor(memoDto.getColor()))
                 .content(memoDto.getContent())
                 .lastModifiedDateTime(LocalDateTime.now())
-                .date(LocalDate.parse(memoDto.getDate(), DateTimeFormatter.ISO_DATE))
+                .memoDate(LocalDate.parse(memoDto.getMemoDate(), DateTimeFormatter.ISO_DATE))
                 .member(member)
                 .build();
     }

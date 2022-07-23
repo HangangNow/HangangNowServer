@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface SpringDataJpaDiaryRepository extends JpaRepository<Diary, Long> {
 
-    @Query("select d from Diary d where d.member =: member and FUNCTION('month',d.date) =: month")
+    @Query("select d from Diary d where d.member =: member and FUNCTION('month',d.diaryDate) =: month")
     List<Diary> findAllByMemberAndMonth(@Param("member") Member member,@Param("month") int month);
 
     default LocalDateTime update(Diary diary, DiaryDto diaryDto){
