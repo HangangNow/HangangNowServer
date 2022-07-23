@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,37 +16,37 @@ public class MemoRepository {
 
     private final EntityManager em;
 
-    public void save(Memo memo){
-        em.persist(memo);
-    }
+    public void save(Memo memo){ em.persist(memo); }
 
     public Optional<Memo> findById(Long id){
         return Optional.ofNullable(em.find(Memo.class, id));
     }
 
-//    public List<Memo> findMemoByMember(Member member){
+//    public List<Memo> findAllByMember(Member member){
 //        return em.createQuery("select m from Memo m where m.member =: member", Memo.class)
 //                .setParameter("member", member)
 //                .getResultList();
 //    }
 
-    public List<Memo> findAllByMemberAndMonth(Member member, int month){
-        String jpql = "select m from Memo m where m.member =: member and FUNCTION('month',m.writtenDateTime) =: month";
+    public List<Memo> findAllByMemberAndYearAndMonth(Member member,int year, int month){
+        String jpql = "select m from Memo m where m.member =: member " +
+                "and FUNCTION('year',m.date) =: year " +
+                "and FUNCTION('month',m.date) =: month ";
+
         return em.createQuery(jpql, Memo.class)
                 .setParameter("member", member)
+                .setParameter("year", year)
                 .setParameter("month", month)
                 .getResultList();
     }
 
-    public void update(Memo memoParam, String content){
-        Memo findMemo = findById(memoParam.getId()).orElseThrow(() ->
-                new NullPointerException("Fail update Memo: Memo not found"));
-        findMemo.updateContent(content);
+    public LocalDateTime update(Memo memo, String content, String memoColor){
+        memo.update(content, memoColor);
+        return memo.getLastModifiedDateTime();
     }
 
-    public void remove(Memo memoParam){
-        Memo findMemo = findById(memoParam.getId()).orElseThrow(() ->
-                new NullPointerException("Fail remove Memo: Memo not found"));
-        em.remove(findMemo);
+    public void remove(Memo memo){
+        em.remove(memo);
     }
 }
+

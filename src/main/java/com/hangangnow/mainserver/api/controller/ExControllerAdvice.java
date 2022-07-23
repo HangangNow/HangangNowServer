@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.constraints.Null;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -45,6 +46,13 @@ public class ExControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public GeneralException illegalExHandle(RuntimeException e) {
         log.error("[Runtime ExceptionHandle] ex" + e.getMessage());
+        return new GeneralException("BAD", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NullPointerException.class)
+    public GeneralException NullPointerExHandle(NullPointerException e) {
+        log.error("[NullPointer ExceptionHandle] ex" + e.getMessage());
         return new GeneralException("BAD", e.getMessage());
     }
 
