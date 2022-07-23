@@ -21,7 +21,11 @@ public class MemoController {
     @GetMapping("/{memoid}")
     @Operation(summary = "단일 메모 조회", description = "메모id를 이용해 메모를 상세 조회할 수 있습니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK !!")
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
     })
     public MemoDto memoOne(@PathVariable Long memoid){
        return memoService.findOne(memoid);
@@ -31,7 +35,10 @@ public class MemoController {
     @Operation(summary = "멤버의 모든 메모 조회", description = "멤버의 모든 메모 리스트 조회할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "400", description = "Failed")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
     })
     public genericResponseDto Memos(){
         return new genericResponseDto(memoService.findAllMemberMemo());
@@ -41,7 +48,10 @@ public class MemoController {
     @Operation(summary = "멤버의 모든 메모 조회", description = "멤버의 모든 메모 리스트 조회할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "400", description = "Failed")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
     })
     public genericResponseDto CalendarMemos(@PathVariable int year, @PathVariable int month){
         return new genericResponseDto(memoService.findAllCalendarMemo(year, month));
@@ -52,7 +62,9 @@ public class MemoController {
             +"\n모든 키 값은 필수 값 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
-            @ApiResponse(responseCode = "400", description = "Failed")
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
     })
     public genericResponseDto AddMemo(@RequestBody @Valid MemoDto request) {
         return new genericResponseDto(memoService.addMemo(request));
@@ -63,7 +75,10 @@ public class MemoController {
             +"\n모든 키 값은 필수 값 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
-            @ApiResponse(responseCode = "400", description = "Failed")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
     })
     public genericResponseDto ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
         return new genericResponseDto(memoService.modifyMemo(memoid, request));
@@ -73,7 +88,10 @@ public class MemoController {
     @Operation(summary = "메모 삭제", description = "메모를 삭제할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
-            @ApiResponse(responseCode = "400", description = "Failed")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
     })
     public genericResponseDto DeleteMemo(@PathVariable Long memoid) {
         return new genericResponseDto(memoService.deleteMemo(memoid));

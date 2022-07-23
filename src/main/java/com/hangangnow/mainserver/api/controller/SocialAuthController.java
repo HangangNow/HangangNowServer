@@ -2,6 +2,9 @@ package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.member.dto.MemberTokenDto;
 import com.hangangnow.mainserver.service.SocialAuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,16 @@ public class SocialAuthController {
 
 
 
+    @Operation(summary = "카카오 로그인", description = "카카오 로그인 URL. " +
+            "\n### RequestParam: accessToken, autoLogin" +
+            "\n### /api/v1/auth/kakao?accessToken=xxxxxxxxx&autoLogin=true or false")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+
+    })
     @PostMapping("/api/v1/auth/kakao")
     public ResponseEntity<MemberTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin){
         return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, autoLogin), HttpStatus.OK);
