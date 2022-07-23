@@ -19,14 +19,14 @@ public class SocialAuthController {
     public ResponseEntity<MemberTokenDto> kakaoCode(@RequestParam String code){
         System.out.println("code = " + code);
         String accessToken = socialAuthService.getKakaoAccessToken(code);
-        return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken), HttpStatus.OK);
+        return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, false), HttpStatus.OK);
     }
 
 
 
 
     @PostMapping("/api/v1/auth/kakao")
-    public ResponseEntity<MemberTokenDto> kakaoLogin(@RequestParam String accessToken){
-        return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken), HttpStatus.OK);
+    public ResponseEntity<MemberTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin){
+        return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, autoLogin), HttpStatus.OK);
     }
 }

@@ -44,7 +44,7 @@ public class SocialAuthService {
     private String restApiKey;
 
 
-    public MemberTokenDto loginByKakaoToken(String accessToken){
+    public MemberTokenDto loginByKakaoToken(String accessToken, Boolean autoLogin){
 
         MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
 
@@ -86,7 +86,7 @@ public class SocialAuthService {
         }
 
         finally {
-            return login(memberKakaoDto);
+            return login(memberKakaoDto, autoLogin);
         }
     }
 
@@ -103,7 +103,7 @@ public class SocialAuthService {
     }
 
 
-    public MemberTokenDto login(MemberKakaoDto memberKakaoDto){
+    public MemberTokenDto login(MemberKakaoDto memberKakaoDto, Boolean autoLogin){
         Member findMemberByKakao = memberRepository.findByEmail(memberKakaoDto.getEmail())
                 .orElse(null);
 
@@ -125,7 +125,7 @@ public class SocialAuthService {
 
         Authentication authentication = kakaoAuthenticationProvider.authenticate(authenticationToken);
 
-        MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication);
+        MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, autoLogin);
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .key(Long.parseLong(authentication.getName()))

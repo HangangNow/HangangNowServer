@@ -49,7 +49,7 @@ public class AuthService {
 
         Authentication authentication = memberAuthenticationProvider.authenticate(authenticationToken);
 
-        MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication);
+        MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberLoginRequestDto.getAutoLogin());
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .key(Long.parseLong(authentication.getName()))
@@ -82,7 +82,7 @@ public class AuthService {
         }
 
         // 5. 새로운 토큰 생성
-        MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication);
+        MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberTokenRequestDto.getAutoLogin());
         refreshToken.updateValue(memberTokenRequestDto.getRefreshToken());
 
         return memberTokenDto;
