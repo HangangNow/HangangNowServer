@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PERMIT_URL_ARRAY = {
             "/api/v1/auth/**",
 
-//            "/actuator/**",
+            "/actuator/**",
             
             /* swagger v2 */
             "/v2/api-docs",

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +41,7 @@ public class DiaryService {
     }
 
     public List<DiaryDto> findAllMemberDiary(){
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 
@@ -51,7 +52,7 @@ public class DiaryService {
     }
 
     public List<DiaryDto> findAllCalendarDiary(int year, int month) {
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 
@@ -62,7 +63,7 @@ public class DiaryService {
     }
 
     public List<DiaryDto> findAllDateDiary(LocalDate date) {
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 

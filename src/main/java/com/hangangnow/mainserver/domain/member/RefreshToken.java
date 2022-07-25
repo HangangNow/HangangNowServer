@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,13 +18,13 @@ public class RefreshToken {
 
     @Id
     @Column(name = "rt_key")
-    private Long key;
+    private UUID key;
 
     @Column(name = "rt_value")
     private String value;
 
     @Builder
-    public RefreshToken(Long key, String value){
+    public RefreshToken(UUID key, String value){
         this.key = key;
         this.value = value;
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Repository
@@ -22,10 +23,8 @@ public class MemberRepository {
     }
 
 
-    public void delete(Long id){
-        em.createQuery("delete from Member m where m.id =:id")
-                .setParameter("id", id)
-                .executeUpdate();
+    public void delete(Member member){
+        em.remove(member);
     }
 
     
@@ -34,7 +33,7 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    public Optional<Member> findById(Long id){
+    public Optional<Member> findById(UUID id){
         List<Member> members = em.createQuery("select m from Member m where m.id =:id", Member.class)
                 .setParameter("id", id)
                 .getResultList();
