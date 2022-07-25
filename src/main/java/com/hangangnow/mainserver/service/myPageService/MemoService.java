@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +40,7 @@ public class MemoService {
     }
 
     public List<MemoDto> findAllMemberMemo() {
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 
@@ -50,7 +51,7 @@ public class MemoService {
     }
 
     public List<MemoDto> findAllCalendarMemo(int year, int month) {
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 

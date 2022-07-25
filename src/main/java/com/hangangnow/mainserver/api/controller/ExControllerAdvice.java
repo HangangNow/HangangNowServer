@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.validation.constraints.Null;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public GeneralException illegalExHandle(IllegalArgumentException e) {
-        log.error("[IllegalArgument ExceptionHandle] ex" + e.getMessage());
+        log.error("[IllegalArgument ExceptionHandle] ex:" + e.getMessage());
         return new GeneralException("BAD", e.getMessage());
     }
 

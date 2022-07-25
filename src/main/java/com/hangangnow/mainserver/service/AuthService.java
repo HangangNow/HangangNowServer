@@ -1,8 +1,9 @@
 package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.MemberAuthenticationProvider;
-import com.hangangnow.mainserver.config.jwt.SecurityUtil;
+
 import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.RefreshToken;
@@ -14,10 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -54,14 +59,12 @@ public class AuthService {
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberLoginRequestDto.getAutoLogin());
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .key(Long.parseLong(authentication.getName()))
+                .key(UUID.fromString(authentication.getName()))
                 .value(memberTokenDto.getRefreshToken())
                 .build();
 
 
-
         memberTokenDto.setProvider("GENERAL");
-
         refreshTokenRepository.save(refreshToken);
 
         return memberTokenDto;
@@ -79,7 +82,7 @@ public class AuthService {
         Authentication authentication = tokenProvider.getAuthentication(memberTokenRequestDto.getAccessToken());
 
         // 3. 저장소에서 memberId 기반으로 RefreshToken 객체 가져옴
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(Long.parseLong(authentication.getName()))
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(UUID.fromString(authentication.getName()))
                 .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
         // 4. Refresh Token 일치하는지 검사
@@ -89,7 +92,7 @@ public class AuthService {
 
         // 5. 새로운 토큰 생성
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberTokenRequestDto.getAutoLogin());
-        refreshToken.updateValue(memberTokenRequestDto.getRefreshToken());
+        refreshToken.updateValue(memberTokenDto.getRefreshToken());
 
         return memberTokenDto;
     }
@@ -105,29 +108,19 @@ public class AuthService {
     }
 
 
-    public ResponseDto duplicateCheckByEmail(String email){
-        Member member = memberRepository.findByEmail(email)
-                .orElse(new Member());
-
-        if (member.getId() == null){
-            return new ResponseDto("0, 가입된 이메일이 존재하지 않습니다.");
+    public boolean duplicateCheckByEmail(MemberDuplicateDto memberDuplicateDto){
+        if(memberRepository.findByEmail(memberDuplicateDto.getEmail()).isPresent()){
+            return true;
         }
-
         else{
-            if(member.getMemberProvider() == MemberProvider.KAKAO){
-                return new ResponseDto("1, 카카오 로그인으로 가입된 이메일입니다. 카카오 로그인을 이용하세요");
-            }
-
-            else{
-                return new ResponseDto("2, 이미 가입된 이메일입니다.");
-            }
+            return false;
         }
     }
 
     @Transactional
     public ResponseDto changePassword(PasswordRequestDto passwordRequestDto) {
-        Member member = memberRepository.findByLoginId(passwordRequestDto.getLoginId())
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
+        Member member = memberRepository.findByEmail(passwordRequestDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("이메일이 존재하지 않습니다."));
 
         String password1 = passwordRequestDto.getPassword1();
         String password2 = passwordRequestDto.getPassword2();

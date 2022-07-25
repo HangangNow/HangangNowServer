@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @Slf4j
 @RestController
@@ -46,6 +48,7 @@ public class MemberController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     @PostMapping("/api/v1/members/logout")
     public ResponseEntity<ResponseDto> logout(){
@@ -62,22 +65,25 @@ public class MemberController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PutMapping("/api/v1/members/password")
-    public ResponseEntity<ResponseDto> changePassword(@RequestBody PasswordRequestDto passwordRequestDto){
+    public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid PasswordRequestDto passwordRequestDto){
         return new ResponseEntity<>(memberService.changePassword(passwordRequestDto), HttpStatus.OK);
     }
 
 
     @Operation(summary = "회원탈퇴", description = "회원탈퇴 요청 URL. " +
-            "\n### 요청변수 X")
+            "\n### 요청변수 X" +
+            "\n### 카카오 로그인 회원은 자동으로 카카오 연동 끊어짐")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @DeleteMapping("api/v1/members")
@@ -93,10 +99,11 @@ public class MemberController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @GetMapping("/api/v1/members/{email}")
-    public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email){
+    public ResponseEntity<MemberResponseDto> getMemberInfoByEmail(@PathVariable String email){
         return new ResponseEntity<>(memberService.getMemberInfoByEmail(email), HttpStatus.OK);
     }
 }

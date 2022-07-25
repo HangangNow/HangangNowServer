@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
-public class genericResponseDto<T> {
+public class GenericResponseDto<T> {
     @NotEmpty
     private T data;
 }

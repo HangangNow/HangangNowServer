@@ -2,7 +2,7 @@ package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
 import com.hangangnow.mainserver.service.myPageService.MemoService;
-import com.hangangnow.mainserver.domain.common.genericResponseDto;
+import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,6 +26,7 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     public MemoDto memoOne(@PathVariable Long memoid){
        return memoService.findOne(memoid);
@@ -39,9 +40,10 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public genericResponseDto Memos(){
-        return new genericResponseDto(memoService.findAllMemberMemo());
+    public GenericResponseDto Memos(){
+        return new GenericResponseDto(memoService.findAllMemberMemo());
     }
 
     @GetMapping("/years/{year}/months/{month}")
@@ -52,9 +54,10 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public genericResponseDto CalendarMemos(@PathVariable int year, @PathVariable int month){
-        return new genericResponseDto(memoService.findAllCalendarMemo(year, month));
+    public GenericResponseDto CalendarMemos(@PathVariable int year, @PathVariable int month){
+        return new GenericResponseDto(memoService.findAllCalendarMemo(year, month));
     }
 
     @PostMapping("")
@@ -65,9 +68,10 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public genericResponseDto AddMemo(@RequestBody @Valid MemoDto request) {
-        return new genericResponseDto(memoService.addMemo(request));
+    public GenericResponseDto AddMemo(@RequestBody @Valid MemoDto request) {
+        return new GenericResponseDto(memoService.addMemo(request));
     }
 
     @PutMapping("/{memoid}")
@@ -79,9 +83,10 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public genericResponseDto ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
-        return new genericResponseDto(memoService.modifyMemo(memoid, request));
+    public GenericResponseDto ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
+        return new GenericResponseDto(memoService.modifyMemo(memoid, request));
     }
 
     @DeleteMapping("/{memoid}")
@@ -92,9 +97,10 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public genericResponseDto DeleteMemo(@PathVariable Long memoid) {
-        return new genericResponseDto(memoService.deleteMemo(memoid));
+    public GenericResponseDto DeleteMemo(@PathVariable Long memoid) {
+        return new GenericResponseDto(memoService.deleteMemo(memoid));
     }
 
 }
