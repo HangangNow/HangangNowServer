@@ -26,7 +26,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final MailService mailService;
-    private final MemberRepository memberRepository;
 
     @Operation(summary = "회원가입", description = "회원가입 요청 URL. " +
             "\n### 요청변수: 모든 변수. " +
@@ -153,11 +152,12 @@ public class AuthController {
     })
     @PostMapping("/api/v1/auth/reissue")
     public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto){
-        return new ResponseEntity<>(authService.reissue(memberTokenRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(authService.reissue(memberTokenRequestDto), HttpStatus.OK);
     }
 
 
-    @Operation(summary = "아이디 찾기 시 이메일 인증코드 발송", description = "이메일 인증코드 발송 요청 URL." +
+
+    @Operation(summary = "이메일 인증코드 발송", description = "이메일 인증코드 발송 요청 URL." +
             "\n### 요청변수: email")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -167,27 +167,8 @@ public class AuthController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
-    @PostMapping("/api/v1/auth/emailAuth/loginId")
-    public ResponseEntity<EmailAuthDto> emailAuthenticateInFindLoginId(@RequestBody EmailAuthDto emailAuthDto){
-        memberRepository.findByEmail(emailAuthDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일 입니다."));
-
-        return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.CREATED);
-    }
-
-
-    @Operation(summary = "회원가입 시 이메일 인증코드 발송", description = "이메일 인증코드 발송 요청 URL." +
-            "\n### 요청변수: email")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
-
-    })
-    @PostMapping("/api/v1/auth/emailAuth/signup")
-    public ResponseEntity<EmailAuthDto> emailAuthenticateInSignup(@RequestBody EmailAuthDto emailAuthDto){
-        return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.CREATED);
+    @PostMapping("/api/v1/auth/emailAuth")
+    public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
+        return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.OK);
     }
 }
