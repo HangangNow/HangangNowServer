@@ -9,6 +9,7 @@ import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiaryDto {
@@ -33,20 +35,20 @@ public class DiaryDto {
     @Pattern(regexp = "^(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$", message = "올바르지 않은 날짜 형식 입니다.")
     private String diaryDate;
 
-    private Emotion emotion;
+    private String emotion;
 
-    private DiaryWeather diaryWeather;
+    private String diaryWeather;
 
-    private DiaryPhoto photo;
+    private String photo;
 
     public DiaryDto(Diary diary) {
         this.id = diary.getId();
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.diaryDate = diary.getDiaryDate().toString();
-        this.emotion = diary.getEmotion();
-        this.diaryWeather = diary.getDiaryWeather();
-        this.photo = diary.getPhoto();
+        if(diary.getPhoto()!=null) this.photo = diary.getPhoto().getUrl();
+        if(diary.getEmotion()!=null) this.emotion = diary.getEmotion().toString();
+        if(diary.getDiaryWeather()!=null) this.diaryWeather = diary.getDiaryWeather().toString();
     }
 
 }

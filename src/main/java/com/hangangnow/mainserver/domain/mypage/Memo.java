@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -58,7 +59,7 @@ public class Memo {
     }
 
     static public MemoColor FromStringToMemoColor(String stringColor){
-        switch (stringColor){
+        switch (Optional.ofNullable(stringColor).orElse("")){
             case "RED" : return MemoColor.RED;
             case "ORANGE" : return MemoColor.ORANGE;
             case "YELLOW" : return MemoColor.YELLOW;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.constraints.Null;
@@ -61,7 +62,14 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NullPointerException.class)
     public GeneralException NullPointerExHandle(NullPointerException e) {
-        log.error("[NullPointer ExceptionHandle] ex" + e.getMessage());
+        log.error("[NullPointer ExceptionHandle] ex: " + e.getMessage());
+        return new GeneralException("BAD", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MultipartException.class)
+    public GeneralException MultipartExHandle(MultipartException e) {
+        log.error("[MultipartException Handle]: " + e.getMessage());
         return new GeneralException("BAD", e.getMessage());
     }
 
