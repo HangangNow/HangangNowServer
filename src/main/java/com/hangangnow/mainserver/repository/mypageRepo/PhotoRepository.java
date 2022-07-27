@@ -17,6 +17,10 @@ public class PhotoRepository {
         em.persist(diaryPhoto);
     }
 
+    public void removeDairyPhoto(DiaryPhoto diaryPhoto){
+        em.remove(diaryPhoto);
+    }
+
 //    public LocalDateTime update(DiaryPhoto diaryPhoto, String newUrl){
 //        diaryPhoto.update(newUrl);
 //    }

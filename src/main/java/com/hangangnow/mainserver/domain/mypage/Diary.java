@@ -66,7 +66,7 @@ public class Diary {
 
     public void updateDiaryPhoto(DiaryPhoto diaryPhoto){
         this.photo = diaryPhoto;
-        diaryPhoto.updateDiary(this);
+        if(diaryPhoto != null) diaryPhoto.updateDiary(this); // 굳이 필요하진 않지만 List라면 필요하다!
     }
 
     public void update(DiaryDto diaryDto){

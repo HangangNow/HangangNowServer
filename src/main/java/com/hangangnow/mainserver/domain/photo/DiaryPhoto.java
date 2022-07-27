@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.domain.photo;
 
+import com.hangangnow.mainserver.domain.S3UploadData;
 import com.hangangnow.mainserver.domain.mypage.Diary;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +28,9 @@ public class DiaryPhoto extends Photo{
         this.lastModifiedTime = LocalDateTime.now();
     }
 
-    public DiaryPhoto(String url){
-        this.url = url;
+    public DiaryPhoto(S3UploadData s3UploadData){
+        this.s3Key = s3UploadData.getFileKey();
+        this.url = s3UploadData.getFileUrl();
         this.lastModifiedTime = LocalDateTime.now();
     }
 

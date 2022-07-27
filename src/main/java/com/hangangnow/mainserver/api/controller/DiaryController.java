@@ -45,12 +45,12 @@ public class DiaryController {
         return new GenericResponseDto(diaryService.findAllDateDiary(diaryDateRequestDto));
     }
 
-//    @PutMapping("/diaryid")
-//    public GenericResponseDto ModifyDiary( @PathVariable("diaryid") Long diaryid,
-//                                        @Valid @RequestPart(value = "data") DiaryDto request,
-//                                        @Valid @RequestPart(value = "image", required = false) MultipartFile imageRequest) throws Exception {
-//        return new GenericResponseDto(diaryService.modifyDiary(diaryid, request, imageRequest));
-//    }
+    @PutMapping("/{diaryid}")
+    public Boolean ModifyDiary( @PathVariable("diaryid") Long diaryid,
+                                        @Valid @RequestPart(value = "data") DiaryDto request,
+                                        @Valid @RequestPart(value = "image", required = false) MultipartFile imageRequest) throws Exception {
+        return diaryService.modifyDiary(diaryid, request, imageRequest);
+    }
 
     @DeleteMapping("/{diaryid}")
     public Boolean DeleteDiary(@PathVariable("diaryid") Long diaryid) {

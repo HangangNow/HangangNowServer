@@ -25,6 +25,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public GeneralException illegalExHandle(IllegalArgumentException e) {
         log.error("[IllegalArgument ExceptionHandle] ex" + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }
 
@@ -40,6 +41,7 @@ public class ExControllerAdvice {
             log.error("[IllegalArgument ExceptionHandle] ex: " + error.getDefaultMessage());
         }
 
+        e.printStackTrace();
         return new MethodArgsException("BAD", errors);
     }
 
@@ -48,6 +50,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public GeneralException illegalExHandle(RuntimeException e) {
         log.error("[Runtime ExceptionHandle] ex: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("FORBIDDEN", e.getMessage());
     }
 
@@ -56,6 +59,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     public GeneralException handleNotFoundError(NoHandlerFoundException e) {
         log.error("[NoHandlerFound ExceptionHandle] ex: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("NOT FOUND", e.getMessage());
     }
 
@@ -63,6 +67,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(NullPointerException.class)
     public GeneralException NullPointerExHandle(NullPointerException e) {
         log.error("[NullPointer ExceptionHandle] ex: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }
 
@@ -70,6 +75,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(MultipartException.class)
     public GeneralException MultipartExHandle(MultipartException e) {
         log.error("[MultipartException Handle]: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }
 

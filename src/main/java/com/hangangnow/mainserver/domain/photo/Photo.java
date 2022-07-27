@@ -18,6 +18,9 @@ public class Photo {
     protected Long id;
 
     @Column(nullable = false)
+    protected String s3Key;
+
+    @Column(nullable = false)
     protected String url;
 
     protected LocalDateTime lastModifiedTime;

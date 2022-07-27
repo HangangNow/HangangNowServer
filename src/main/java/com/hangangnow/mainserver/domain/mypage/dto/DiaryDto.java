@@ -1,21 +1,13 @@
 package com.hangangnow.mainserver.domain.mypage.dto;
 
-import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.mypage.Diary;
-import com.hangangnow.mainserver.domain.mypage.DiaryWeather;
-import com.hangangnow.mainserver.domain.mypage.Emotion;
-import com.hangangnow.mainserver.domain.mypage.Memo;
-import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -39,14 +31,14 @@ public class DiaryDto {
 
     private String diaryWeather;
 
-    private String photo;
+    private String url;
 
     public DiaryDto(Diary diary) {
         this.id = diary.getId();
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.diaryDate = diary.getDiaryDate().toString();
-        if(diary.getPhoto()!=null) this.photo = diary.getPhoto().getUrl();
+        if(diary.getPhoto()!=null) this.url = diary.getPhoto().getUrl();
         if(diary.getEmotion()!=null) this.emotion = diary.getEmotion().toString();
         if(diary.getDiaryWeather()!=null) this.diaryWeather = diary.getDiaryWeather().toString();
     }
