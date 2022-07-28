@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.api.controller;
 
+import com.hangangnow.mainserver.domain.common.IdResponseDto;
 import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
 import com.hangangnow.mainserver.service.myPageService.MemoService;
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
@@ -7,13 +8,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/mypage/memos")
+@RequestMapping("/api/v1/memos")
 public class MemoController {
 
     private final MemoService memoService;
@@ -47,22 +52,23 @@ public class MemoController {
     }
 
     @GetMapping("/years/{year}/months/{month}")
-    @Operation(summary = "멤버의 모든 메모 조회", description = "멤버의 모든 메모 리스트 조회할 수 있습니다.")
+    @Operation(summary = "멤버 달력 메모 조회", description = "년도, 월 별로 멤버의 달력 메모 리스트를 조회할 수 있습니다.  " +
+            "\nyear range: 2000~2099  " +
+            "\nmonth range: 1~12")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public GenericResponseDto CalendarMemos(@PathVariable int year, @PathVariable int month){
+    public GenericResponseDto CalendarMemos(@PathVariable("year") @Min(2000) @Max(2099) int year,
+                                            @PathVariable("month") @Min(1) @Max(12) int month){
         return new GenericResponseDto(memoService.findAllCalendarMemo(year, month));
     }
 
     @PostMapping("")
-    @Operation(summary = "메모 추가", description = "메모를 추가할 수 있습니다.  "
-            +"\n모든 키 값은 필수 값 입니다.")
+    @Operation(summary = "메모 추가", description = "메모를 추가할 수 있습니다.  " +
+            "\n모든 키 값은 필수 값 입니다.  " +
+            "\ncolor type: RED, ORANGE, YELLOW, GREEN, BLUE, NAVY, PURPLE, GRAY")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -70,8 +76,8 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public GenericResponseDto AddMemo(@RequestBody @Valid MemoDto request) {
-        return new GenericResponseDto(memoService.addMemo(request));
+    public IdResponseDto AddMemo(@RequestBody @Valid MemoDto request){
+        return new IdResponseDto(memoService.addMemo(request));
     }
 
     @PutMapping("/{memoid}")
@@ -85,8 +91,8 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public GenericResponseDto ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
-        return new GenericResponseDto(memoService.modifyMemo(memoid, request));
+    public Boolean ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
+        return memoService.modifyMemo(memoid, request);
     }
 
     @DeleteMapping("/{memoid}")
@@ -99,8 +105,8 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public GenericResponseDto DeleteMemo(@PathVariable Long memoid) {
-        return new GenericResponseDto(memoService.deleteMemo(memoid));
+    public Boolean DeleteMemo(@PathVariable Long memoid) {
+        return memoService.deleteMemo(memoid);
     }
 
 }
