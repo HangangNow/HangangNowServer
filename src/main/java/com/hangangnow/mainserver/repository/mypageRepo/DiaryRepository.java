@@ -5,6 +5,7 @@ import com.hangangnow.mainserver.domain.mypage.Diary;
 import com.hangangnow.mainserver.domain.mypage.Memo;
 import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class DiaryRepository {
@@ -33,14 +35,6 @@ public class DiaryRepository {
                 .getResultList();
     }
 
-    public List<Diary> findAllByMemberAndMonth(Member member, int month){
-        String jpql = "select d from Diary d where d.member =: member and FUNCTION('month',d.diaryDate) =: month";
-        return em.createQuery(jpql, Diary.class)
-                .setParameter("member", member)
-                .setParameter("month", month)
-                .getResultList();
-    }
-
     public List<Diary> findAllByMemberAndYearAndMonth(Member member, int year, int month) {
         String jpql = "select d from Diary d " +
                 "where d.member =: member " +
@@ -54,7 +48,7 @@ public class DiaryRepository {
                 .getResultList();
     }
 
-    public List<Diary> findAllByMemberAndWrittenDateTime(Member member, int year, int month, int day){
+    public List<Diary> findAllByMemberAndDate(Member member, int year, int month, int day){
         String jpql = "select d from Diary d " +
                 "where d.member =: member " +
                 "and FUNCTION('year',d.diaryDate) =: year " +

@@ -25,7 +25,7 @@ public class MemoService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long addMemo(MemoDto memoDto) {
+    public Long addMemo(MemoDto memoDto){
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new NullPointerException("Failed: Not found memo"));
         Memo memo = Memo.of(memoDto, findMember);

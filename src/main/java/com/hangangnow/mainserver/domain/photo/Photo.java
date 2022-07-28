@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -14,6 +15,15 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photo_id")
-    private Long id;
-    private String url;
+    protected Long id;
+
+    @Column(nullable = false)
+    protected String s3Key;
+
+    @Column(nullable = false)
+    protected String url;
+
+    protected LocalDateTime lastModifiedTime;
+
+
 }
