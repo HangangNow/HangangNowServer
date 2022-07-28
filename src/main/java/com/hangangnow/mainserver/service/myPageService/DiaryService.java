@@ -78,8 +78,9 @@ public class DiaryService {
                 .collect(Collectors.toList());
     }
 
-    public List<DiaryDto> findAllDateDiary(LocalDate date) {
+    public List<DiaryDto> findAllDateDiary(DiaryDateRequestDto diaryDateRequestDto) {
         UUID currentMemberId = SecurityUtil.getCurrentMemberId();
+        log.info(currentMemberId.toString());
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
         LocalDate date = LocalDate.parse(diaryDateRequestDto.getDate(), DateTimeFormatter.ISO_DATE);
