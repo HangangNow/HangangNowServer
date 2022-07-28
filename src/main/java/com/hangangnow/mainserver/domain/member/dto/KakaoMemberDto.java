@@ -8,11 +8,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberKakaoDto {
+public class KakaoMemberDto {
     private Long kakaoId;
     private String loginId;
     private String email;
     private String name;
+    private Gender gender;
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
         return new UsernamePasswordAuthenticationToken(email, name);

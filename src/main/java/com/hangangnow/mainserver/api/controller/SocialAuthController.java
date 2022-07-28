@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.api.controller;
 
+import com.hangangnow.mainserver.domain.member.dto.MemberKakaoTokenDto;
 import com.hangangnow.mainserver.domain.member.dto.MemberTokenDto;
 import com.hangangnow.mainserver.service.SocialAuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ public class SocialAuthController {
     private final SocialAuthService socialAuthService;
 
     @GetMapping("/api/v1/auth/kakao")
-    public ResponseEntity<MemberTokenDto> kakaoCode(@RequestParam String code){
+    public ResponseEntity<MemberKakaoTokenDto> kakaoCode(@RequestParam String code){
         System.out.println("code = " + code);
         String accessToken = socialAuthService.getKakaoAccessToken(code);
         return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, false), HttpStatus.OK);
@@ -36,10 +37,11 @@ public class SocialAuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/kakao")
-    public ResponseEntity<MemberTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin){
+    public ResponseEntity<MemberKakaoTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin){
         return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, autoLogin), HttpStatus.OK);
     }
 }

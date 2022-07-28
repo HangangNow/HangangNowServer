@@ -3,14 +3,14 @@ package com.hangangnow.mainserver.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.hangangnow.mainserver.config.KakaoAuthenticationProvider;
-import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
 import com.hangangnow.mainserver.domain.member.Authority;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.RefreshToken;
-import com.hangangnow.mainserver.domain.member.dto.MemberKakaoDto;
-import com.hangangnow.mainserver.domain.member.dto.MemberLoginRequestDto;
+import com.hangangnow.mainserver.domain.member.dto.Gender;
+import com.hangangnow.mainserver.domain.member.dto.KakaoMemberDto;
+import com.hangangnow.mainserver.domain.member.dto.MemberKakaoTokenDto;
 import com.hangangnow.mainserver.domain.member.dto.MemberTokenDto;
 import com.hangangnow.mainserver.repository.MemberRepository;
 import com.hangangnow.mainserver.repository.RefreshTokenRepository;
@@ -19,15 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.UUID;
 
 
 @Slf4j
@@ -46,9 +45,9 @@ public class SocialAuthService {
     private String restApiKey;
 
 
-    public MemberTokenDto loginByKakaoToken(String accessToken, Boolean autoLogin){
+    public MemberKakaoTokenDto loginByKakaoToken(String accessToken, Boolean autoLogin){
 
-        MemberKakaoDto memberKakaoDto = new MemberKakaoDto();
+        KakaoMemberDto memberKakaoDto = new KakaoMemberDto();
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
@@ -93,19 +92,30 @@ public class SocialAuthService {
     }
 
 
-    private MemberKakaoDto getKakaoUserAttribute(JsonElement element) {
+    private KakaoMemberDto getKakaoUserAttribute(JsonElement element) {
+
         long kakaoId = element.getAsJsonObject().get("id").getAsLong();
         String name = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
         String email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
+        boolean hasGender = element.getAsJsonObject().get("kakao_account" ).getAsJsonObject().get("has_gender").getAsBoolean();
+
+        Gender gender = null;
+        if (hasGender){
+            System.out.println("gender = " + element.getAsJsonObject().get("kakao_account" ).getAsJsonObject().get("gender").getAsString().toUpperCase());
+            if (element.getAsJsonObject().get("kakao_account" ).getAsJsonObject().get("gender").getAsString().equalsIgnoreCase("MALE")){
+                gender = Gender.MALE;
+            }
+            else gender = Gender.FEMALE;
+        }
 
         int index = email.indexOf("@");
         String loginId = email.substring(0, index) + "_kakao";
 
-        return new MemberKakaoDto(kakaoId,loginId, email, name);
+        return new KakaoMemberDto(kakaoId,loginId, email, name, gender);
     }
 
 
-    public MemberTokenDto login(MemberKakaoDto memberKakaoDto, Boolean autoLogin){
+    public MemberKakaoTokenDto login(KakaoMemberDto memberKakaoDto, Boolean autoLogin){
         Member findMemberByKakao = memberRepository.findByEmail(memberKakaoDto.getEmail())
                 .orElse(null);
 
@@ -115,8 +125,9 @@ public class SocialAuthService {
                     .loginId(memberKakaoDto.getLoginId())
                     .kakaoId(memberKakaoDto.getKakaoId())
                     .email(memberKakaoDto.getEmail())
-                    .password("test")
+                    .password(UUID.randomUUID().toString())
                     .name(memberKakaoDto.getName())
+                    .gender(memberKakaoDto.getGender())
                     .authority(Authority.ROLE_USER)
                     .memberProvider(MemberProvider.KAKAO)
                     .build();
@@ -130,16 +141,25 @@ public class SocialAuthService {
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, autoLogin);
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .key(Long.parseLong(authentication.getName()))
+                .key(UUID.fromString(authentication.getName()))
                 .value(memberTokenDto.getRefreshToken())
                 .build();
 
         refreshTokenRepository.save(refreshToken);
 
+        MemberKakaoTokenDto memberKakaoTokenDto = new MemberKakaoTokenDto();
+        memberKakaoTokenDto.setGrantType(memberTokenDto.getGrantType());
+        memberKakaoTokenDto.setAccessToken(memberTokenDto.getAccessToken());
+        memberKakaoTokenDto.setRefreshToken(memberTokenDto.getRefreshToken());
+        memberKakaoTokenDto.setAccessTokenExpiresIn(memberTokenDto.getAccessTokenExpiresIn());
 
-        memberTokenDto.setProvider("KAKAO");
+        memberKakaoTokenDto.setEmail(memberKakaoDto.getEmail());
+        memberKakaoTokenDto.setName(memberKakaoDto.getName());
+        memberKakaoTokenDto.setProvider("KAKAO");
+        memberKakaoTokenDto.setGender(memberKakaoDto.getGender());
 
-        return memberTokenDto;
+
+        return memberKakaoTokenDto;
     }
 
 

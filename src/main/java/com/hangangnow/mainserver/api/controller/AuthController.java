@@ -26,7 +26,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final MailService mailService;
-    private final MemberRepository memberRepository;
 
     @Operation(summary = "회원가입", description = "회원가입 요청 URL. " +
             "\n### 요청변수: 모든 변수. " +
@@ -38,6 +37,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/signup")
@@ -53,6 +53,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/login")
@@ -68,6 +69,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PutMapping("/api/v1/auth/password")
@@ -83,6 +85,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/loginId")
@@ -104,6 +107,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/dup/loginId")
@@ -125,28 +129,32 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/dup/email")
-    public ResponseEntity<ResponseDto> emailDuplicateCheck(@RequestBody MemberDuplicateDto memberDuplicateDto){
-        return new ResponseEntity<>(authService.duplicateCheckByEmail(memberDuplicateDto.getEmail()), HttpStatus.OK);
+    public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody MemberDuplicateDto memberDuplicateDto){
+        return new ResponseEntity<>(authService.duplicateCheckByEmail(memberDuplicateDto), HttpStatus.OK);
     }
 
 
 
     @Operation(summary = "토큰 재발급", description = "Access Token 만료 시 재발급 요청 URL" +
-            "\n### 요청변수: accessToken, refreshToken")
+            "\n### 요청변수: accessToken, refreshToken" +
+            "\n### provider는 항상 null 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/reissue")
     public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto){
-        return new ResponseEntity<>(authService.reissue(memberTokenRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(authService.reissue(memberTokenRequestDto), HttpStatus.OK);
     }
+
 
 
     @Operation(summary = "이메일 인증코드 발송", description = "이메일 인증코드 발송 요청 URL." +
@@ -156,13 +164,11 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
     @PostMapping("/api/v1/auth/emailAuth")
-    public ResponseEntity<EmailAuthDto> emailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
-        memberRepository.findByEmail(emailAuthDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일 입니다."));
-
-        return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.CREATED);
+    public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
+        return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.OK);
     }
 }

@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -56,7 +57,7 @@ public class DiaryService {
     }
 
     public List<DiaryDto> findAllMemberDiary(){
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 
@@ -67,7 +68,7 @@ public class DiaryService {
     }
 
     public List<DiaryDto> findAllCalendarDiary(int year, int month) {
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
 
@@ -77,8 +78,8 @@ public class DiaryService {
                 .collect(Collectors.toList());
     }
 
-    public List<DiaryDto> findAllDateDiary(DiaryDateRequestDto diaryDateRequestDto) {
-        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+    public List<DiaryDto> findAllDateDiary(LocalDate date) {
+        UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
         LocalDate date = LocalDate.parse(diaryDateRequestDto.getDate(), DateTimeFormatter.ISO_DATE);

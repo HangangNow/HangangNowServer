@@ -31,6 +31,7 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     public MemoDto memoOne(@PathVariable Long memoid){
        return memoService.findOne(memoid);
@@ -44,6 +45,7 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     public GenericResponseDto Memos(){
         return new GenericResponseDto(memoService.findAllMemberMemo());
@@ -72,6 +74,7 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     public IdResponseDto AddMemo(@RequestBody @Valid MemoDto request){
         return new IdResponseDto(memoService.addMemo(request));
@@ -86,6 +89,7 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     public Boolean ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
         return memoService.modifyMemo(memoid, request);
@@ -99,6 +103,7 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     public Boolean DeleteMemo(@PathVariable Long memoid) {
         return memoService.deleteMemo(memoid);

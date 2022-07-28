@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.UUID;
 
 
 @Slf4j
@@ -40,7 +41,7 @@ public class MemberService {
 
     @Transactional
     public ResponseDto deleteMember(){
-        Long memberId = SecurityUtil.getCurrentMemberId();
+        UUID memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("유저 정보를 찾을 수 없습니다"));
 
@@ -49,11 +50,11 @@ public class MemberService {
         }
 
         refreshTokenRepository.delete(memberId);
-        memberRepository.delete(memberId);
+        memberRepository.delete(member);
         return new ResponseDto("회원탈퇴가 정상적으로 처리되었습니다.");
     }
 
-
+    @Transactional
     public void disconnectKakaoAccount(Member member){
         String reqURL = "https://kauth.kakao.com/v1/user/unlink";
 
@@ -76,7 +77,7 @@ public class MemberService {
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+//            System.out.println("responseCode : " + responseCode);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,8 +112,6 @@ public class MemberService {
     public ResponseDto changePassword(PasswordRequestDto passwordRequestDto) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
-
-        // System.out.println("passwordRequestDto = " + passwordRequestDto.getPassword1());
 
 
         if (!passwordRequestDto.getPassword1().equals(passwordRequestDto.getPassword2())){
