@@ -3,11 +3,11 @@ package com.hangangnow.mainserver.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.hangangnow.mainserver.config.KakaoAuthenticationProvider;
+import com.hangangnow.mainserver.config.RedisUtil;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
 import com.hangangnow.mainserver.domain.member.Authority;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
-import com.hangangnow.mainserver.domain.member.RefreshToken;
 import com.hangangnow.mainserver.domain.member.dto.Gender;
 import com.hangangnow.mainserver.domain.member.dto.KakaoMemberDto;
 import com.hangangnow.mainserver.domain.member.dto.MemberKakaoTokenDto;
@@ -36,6 +36,7 @@ import java.util.UUID;
 @PropertySource("classpath:/application-secret.properties")
 public class SocialAuthService {
 
+    private final RedisUtil redisUtil;
     private final MemberRepository memberRepository;
     private final KakaoAuthenticationProvider kakaoAuthenticationProvider;
     private final TokenProvider tokenProvider;
@@ -111,7 +112,7 @@ public class SocialAuthService {
         int index = email.indexOf("@");
         String loginId = email.substring(0, index) + "_kakao";
 
-        return new KakaoMemberDto(kakaoId,loginId, email, name, gender);
+        return new KakaoMemberDto(kakaoId, loginId, email, name, gender);
     }
 
 
@@ -140,26 +141,33 @@ public class SocialAuthService {
 
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, autoLogin);
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(UUID.fromString(authentication.getName()))
-                .value(memberTokenDto.getRefreshToken())
+        String existsRefreshToken = redisUtil.getDataWithKey(authentication.getName());
+        if (existsRefreshToken == null){
+            // Redis <String, String> -> <memberId, refreshToken> 으로 저장
+            if(memberTokenDto.getAutoLogin()){
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 90));
+            }
+
+            else{
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 7));
+            }
+        }
+
+        else{
+            memberTokenDto.setRefreshToken(existsRefreshToken);
+        }
+
+
+        return MemberKakaoTokenDto.builder()
+                .grantType(memberTokenDto.getGrantType())
+                .accessToken(memberTokenDto.getAccessToken())
+                .refreshToken(memberTokenDto.getRefreshToken())
+                .accessTokenExpiresIn(memberTokenDto.getAccessTokenExpiresIn())
+                .email(memberKakaoDto.getEmail())
+                .name(memberKakaoDto.getName())
+                .provider("KAKAO")
+                .gender(memberKakaoDto.getGender())
                 .build();
-
-        refreshTokenRepository.save(refreshToken);
-
-        MemberKakaoTokenDto memberKakaoTokenDto = new MemberKakaoTokenDto();
-        memberKakaoTokenDto.setGrantType(memberTokenDto.getGrantType());
-        memberKakaoTokenDto.setAccessToken(memberTokenDto.getAccessToken());
-        memberKakaoTokenDto.setRefreshToken(memberTokenDto.getRefreshToken());
-        memberKakaoTokenDto.setAccessTokenExpiresIn(memberTokenDto.getAccessTokenExpiresIn());
-
-        memberKakaoTokenDto.setEmail(memberKakaoDto.getEmail());
-        memberKakaoTokenDto.setName(memberKakaoDto.getName());
-        memberKakaoTokenDto.setProvider("KAKAO");
-        memberKakaoTokenDto.setGender(memberKakaoDto.getGender());
-
-
-        return memberKakaoTokenDto;
     }
 
 

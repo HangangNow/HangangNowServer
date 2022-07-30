@@ -34,22 +34,22 @@ public class MemberAuthenticationProvider implements AuthenticationProvider{
 
         /* checker */
         if(!loadedUser.isAccountNonLocked()){
-            throw new LockedException("User account is locked");
+            throw new LockedException("사용할 수 없는 사용자 계정입니다.");
         }
         if(!loadedUser.isEnabled()){
-            throw new DisabledException("User is disabled");
+            throw new DisabledException("로그인이 차단 된 유저입니다.");
         }
         if(!loadedUser.isAccountNonExpired()){
-            throw new AccountExpiredException("User account has expired");
+            throw new AccountExpiredException("사용자 계정이 만료되었습니다.");
         }
 
         /* 실질적인 인증 */
         if(!passwordEncoder.matches(password, loadedUser.getPassword())){
-            throw new BadCredentialsException("Password does not match stored value");
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
         /* checker */
         if(!loadedUser.isCredentialsNonExpired()){
-            throw new CredentialsExpiredException("User credentials have expired");
+            throw new CredentialsExpiredException("사용자 자격 증명이 만료되었습니다.");
         }
 
         /* 인증 완료 */

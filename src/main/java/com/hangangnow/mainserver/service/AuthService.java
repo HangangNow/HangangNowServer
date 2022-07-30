@@ -2,6 +2,7 @@ package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.MemberAuthenticationProvider;
 
+import com.hangangnow.mainserver.config.RedisUtil;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
@@ -13,6 +14,7 @@ import com.hangangnow.mainserver.repository.MemberRepository;
 import com.hangangnow.mainserver.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -30,9 +32,9 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class AuthService {
 
+    private final RedisUtil redisUtil;
     private final MemberAuthenticationProvider memberAuthenticationProvider;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final MailService mailService;
@@ -58,15 +60,23 @@ public class AuthService {
 
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberLoginRequestDto.getAutoLogin());
 
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(UUID.fromString(authentication.getName()))
-                .value(memberTokenDto.getRefreshToken())
-                .build();
+        String existsRefreshToken = redisUtil.getDataWithKey(authentication.getName());
+        if (existsRefreshToken == null){
+            // Redis <String, String> -> <memberId, refreshToken> 으로 저장
+            if(memberTokenDto.getAutoLogin()){
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 90));
+            }
 
+            else{
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 7));
+            }
+        }
+
+        else{
+            memberTokenDto.setRefreshToken(existsRefreshToken);
+        }
 
         memberTokenDto.setProvider("GENERAL");
-        refreshTokenRepository.save(refreshToken);
-
         return memberTokenDto;
     }
 
@@ -82,18 +92,28 @@ public class AuthService {
         Authentication authentication = tokenProvider.getAuthentication(memberTokenRequestDto.getAccessToken());
 
         // 3. 저장소에서 memberId 기반으로 RefreshToken 객체 가져옴
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(UUID.fromString(authentication.getName()))
-                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+//        RefreshToken refreshToken = refreshTokenRepository.findByKey(UUID.fromString(authentication.getName()))
+//                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+        String refreshToken = redisUtil.getDataWithKey(authentication.getName());
+
+        if(refreshToken == null){
+            throw new RuntimeException("로그아웃 된 사용자입니다.");
+        }
 
         // 4. Refresh Token 일치하는지 검사
-        if (!refreshToken.getValue().equals(memberTokenRequestDto.getRefreshToken())){
+        if (!refreshToken.equals(memberTokenRequestDto.getRefreshToken())){
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
         }
 
         // 5. 새로운 토큰 생성
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberTokenRequestDto.getAutoLogin());
-        refreshToken.updateValue(memberTokenDto.getRefreshToken());
+        if(memberTokenDto.getAutoLogin()){
+            redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 90));
+        }
 
+        else{
+            redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 7));
+        }
         return memberTokenDto;
     }
 

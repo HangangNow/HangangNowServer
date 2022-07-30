@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.domain.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,6 @@ public class MemberTokenDto {
     private String accessToken;
     private String refreshToken;
     private Long accessTokenExpiresIn;
+    private Boolean autoLogin;
     private String provider;
 }

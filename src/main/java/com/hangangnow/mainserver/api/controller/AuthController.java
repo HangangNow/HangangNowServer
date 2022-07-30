@@ -171,4 +171,20 @@ public class AuthController {
     public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
         return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.OK);
     }
+
+
+    @Operation(summary = "이메일 인증코드 확인", description = "이메일 인증코드 확인 요청 URL." +
+            "\n### 요청변수: email")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+
+    })
+    @PostMapping("/api/v1/auth/emailAuth/code")
+    public ResponseEntity<Boolean> checkEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
+        return new ResponseEntity<>(mailService.checkEmailCode(emailAuthDto), HttpStatus.OK);
+    }
 }
