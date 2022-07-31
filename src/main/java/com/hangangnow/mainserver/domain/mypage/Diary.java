@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -28,6 +29,10 @@ public class Diary {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @OneToOne(mappedBy = "diary", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "photo_id")
+    private DiaryPhoto photo;
 
     @Column(nullable = false)
     private String title;
@@ -47,59 +52,58 @@ public class Diary {
     @Enumerated(EnumType.STRING)
     private DiaryWeather diaryWeather;
 
-    @OneToOne(mappedBy = "diary")
-    private DiaryPhoto photo;
-
-
-
-
     static public Diary of(DiaryDto diaryDto, Member member){
         return Diary.builder()
                 .member(member)
                 .title(diaryDto.getTitle())
                 .content(diaryDto.getContent())
                 .diaryDate(LocalDate.parse(diaryDto.getDiaryDate(), DateTimeFormatter.ISO_DATE))
-                .diaryWeather(diaryDto.getDiaryWeather())
-                .emotion(diaryDto.getEmotion())
+                .diaryWeather(FromStringToDiaryWeather(diaryDto.getDiaryWeather()))
+                .emotion(FromStringToEmotion(diaryDto.getEmotion()))
                 .lastModifiedDateTime(LocalDateTime.now())
-                .photo(diaryDto.getPhoto())
                 .build();
+    }
+
+    public void updateDiaryPhoto(DiaryPhoto diaryPhoto){
+        this.photo = diaryPhoto;
+        if(diaryPhoto != null) diaryPhoto.updateDiary(this); // 굳이 필요하진 않지만 List라면 필요하다!
     }
 
     public void update(DiaryDto diaryDto){
         this.title = diaryDto.getTitle();
         this.content = diaryDto.getContent();
-        this.emotion = diaryDto.getEmotion();
-        this.diaryWeather = diaryDto.getDiaryWeather();
-        this.photo = diaryDto.getPhoto(); // 연관관계 끊어주고 고아 방지를 위해 diary photo 삭제.
+        this.emotion = FromStringToEmotion(diaryDto.getEmotion());
+        this.diaryWeather = FromStringToDiaryWeather(diaryDto.getDiaryWeather());
         this.lastModifiedDateTime = LocalDateTime.now();
     }
 
-//    static public Emotion FromStringToEmotion(String stringEmotion){
-//        switch (stringEmotion){
-//            case "EXCITED" : return Emotion.EXCITED;
-//            case "BIG_SMILE" : return Emotion.BIG_SMILE;
-//            case "FUNNY" : return Emotion.FUNNY;
-//            case "PEACEFUL" : return Emotion.PEACEFUL;
-//            case "LOVELY" : return Emotion.LOVELY;
-//            case "SAD" : return Emotion.SAD;
-//            case "ANGRY" : return Emotion.ANGRY;
-//            case "FROWNING" : return Emotion.FROWNING;
-//            case "DIZZY" : return Emotion.DIZZY;
-//            default: return Emotion.SMILE;
-//        }
-//    }
+    static public Emotion FromStringToEmotion(String stringEmotion){
+        if(stringEmotion == null) return null;
+        switch (stringEmotion){
+            case "EXCITED" : return Emotion.EXCITED;
+            case "BIG_SMILE" : return Emotion.BIG_SMILE;
+            case "FUNNY" : return Emotion.FUNNY;
+            case "PEACEFUL" : return Emotion.PEACEFUL;
+            case "LOVELY" : return Emotion.LOVELY;
+            case "SAD" : return Emotion.SAD;
+            case "ANGRY" : return Emotion.ANGRY;
+            case "FROWNING" : return Emotion.FROWNING;
+            case "DIZZY" : return Emotion.DIZZY;
+            default: return Emotion.SMILE;
+        }
+    }
 
-    static public MemoColor FromStringToMemoColor(String stringColor){
-        switch (stringColor){
-            case "RED" : return MemoColor.RED;
-            case "ORANGE" : return MemoColor.ORANGE;
-            case "YELLOW" : return MemoColor.YELLOW;
-            case "GREEN" : return MemoColor.GREEN;
-            case "BLUE" : return MemoColor.BLUE;
-            case "NAVY" : return MemoColor.NAVY;
-            case "PURPLE" : return MemoColor.PURPLE;
-            default: return MemoColor.GRAY;
+    static public DiaryWeather FromStringToDiaryWeather(String stringDiaryWeather){
+        if(stringDiaryWeather == null) return null;
+        switch (stringDiaryWeather){
+            case "SUN_CLOUD" : return DiaryWeather.SUN_CLOUD;
+            case "CLOUD" : return DiaryWeather.CLOUD;
+            case "CLOUD_RAIN" : return DiaryWeather.CLOUD_RAIN;
+            case "CLOUD_SNOW" : return DiaryWeather.CLOUD_SNOW;
+            case "SNOWMAN" : return DiaryWeather.SNOWMAN;
+            case "UMBRELLA" : return DiaryWeather.UMBRELLA;
+            case "WIND" : return DiaryWeather.WIND;
+            default: return DiaryWeather.SUN;
         }
     }
 }

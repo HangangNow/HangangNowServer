@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 
@@ -23,7 +24,8 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public GeneralException illegalExHandle(IllegalArgumentException e) {
-        log.error("[IllegalArgument ExceptionHandle] ex:" + e.getMessage());
+        log.error("[IllegalArgument ExceptionHandle] ex" + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }
 
@@ -39,6 +41,7 @@ public class ExControllerAdvice {
             log.error("[IllegalArgument ExceptionHandle] ex: " + error.getDefaultMessage());
         }
 
+        e.printStackTrace();
         return new MethodArgsException("BAD", errors);
     }
 
@@ -47,6 +50,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public GeneralException illegalExHandle(RuntimeException e) {
         log.error("[Runtime ExceptionHandle] ex: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("FORBIDDEN", e.getMessage());
     }
 
@@ -55,13 +59,23 @@ public class ExControllerAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     public GeneralException handleNotFoundError(NoHandlerFoundException e) {
         log.error("[NoHandlerFound ExceptionHandle] ex: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("NOT FOUND", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NullPointerException.class)
     public GeneralException NullPointerExHandle(NullPointerException e) {
-        log.error("[NullPointer ExceptionHandle] ex" + e.getMessage());
+        log.error("[NullPointer ExceptionHandle] ex: " + e.getMessage());
+        e.printStackTrace();
+        return new GeneralException("BAD", e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MultipartException.class)
+    public GeneralException MultipartExHandle(MultipartException e) {
+        log.error("[MultipartException Handle]: " + e.getMessage());
+        e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }
 
