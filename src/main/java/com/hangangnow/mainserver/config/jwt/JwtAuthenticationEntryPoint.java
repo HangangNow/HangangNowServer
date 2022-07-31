@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.config.jwt;
 
-import com.hangangnow.mainserver.config.HttpRequestEndpointChecker;
+import com.hangangnow.mainserver.config.security.HttpRequestEndpointChecker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

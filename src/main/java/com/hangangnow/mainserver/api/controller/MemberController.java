@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -57,7 +58,7 @@ public class MemberController {
 
 
     @Operation(summary = "로그인 -> 비밀번호 변경", description = "현재 로그인 한 멤버 비밀번호 변경 요청 URL" +
-            "\n### 요청변수: loginId, password1, password2" +
+            "\n### 요청변수: email, password1, password2" +
             "\n### 비밀번호 정상 변경 시 로그아웃 처리 -> 다시 로그인 하도록")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -106,4 +107,12 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> getMemberInfoByEmail(@PathVariable String email){
         return new ResponseEntity<>(memberService.getMemberInfoByEmail(email), HttpStatus.OK);
     }
+
+
+//    @PostMapping("/api/v1/members/profiles")
+//    public ResponseEntity<String> changeMemberProfile(
+//            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception{
+//
+//        return new ResponseEntity<>(memberService.changeProfile(imageRequest), HttpStatus.OK);
+//    }
 }

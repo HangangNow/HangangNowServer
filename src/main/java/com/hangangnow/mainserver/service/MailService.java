@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.config.RedisUtil;
+import com.hangangnow.mainserver.config.redis.RedisUtil;
 import com.hangangnow.mainserver.domain.member.dto.EmailAuthDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

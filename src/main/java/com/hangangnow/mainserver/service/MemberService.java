@@ -1,15 +1,14 @@
 package com.hangangnow.mainserver.service;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.hangangnow.mainserver.config.RedisUtil;
+import com.hangangnow.mainserver.config.redis.RedisUtil;
 import com.hangangnow.mainserver.config.jwt.SecurityUtil;
+import com.hangangnow.mainserver.config.s3.S3Uploader;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.dto.*;
+import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import com.hangangnow.mainserver.repository.MemberRepository;
-import com.hangangnow.mainserver.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -35,6 +35,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
     private final PasswordEncoder passwordEncoder;
+    private final S3Uploader s3Uploader;
 
     @Value("${hangangnow.api.admin.key}")
     private String adminKey;
@@ -124,7 +125,6 @@ public class MemberService {
         }
 
         // 로그인 되어있는 refresh 토큰 삭제 -> 로그아웃
-        // 클라이언트와 협의 해야함.
         redisUtil.deleteData(findMember.getId().toString());
 
         findMember.updatePassword(passwordEncoder.encode(passwordRequestDto.getPassword1()));
@@ -132,4 +132,18 @@ public class MemberService {
         return new ResponseDto("비밀번호가 정상적으로 변경되었습니다.");
 
     }
+
+//    @Transactional
+//    public String changeProfile(MultipartFile multipartFile) throws IOException {
+//        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+//                .orElseThrow(() -> new RuntimeException("멤버 조회를 실패했습니다."));
+//
+//        if (multipartFile == null){
+//            throw new IllegalArgumentException("MultipartFile이 존재하지 않습니다.");
+//        }
+//
+//        MemberPhoto memberPhoto = new MemberPhoto(s3Uploader.upload(multipartFile, "profile"));
+//        findMember.updateProfile(memberPhoto);
+//
+//    }
 }

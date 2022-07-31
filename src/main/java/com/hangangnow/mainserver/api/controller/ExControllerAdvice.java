@@ -24,7 +24,7 @@ public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public GeneralException illegalExHandle(IllegalArgumentException e) {
-        log.error("[IllegalArgument ExceptionHandle] ex" + e.getMessage());
+        log.error("[IllegalArgument ExceptionHandle] ex: " + e.getMessage());
         e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }

@@ -141,6 +141,7 @@ public class AuthController {
 
     @Operation(summary = "토큰 재발급", description = "Access Token 만료 시 재발급 요청 URL" +
             "\n### 요청변수: accessToken, refreshToken" +
+            "\n### **토큰 재발급 시 Refresh Token 값은 변경됩니다.**" +
             "\n### provider는 항상 null 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),

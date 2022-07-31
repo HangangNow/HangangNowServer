@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.config;
 
+import com.hangangnow.mainserver.config.security.HttpRequestEndpointChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 @RequiredArgsConstructor
 @Configuration
-public class CommonConfig {
+public class BeanConfig {
 
     private final DispatcherServlet dispatcherServlet;
 

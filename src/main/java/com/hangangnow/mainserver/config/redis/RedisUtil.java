@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.config;
+package com.hangangnow.mainserver.config.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

@@ -5,6 +5,7 @@ import com.fasterxml.uuid.Generators;
 import com.hangangnow.mainserver.domain.member.dto.Gender;
 import com.hangangnow.mainserver.domain.mypage.Diary;
 import com.hangangnow.mainserver.domain.mypage.Memo;
+import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,11 +64,9 @@ public class Member{
     @Enumerated(EnumType.STRING)
     private MemberProvider memberProvider;
 
-    private String profileUrl;
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
+//    private MemberPhoto photo;
 
-
-//    @OneToOne(fetch = FetchType.LAZY)
-//    private RefreshToken refreshToken;
 
 
     @Builder
@@ -98,9 +97,9 @@ public class Member{
     }
 
 
-    public void updateProfile(String profileUrl){
-        this.profileUrl = profileUrl;
-    }
+//    public void updateProfile(MemberPhoto memberPhoto){
+//        this.photo = memberPhoto;
+//    }
 
     @PrePersist
     public void createMemberUniqId() {

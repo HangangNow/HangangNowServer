@@ -2,8 +2,8 @@ package com.hangangnow.mainserver.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.hangangnow.mainserver.config.KakaoAuthenticationProvider;
-import com.hangangnow.mainserver.config.RedisUtil;
+import com.hangangnow.mainserver.config.security.KakaoAuthenticationProvider;
+import com.hangangnow.mainserver.config.redis.RedisUtil;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
 import com.hangangnow.mainserver.domain.member.Authority;
 import com.hangangnow.mainserver.domain.member.Member;

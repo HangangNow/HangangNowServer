@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.config;
+package com.hangangnow.mainserver.config.swagger;
 
 
 import org.springframework.context.annotation.Bean;
