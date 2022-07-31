@@ -42,6 +42,10 @@ public class SocialAuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    private static final long REFRESH_TOKEN_TTL = 60 * 60 * 24 * 7;  // 7일(s)
+    private static final long REFRESH_TOKEN_AUTOLOGIN_TTL = 60 * 60 * 24 * 90;  // 90일(s)
+
+
     @Value("${hangangnow.api.restapi.key}")
     private String restApiKey;
 
@@ -145,15 +149,23 @@ public class SocialAuthService {
         if (existsRefreshToken == null){
             // Redis <String, String> -> <memberId, refreshToken> 으로 저장
             if(memberTokenDto.getAutoLogin()){
-                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 90));
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_AUTOLOGIN_TTL);
             }
 
             else{
-                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 7));
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_TTL);
             }
         }
 
         else{
+            if(memberTokenDto.getAutoLogin()){
+                redisUtil.setDataWithExpire(authentication.getName(), existsRefreshToken, REFRESH_TOKEN_AUTOLOGIN_TTL);
+            }
+
+            else{
+                redisUtil.setDataWithExpire(authentication.getName(), existsRefreshToken, REFRESH_TOKEN_TTL);
+            }
+
             memberTokenDto.setRefreshToken(existsRefreshToken);
         }
 

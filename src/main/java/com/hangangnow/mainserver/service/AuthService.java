@@ -39,6 +39,9 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final MailService mailService;
 
+    private static final long REFRESH_TOKEN_TTL = 60 * 60 * 24 * 7;  // 7일(s)
+    private static final long REFRESH_TOKEN_AUTOLOGIN_TTL = 60 * 60 * 24 * 90;  // 90일(s)
+
 
     @Transactional
     public MemberResponseDto signup(MemberSignupRequestDto memberSignupRequestDto){
@@ -62,17 +65,23 @@ public class AuthService {
 
         String existsRefreshToken = redisUtil.getDataWithKey(authentication.getName());
         if (existsRefreshToken == null){
-            // Redis <String, String> -> <memberId, refreshToken> 으로 저장
             if(memberTokenDto.getAutoLogin()){
-                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 90));
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_AUTOLOGIN_TTL);
             }
 
             else{
-                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 7));
+                redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_TTL);
             }
         }
 
         else{
+            if(memberTokenDto.getAutoLogin()){
+                redisUtil.setDataWithExpire(authentication.getName(), existsRefreshToken, REFRESH_TOKEN_AUTOLOGIN_TTL);
+            }
+
+            else{
+                redisUtil.setDataWithExpire(authentication.getName(), existsRefreshToken, REFRESH_TOKEN_TTL);
+            }
             memberTokenDto.setRefreshToken(existsRefreshToken);
         }
 
@@ -92,8 +101,6 @@ public class AuthService {
         Authentication authentication = tokenProvider.getAuthentication(memberTokenRequestDto.getAccessToken());
 
         // 3. 저장소에서 memberId 기반으로 RefreshToken 객체 가져옴
-//        RefreshToken refreshToken = refreshTokenRepository.findByKey(UUID.fromString(authentication.getName()))
-//                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
         String refreshToken = redisUtil.getDataWithKey(authentication.getName());
 
         if(refreshToken == null){
@@ -108,11 +115,11 @@ public class AuthService {
         // 5. 새로운 토큰 생성
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, memberTokenRequestDto.getAutoLogin());
         if(memberTokenDto.getAutoLogin()){
-            redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 90));
+            redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_AUTOLOGIN_TTL);
         }
 
         else{
-            redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), (60 * 60 * 24 * 7));
+            redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_TTL);
         }
         return memberTokenDto;
     }
