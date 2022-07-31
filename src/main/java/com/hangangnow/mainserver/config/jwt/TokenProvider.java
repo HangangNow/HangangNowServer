@@ -31,6 +31,7 @@ public class TokenProvider{
 
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private static final long REFRESH_TOKEN_AUTO_LOGIN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 90;  // 90일
     private final Key key;
 
 
@@ -49,18 +50,20 @@ public class TokenProvider{
         // authentication.getName()은 Member PK
         log.info("LOGIN REQUEST MEMBER ID: " + authentication.getName());
 
-
         long now = (new Date()).getTime();
+
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiresIn;
 
         if (autoLogin == null) autoLogin = false;
 
         if (autoLogin) {
-            refreshTokenExpiresIn = new Date(now + (1000 * 60 * 60 * 24 * 90));
+            refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_AUTO_LOGIN_EXPIRE_TIME);
         }
 
-        else refreshTokenExpiresIn = new Date(now + (REFRESH_TOKEN_EXPIRE_TIME));
+        else {
+            refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+        }
 
         // Access Token 생성
         String accessToken = Jwts.builder()
