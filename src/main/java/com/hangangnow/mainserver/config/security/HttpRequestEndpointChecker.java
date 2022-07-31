@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.config;
+package com.hangangnow.mainserver.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.DispatcherServlet;

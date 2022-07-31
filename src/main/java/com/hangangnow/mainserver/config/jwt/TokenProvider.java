@@ -6,6 +6,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@PropertySource("classpath:/application-secret.properties")
 public class TokenProvider{
 
     private static final String AUTHORITIES_KEY = "auth";
@@ -54,7 +56,6 @@ public class TokenProvider{
 
         if (autoLogin == null) autoLogin = false;
 
-
         if (autoLogin) {
             refreshTokenExpiresIn = new Date(now + (1000 * 60 * 60 * 24 * 90));
         }
@@ -80,6 +81,7 @@ public class TokenProvider{
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
+                .autoLogin(autoLogin)
                 .build();
     }
 

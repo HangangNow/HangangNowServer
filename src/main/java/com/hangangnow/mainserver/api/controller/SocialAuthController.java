@@ -1,7 +1,6 @@
 package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.member.dto.MemberKakaoTokenDto;
-import com.hangangnow.mainserver.domain.member.dto.MemberTokenDto;
 import com.hangangnow.mainserver.service.SocialAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -141,6 +141,7 @@ public class AuthController {
 
     @Operation(summary = "토큰 재발급", description = "Access Token 만료 시 재발급 요청 URL" +
             "\n### 요청변수: accessToken, refreshToken" +
+            "\n### **토큰 재발급 시 Refresh Token 값은 변경됩니다.**" +
             "\n### provider는 항상 null 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -170,5 +171,21 @@ public class AuthController {
     @PostMapping("/api/v1/auth/emailAuth")
     public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
         return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "이메일 인증코드 확인", description = "이메일 인증코드 확인 요청 URL." +
+            "\n### 요청변수: email")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+
+    })
+    @PostMapping("/api/v1/auth/emailAuth/code")
+    public ResponseEntity<Boolean> checkEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
+        return new ResponseEntity<>(mailService.checkEmailCode(emailAuthDto), HttpStatus.OK);
     }
 }

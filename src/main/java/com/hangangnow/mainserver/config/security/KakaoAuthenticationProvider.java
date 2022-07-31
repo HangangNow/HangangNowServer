@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.config;
+package com.hangangnow.mainserver.config.security;
 
 import com.hangangnow.mainserver.service.CustomMemberDetailsService;
 import lombok.RequiredArgsConstructor;
