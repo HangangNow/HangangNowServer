@@ -2,6 +2,7 @@ package com.hangangnow.mainserver.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.hangangnow.mainserver.config.RedisUtil;
 import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
@@ -32,7 +33,7 @@ import java.util.UUID;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisUtil redisUtil;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${hangangnow.api.admin.key}")
@@ -49,7 +50,7 @@ public class MemberService {
             disconnectKakaoAccount(member);
         }
 
-        refreshTokenRepository.delete(memberId);
+        redisUtil.deleteData(memberId.toString());
         memberRepository.delete(member);
         return new ResponseDto("회원탈퇴가 정상적으로 처리되었습니다.");
     }
@@ -89,7 +90,7 @@ public class MemberService {
 
     @Transactional
     public ResponseDto logout() {
-        refreshTokenRepository.delete(SecurityUtil.getCurrentMemberId());
+        redisUtil.deleteData(SecurityUtil.getCurrentMemberId().toString());
         return new ResponseDto("로그아웃이 정상적으로 처리되었습니다.");
     }
 
@@ -124,7 +125,7 @@ public class MemberService {
 
         // 로그인 되어있는 refresh 토큰 삭제 -> 로그아웃
         // 클라이언트와 협의 해야함.
-        refreshTokenRepository.delete(findMember.getId());
+        redisUtil.deleteData(findMember.getId().toString());
 
         findMember.updatePassword(passwordEncoder.encode(passwordRequestDto.getPassword1()));
 
