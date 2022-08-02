@@ -56,10 +56,10 @@ public class Member{
     private MemberMBTI memberMBTI;
 
     @OneToMany(mappedBy = "member")
-    private List<Memo> Memos = new ArrayList<>();
+    private List<Memo> memos = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<Diary> Diaries = new ArrayList<>();
+    private List<Diary> diaries = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private MemberProvider memberProvider;
