@@ -67,8 +67,9 @@ public class MemoController {
 
     @PostMapping("")
     @Operation(summary = "메모 추가", description = "메모를 추가할 수 있습니다.  " +
-            "\n모든 키 값은 필수 값 입니다.  " +
-            "\ncolor type: RED, ORANGE, YELLOW, GREEN, BLUE, NAVY, PURPLE, GRAY")
+            "\n content, memoDate 값은 필수 값 입니다.  " +
+            "\n color default: #ffffff(white)  " +
+            "\n color Valid condition: ^#([0-9]|[a-f]|[A-F]){6}$")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -76,8 +77,8 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public IdResponseDto AddMemo(@RequestBody @Valid MemoDto request){
-        return new IdResponseDto(memoService.addMemo(request));
+    public MemoDto AddMemo(@RequestBody @Valid MemoDto request){
+        return memoService.addMemo(request);
     }
 
     @PutMapping("/{memoid}")

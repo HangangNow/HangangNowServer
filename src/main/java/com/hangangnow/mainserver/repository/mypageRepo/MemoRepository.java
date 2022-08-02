@@ -42,7 +42,7 @@ public class MemoRepository {
 
     public LocalDateTime update(Memo memo, String content, String memoColor){
         memo.update(content, memoColor);
-        return memo.getLastModifiedDateTime();
+        return memo.getLastModifiedTime();
     }
 
     public void remove(Memo memo){

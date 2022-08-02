@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class DiaryService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public Long addDiary(DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
+    public DiaryDto addDiary(DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new NullPointerException("Failed: Not found member"));
 
@@ -47,7 +48,7 @@ public class DiaryService {
         }
 
         diaryRepository.save(diary);
-        return diary.getId();
+        return new DiaryDto(diary);
     }
 
     public DiaryDto findOne(Long id){
@@ -122,7 +123,7 @@ public class DiaryService {
             }
         }
 
-        LocalDateTime prevDateTime = findDiary.getLastModifiedDateTime();
+        LocalDateTime prevDateTime = findDiary.getLastModifiedTime();
         LocalDateTime postDateTime = diaryRepository.update(findDiary, diaryDto);
 
         return prevDateTime != postDateTime;
@@ -133,7 +134,8 @@ public class DiaryService {
         Diary findDiary = diaryRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found diary"));
         if(findDiary.getPhoto() != null) s3Uploader.delete(findDiary.getPhoto().getS3Key());
-        diaryRepository.remove(findDiary);
-        return diaryRepository.findById(id).isEmpty();
+        Member findMember = findDiary.getMember();
+        int diariesSize = findMember.removeDiaries(findDiary);
+        return diariesSize == 0;
     }
 }
