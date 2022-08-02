@@ -74,8 +74,10 @@ public class MemoService {
     public Boolean deleteMemo(Long id){
         Memo findMemo = memoRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found memo"));
-        memoRepository.remove(findMemo);
-        return memoRepository.findById(id).isEmpty();
+        Member findMember = findMemo.getMember();
+        int prevMemosSize = findMember.getMemos().size();
+        int postMemosSize = findMember.removeOneMemo(findMemo);
+        return prevMemosSize-1 == postMemosSize;
     }
 
 }

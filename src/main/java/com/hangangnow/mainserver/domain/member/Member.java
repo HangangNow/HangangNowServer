@@ -55,10 +55,10 @@ public class Member{
     @Enumerated(EnumType.STRING)
     private MemberMBTI memberMBTI;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Memo> memos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaries = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -91,11 +91,9 @@ public class Member{
         this.memberProvider = MemberProvider.KAKAO;
     }
 
-
     public void updatePassword(String password){
         this.password = password;
     }
-
 
 //    public void updateProfile(MemberPhoto memberPhoto){
 //        this.photo = memberPhoto;
@@ -116,4 +114,13 @@ public class Member{
         this.id = uuid;
     }
 
+    public int removeDiaries(Diary diary){
+        this.diaries.remove(diary);
+        return this.diaries.size();
+    }
+
+    public int removeOneMemo(Memo memo) {
+        this.memos.remove(memo);
+        return this.memos.size();
+    }
 }
