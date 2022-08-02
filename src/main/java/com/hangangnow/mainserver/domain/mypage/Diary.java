@@ -44,7 +44,7 @@ public class Diary {
     private LocalDate diaryDate;
 
     @Column(nullable = false)
-    private LocalDateTime lastModifiedDateTime;
+    private LocalDateTime lastModifiedTime;
 
     @Enumerated(EnumType.STRING)
     private Emotion emotion;
@@ -60,7 +60,7 @@ public class Diary {
                 .diaryDate(LocalDate.parse(diaryDto.getDiaryDate(), DateTimeFormatter.ISO_DATE))
                 .diaryWeather(FromStringToDiaryWeather(diaryDto.getDiaryWeather()))
                 .emotion(FromStringToEmotion(diaryDto.getEmotion()))
-                .lastModifiedDateTime(LocalDateTime.now())
+                .lastModifiedTime(LocalDateTime.now())
                 .build();
     }
 
@@ -74,7 +74,7 @@ public class Diary {
         this.content = diaryDto.getContent();
         this.emotion = FromStringToEmotion(diaryDto.getEmotion());
         this.diaryWeather = FromStringToDiaryWeather(diaryDto.getDiaryWeather());
-        this.lastModifiedDateTime = LocalDateTime.now();
+        this.lastModifiedTime = LocalDateTime.now();
     }
 
     static public Emotion FromStringToEmotion(String stringEmotion){

@@ -65,7 +65,7 @@ public class MemoService {
     public Boolean modifyMemo(Long id, MemoDto memoDto){
         Memo findMemo = memoRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found memo"));
-        LocalDateTime prevDateTime = findMemo.getLastModifiedDateTime();
+        LocalDateTime prevDateTime = findMemo.getLastModifiedTime();
         LocalDateTime postDateTime = memoRepository.update(findMemo, memoDto.getContent(), memoDto.getColor());
         return prevDateTime != postDateTime;
     }

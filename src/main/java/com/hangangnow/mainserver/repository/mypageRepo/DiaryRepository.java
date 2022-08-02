@@ -64,7 +64,7 @@ public class DiaryRepository {
 
     public LocalDateTime update(Diary diary, DiaryDto diaryDto){
         diary.update(diaryDto);
-        return diary.getLastModifiedDateTime();
+        return diary.getLastModifiedTime();
     }
 
     public void remove(Diary diary){

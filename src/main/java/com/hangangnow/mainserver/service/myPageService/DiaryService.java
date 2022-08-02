@@ -122,7 +122,7 @@ public class DiaryService {
             }
         }
 
-        LocalDateTime prevDateTime = findDiary.getLastModifiedDateTime();
+        LocalDateTime prevDateTime = findDiary.getLastModifiedTime();
         LocalDateTime postDateTime = diaryRepository.update(findDiary, diaryDto);
 
         return prevDateTime != postDateTime;

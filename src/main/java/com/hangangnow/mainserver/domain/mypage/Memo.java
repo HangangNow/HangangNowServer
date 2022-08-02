@@ -29,7 +29,7 @@ public class Memo {
     private LocalDate memoDate;
 
     @Column(nullable = false)
-    private LocalDateTime lastModifiedDateTime;
+    private LocalDateTime lastModifiedTime;
 
     @Column(nullable = false)
     private String content;
@@ -45,14 +45,14 @@ public class Memo {
     public void update(String content, String memoColor){
         this.content = content;
         this.color = FromStringToMemoColor(memoColor);
-        this.lastModifiedDateTime = LocalDateTime.now();
+        this.lastModifiedTime = LocalDateTime.now();
     }
 
     static public Memo of(MemoDto memoDto, Member member){
         return Memo.builder()
                 .color(FromStringToMemoColor(memoDto.getColor()))
                 .content(memoDto.getContent())
-                .lastModifiedDateTime(LocalDateTime.now())
+                .lastModifiedTime(LocalDateTime.now())
                 .memoDate(LocalDate.parse(memoDto.getMemoDate(), DateTimeFormatter.ISO_DATE))
                 .member(member)
                 .build();
