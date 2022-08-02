@@ -35,7 +35,7 @@ public class DiaryService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public Long addDiary(DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
+    public DiaryDto addDiary(DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new NullPointerException("Failed: Not found member"));
 
@@ -47,7 +47,7 @@ public class DiaryService {
         }
 
         diaryRepository.save(diary);
-        return diary.getId();
+        return new DiaryDto(diary);
     }
 
     public DiaryDto findOne(Long id){
