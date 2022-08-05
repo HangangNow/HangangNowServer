@@ -157,6 +157,15 @@ public class MemberService {
         return new ResponseDto("mbti가 정상적으로 설정되었습니다.");
     }
 
+    @Transactional
+    public ResponseDto deleteMemberMbti() {
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+
+        findMember.updateMbti(null);
+        return new ResponseDto("mbti가 정상적으로 삭제되었습니다.");
+    }
+
 
     @Transactional
     public ResponseDto changePhoto(MultipartFile multipartFile) throws IOException {
@@ -182,7 +191,7 @@ public class MemberService {
         }
 
 
-        return new ResponseDto("프로필이 정상적으로 업데이트 되었습니다.");
+        return new ResponseDto(findMember.getPhoto().getUrl());
     }
 
 

@@ -124,12 +124,17 @@ public class Member{
 
     // INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST
     static public MemberMBTI fromStringToEmotion(String mbti){
+        if(mbti == null){
+            return null;
+        }
+
         switch (mbti){
             case "INFLUENCER": return MemberMBTI.INFLUENCER;
             case "INSIDER": return MemberMBTI.INSIDER;
             case "ARTIST": return MemberMBTI.ARTIST;
             case "SOCIAL_DISTANCING": return MemberMBTI.SOCIAL_DISTANCING;
-            default: return MemberMBTI.ACTIVIST;
+            case "ACTIVIST": return MemberMBTI.ACTIVIST;
+            default: return null;
         }
     }
 

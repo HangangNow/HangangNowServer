@@ -110,7 +110,7 @@ public class MemberController {
     }
 
 
-    @Operation(summary = "멤버 MBTI 설정", description = "멤버 MBTI 설정 URL." +
+    @Operation(summary = "멤버 MBTI 설정, 변경", description = "멤버 MBTI 설정 URL." +
             "\n### ?mbti=xxxxx" +
             "\n### **INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST** 중 하나를 requestParam으로 보내면 됩니다." +
             "\n### 일치하지 않는 mbti가 요청으로 넘어오는 경우 exception이 발생합니다.")
@@ -118,23 +118,62 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
     })
-    @PostMapping("/api/v1/members/mbti")
+    @PutMapping("/api/v1/members/mbti")
     public ResponseEntity<ResponseDto> changeMemberMbti(@RequestParam String mbti){
         return new ResponseEntity<>(memberService.changeMemberMbti(mbti), HttpStatus.OK);
     }
 
+    @Operation(summary = "멤버 MBTI 삭제", description = "멤버 MBTI 삭제 URL." +
+            "\n### 요청변수 X" )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
 
-    @PostMapping("/api/v1/members/photos")
+    })
+    @DeleteMapping("/api/v1/members/mbti")
+    public ResponseEntity<ResponseDto> deleteMemberMbti(){
+        return new ResponseEntity<>(memberService.deleteMemberMbti(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "프로필 추가 및 수정", description = "회원 프로필을 추가할 수 있습니다.  " +
+            "\nform-data key-value형식으로 데이터를 요청  " +
+            "\nkey: multipartData(필수)  "+
+            "\n정상적으로 변경된 경우 URL이 반환됩니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+    })
+    @PutMapping("/api/v1/members/photos")
     public ResponseEntity<ResponseDto> changeMemberProfile(
             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception{
-
         return new ResponseEntity<>(memberService.changePhoto(imageRequest), HttpStatus.OK);
     }
 
 
+    @Operation(summary = "프로필 삭제", description = "회원 프로필을 삭제할 수 있습니다.  " +
+            "\n요청변수: X  " +
+            "\n기존 프로필 사진이 없는데 요청하는 경우 예외가 발생합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+    })
     @DeleteMapping("/api/v1/members/photos")
     public ResponseEntity<ResponseDto> deleteMemberProfile() throws IOException {
         return new ResponseEntity<>(memberService.deletePhoto(), HttpStatus.OK);
