@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -22,6 +23,9 @@ public class DiaryPhoto extends Photo{
     @OneToOne
     @JoinColumn(name = "diary_id")
     private Diary diary;
+
+    @Column(nullable = false)
+    protected String s3Key;
 
     public void update(String newUrl) {
         this.url = newUrl;

@@ -28,7 +28,7 @@ public class MemberSignupRequestDto {
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,15}", message = "비밀번호는 영문 대,소문자와 숫자가 포함된 8자 ~ 15자의 비밀번호입니다.")
     private String password;
 
-    @Email
+    @Email(message = "올바른 이메일 형식을 입력하세요")
     private String email;
     @NotBlank(message = "이름은 필수 값 입니다.")
     private String name;

@@ -8,6 +8,7 @@ import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
+import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import com.hangangnow.mainserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -42,7 +45,11 @@ public class AuthService {
         }
 
         Member member = memberSignupRequestDto.toMember(passwordEncoder);
-        return MemberResponseDto.of(memberRepository.save(member));
+
+        MemberResponseDto memberResponseDto = new MemberResponseDto();
+        memberResponseDto.setMemberResponseDto(memberRepository.save(member));
+
+        return memberResponseDto;
     }
 
 
@@ -117,8 +124,8 @@ public class AuthService {
     }
 
 
-    public boolean duplicateCheckByLoginId(MemberDuplicateDto memberDuplicateDto){
-        if(memberRepository.findByLoginId(memberDuplicateDto.getLoginId()).isPresent()){
+    public boolean duplicateCheckByLoginId(LoginIdDuplicateDto loginIdDuplicateDto){
+        if(memberRepository.findByLoginId(loginIdDuplicateDto.getLoginId()).isPresent()){
             return true;
         }
         else{
@@ -127,8 +134,8 @@ public class AuthService {
     }
 
 
-    public boolean duplicateCheckByEmail(MemberDuplicateDto memberDuplicateDto){
-        if(memberRepository.findByEmail(memberDuplicateDto.getEmail()).isPresent()){
+    public boolean duplicateCheckByEmail(EmailDuplicateDto emailDuplicateDto){
+        if(memberRepository.findByEmail(emailDuplicateDto.getEmail()).isPresent()){
             return true;
         }
         else{

@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.repository.mypageRepo;
 
 import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
+import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,10 @@ public class PhotoRepository {
 
     public void removeDairyPhoto(DiaryPhoto diaryPhoto){
         em.remove(diaryPhoto);
+    }
+
+    public void removeMemberPhoto(MemberPhoto memberPhoto){
+        em.remove(memberPhoto);
     }
 
 //    public LocalDateTime update(DiaryPhoto diaryPhoto, String newUrl){

@@ -2,6 +2,7 @@ package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.redis.RedisUtil;
 import com.hangangnow.mainserver.domain.member.dto.EmailAuthDto;
+import com.hangangnow.mainserver.exception.MethodArgsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 @Slf4j
@@ -40,6 +42,10 @@ public class MailService {
 
 
     public boolean checkEmailCode(EmailAuthDto emailAuthDto){
+        if(emailAuthDto.getCode() == null){
+            throw new IllegalArgumentException("Email 인증 code 값이 비어있습니다. 값을 확인하세요");
+        }
+
         String findCode = redisUtil.getDataWithKey(emailAuthDto.getEmail());
 
         if(findCode == null){

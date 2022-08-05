@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 
 @Slf4j
@@ -109,10 +110,33 @@ public class MemberController {
     }
 
 
-//    @PostMapping("/api/v1/members/profiles")
-//    public ResponseEntity<String> changeMemberProfile(
-//            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception{
-//
-//        return new ResponseEntity<>(memberService.changeProfile(imageRequest), HttpStatus.OK);
-//    }
+    @Operation(summary = "멤버 MBTI 설정", description = "멤버 MBTI 설정 URL." +
+            "\n### ?mbti=xxxxx" +
+            "\n### **INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST** 중 하나를 requestParam으로 보내면 됩니다." +
+            "\n### 일치하지 않는 mbti가 요청으로 넘어오는 경우 exception이 발생합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+
+    })
+    @PostMapping("/api/v1/members/mbti")
+    public ResponseEntity<ResponseDto> changeMemberMbti(@RequestParam String mbti){
+        return new ResponseEntity<>(memberService.changeMemberMbti(mbti), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/api/v1/members/photos")
+    public ResponseEntity<ResponseDto> changeMemberProfile(
+            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception{
+
+        return new ResponseEntity<>(memberService.changePhoto(imageRequest), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/api/v1/members/photos")
+    public ResponseEntity<ResponseDto> deleteMemberProfile() throws IOException {
+        return new ResponseEntity<>(memberService.deletePhoto(), HttpStatus.OK);
+    }
 }

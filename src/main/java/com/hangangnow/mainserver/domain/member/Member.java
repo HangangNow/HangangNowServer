@@ -55,18 +55,18 @@ public class Member{
     @Enumerated(EnumType.STRING)
     private MemberMBTI memberMBTI;
 
-    @OneToMany(mappedBy = "member")
-    private List<Memo> Memos = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Memo> memos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Diary> Diaries = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Diary> diaries = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private MemberProvider memberProvider;
 
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
-//    private MemberPhoto photo;
-
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "photo_id")
+    private MemberPhoto photo;
 
 
     @Builder
@@ -97,9 +97,14 @@ public class Member{
     }
 
 
-//    public void updateProfile(MemberPhoto memberPhoto){
-//        this.photo = memberPhoto;
-//    }
+    public void updateMbti(String mbti){
+        this.memberMBTI = fromStringToEmotion(mbti);
+    }
+
+
+    public void updatePhoto(MemberPhoto memberPhoto){
+        this.photo = memberPhoto;
+    }
 
     @PrePersist
     public void createMemberUniqId() {
@@ -116,4 +121,14 @@ public class Member{
         this.id = uuid;
     }
 
+    // INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST
+    static public MemberMBTI fromStringToEmotion(String mbti){
+        switch (mbti){
+            case "INFLUENCER": return MemberMBTI.INFLUENCER;
+            case "INSIDER": return MemberMBTI.INSIDER;
+            case "ARTIST": return MemberMBTI.ARTIST;
+            case "SOCIAL_DISTANCING": return MemberMBTI.SOCIAL_DISTANCING;
+            default: return MemberMBTI.ACTIVIST;
+        }
+    }
 }

@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.UUID;
 
 
@@ -97,16 +98,24 @@ public class MemberService {
 
 
     public MemberResponseDto getMemberInfoByEmail(String email){
-        return memberRepository.findByEmail(email)
-                .map(MemberResponseDto::of)
+        Member findMember = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
+
+        MemberResponseDto memberResponseDto = new MemberResponseDto();
+        memberResponseDto.setMemberResponseDto(findMember);
+
+        return memberResponseDto;
     }
 
 
     public MemberResponseDto getLoginMemberInfo() {
-        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .map(MemberResponseDto::of)
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("로그인 유저 정보가 없습니다"));
+
+        MemberResponseDto memberResponseDto = new MemberResponseDto();
+        memberResponseDto.setMemberResponseDto(findMember);
+
+        return memberResponseDto;
     }
 
 
@@ -133,17 +142,65 @@ public class MemberService {
 
     }
 
-//    @Transactional
-//    public String changeProfile(MultipartFile multipartFile) throws IOException {
-//        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-//                .orElseThrow(() -> new RuntimeException("멤버 조회를 실패했습니다."));
-//
-//        if (multipartFile == null){
-//            throw new IllegalArgumentException("MultipartFile이 존재하지 않습니다.");
-//        }
-//
-//        MemberPhoto memberPhoto = new MemberPhoto(s3Uploader.upload(multipartFile, "profile"));
-//        findMember.updateProfile(memberPhoto);
-//
-//    }
+
+    @Transactional
+    public ResponseDto changeMemberMbti(String mbti) {
+        String[] mbtiList = new String[]{"INFLUENCER", "INSIDER", "ARTIST", "SOCIAL_DISTANCING", "ACTIVIST"};
+
+        if (!Arrays.asList(mbtiList).contains(mbti)){
+            throw new IllegalArgumentException("존재하지 않는 MBTI 입니다");
+        }
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+
+        findMember.updateMbti(mbti);
+        return new ResponseDto("mbti가 정상적으로 설정되었습니다.");
+    }
+
+
+    @Transactional
+    public ResponseDto changePhoto(MultipartFile multipartFile) throws IOException {
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("멤버 조회를 실패했습니다."));
+
+        // 프로필을 없애는 경우
+        if (multipartFile == null){
+            throw new IllegalArgumentException("이미지 파일이 존재하지 않습니다.");
+        }
+
+        MemberPhoto findMemberPhoto = findMember.getPhoto();
+
+        if(findMemberPhoto == null){
+            MemberPhoto memberPhoto = new MemberPhoto(s3Uploader.upload(multipartFile, "profile"));
+            findMember.updatePhoto(memberPhoto);
+        }
+
+        else{
+            s3Uploader.delete(findMemberPhoto.getS3Key());
+            MemberPhoto memberPhoto = new MemberPhoto(s3Uploader.upload(multipartFile, "profile"));
+            findMember.updatePhoto(memberPhoto);
+        }
+
+
+        return new ResponseDto("프로필이 정상적으로 업데이트 되었습니다.");
+    }
+
+
+    @Transactional
+    public ResponseDto deletePhoto() throws IOException{
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다"));
+
+        MemberPhoto findMemberPhoto = findMember.getPhoto();
+
+        if (findMemberPhoto == null){
+            throw new RuntimeException("회원 프로필 사진이 없습니다.");
+        }
+
+        s3Uploader.delete(findMemberPhoto.getS3Key());
+        findMember.updatePhoto(null);
+
+        return new ResponseDto("프로필이 정상적으로 삭제되었습니다.");
+    }
+
 }

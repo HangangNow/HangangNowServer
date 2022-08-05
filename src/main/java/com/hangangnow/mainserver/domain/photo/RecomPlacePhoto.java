@@ -4,10 +4,7 @@ import com.hangangnow.mainserver.domain.RecomPlace;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -18,4 +15,7 @@ public class RecomPlacePhoto extends Photo{
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "recom_place_id")
     private RecomPlace recomPlace;
+
+    @Column(nullable = false)
+    protected String s3Key;
 }
