@@ -92,9 +92,9 @@ public class DiaryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public IdResponseDto addDiary(@Valid @RequestPart(value = "jsonData") DiaryDto request,
+    public DiaryDto addDiary(@Valid @RequestPart(value = "jsonData") DiaryDto request,
                                   @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
-        return new IdResponseDto(diaryService.addDiary(request, imageRequest));
+        return diaryService.addDiary(request, imageRequest);
     }
 
     @PutMapping("/{diaryid}")

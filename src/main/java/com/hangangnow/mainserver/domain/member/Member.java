@@ -55,10 +55,10 @@ public class Member{
     @Enumerated(EnumType.STRING)
     private MemberMBTI memberMBTI;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Memo> memos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaries = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -67,6 +67,7 @@ public class Member{
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "photo_id")
     private MemberPhoto photo;
+
 
 
     @Builder
@@ -131,4 +132,15 @@ public class Member{
             default: return MemberMBTI.ACTIVIST;
         }
     }
+
+    public int removeDiaries(Diary diary){
+        this.diaries.remove(diary);
+        return this.diaries.size();
+    }
+
+    public int removeOneMemo(Memo memo) {
+        this.memos.remove(memo);
+        return this.memos.size();
+    }
+
 }
