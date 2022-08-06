@@ -212,4 +212,24 @@ public class MemberService {
         return new ResponseDto("프로필이 정상적으로 삭제되었습니다.");
     }
 
+    @Transactional
+    public ResponseDto updateMarketingAgree(Boolean flag) {
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+
+        findMember.updateMarketingAgree(flag);
+
+        return new ResponseDto("마케팅 정보, 메일 수신 동의 처리가 정상적으로 완료되었습니다.");
+    }
+
+
+    @Transactional
+    public ResponseDto updateAlarmAgree(Boolean flag) {
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+
+        findMember.updateAlarmAgree(flag);
+
+        return new ResponseDto("알람설정 처리가 정상적으로 완료되었습니다.");
+    }
 }
