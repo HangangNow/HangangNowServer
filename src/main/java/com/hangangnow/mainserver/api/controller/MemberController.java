@@ -178,4 +178,41 @@ public class MemberController {
     public ResponseEntity<ResponseDto> deleteMemberProfile() throws IOException {
         return new ResponseEntity<>(memberService.deletePhoto(), HttpStatus.OK);
     }
+
+
+    @Operation(summary = "마케팅 정보, 메일 수신 동의 변경", description = "회원 마케팅 정보와 메일 수신 동의 정보 변경 요청 URL.  " +
+            "\n### ?flag=xxxxx" +
+            "\n### **true, false** 중 하나를 requestParam으로 보내면 됩니다." +
+            "\n### requestParam 형태가 올바르지 않은 경우, flar가 true, false가 아닌 경우 exception이 발생합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+    })
+    @PostMapping("/api/v1/members/agree/marketing")
+    public ResponseEntity<ResponseDto> updateMarketingAgree(@RequestParam Boolean flag){
+        return new ResponseEntity<>(memberService.updateMarketingAgree(flag), HttpStatus.OK);
+    }
+
+
+
+    @Operation(summary = "알람 설정 변경", description = "회원 알람 설정 변경 요청 URL.  " +
+            "\n### ?flag=xxxxx" +
+            "\n### **true, false** 중 하나를 requestParam으로 보내면 됩니다." +
+            "\n### requestParam 형태가 올바르지 않은 경우, flar가 true, false가 아닌 경우 exception이 발생합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+    })
+    @PostMapping("/api/v1/members/agree/alarm")
+    public ResponseEntity<ResponseDto> updateAlarmAgree(@RequestParam Boolean flag){
+        return new ResponseEntity<>(memberService.updateAlarmAgree(flag), HttpStatus.OK);
+    }
 }

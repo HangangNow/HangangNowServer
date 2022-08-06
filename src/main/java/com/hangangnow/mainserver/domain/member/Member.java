@@ -68,6 +68,10 @@ public class Member{
     @JoinColumn(name = "photo_id")
     private MemberPhoto photo;
 
+    private Boolean marketing_agree;
+
+    private Boolean alarm_agree;
+
 
 
     @Builder
@@ -105,6 +109,15 @@ public class Member{
 
     public void updatePhoto(MemberPhoto memberPhoto){
         this.photo = memberPhoto;
+    }
+
+    public void updateAlarmAgree(Boolean alarm_agree){
+        this.alarm_agree = alarm_agree;
+    }
+
+
+    public void updateMarketingAgree(Boolean marketing_agree){
+        this.marketing_agree = marketing_agree;
     }
 
     @PrePersist

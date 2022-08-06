@@ -49,6 +49,8 @@ public class MemberSignupRequestDto {
                     .birthday(LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE))
                     .authority(Authority.ROLE_USER)
                     .memberProvider(MemberProvider.GENERAL)
+                    .marketing_agree(false)
+                    .alarm_agree(false)
                     .build();
         }
         else{
@@ -61,6 +63,8 @@ public class MemberSignupRequestDto {
                     .birthday(LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE))
                     .authority(Authority.ROLE_USER)
                     .memberProvider(MemberProvider.GENERAL)
+                    .marketing_agree(false)
+                    .alarm_agree(false)
                     .build();
         }
     }

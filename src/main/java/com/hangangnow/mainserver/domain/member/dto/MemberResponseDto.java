@@ -20,6 +20,8 @@ public class MemberResponseDto {
     private MemberProvider provider;
     private MemberMBTI memberMBTI;
     private String photoUrl;
+    private Boolean marketing_agree;
+    private Boolean alarm_agree;
 
     public void setMemberResponseDto(Member member){
         this.id = member.getId();
@@ -28,6 +30,8 @@ public class MemberResponseDto {
         this.name = member.getName();
         this.provider = member.getMemberProvider();
         this.memberMBTI = member.getMemberMBTI();
+        this.marketing_agree = member.getMarketing_agree();
+        this.alarm_agree = member.getAlarm_agree();
 
         if (member.getPhoto() == null){
             this.photoUrl = null;
