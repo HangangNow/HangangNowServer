@@ -2,19 +2,15 @@ package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
-import com.hangangnow.mainserver.domain.Park;
-import com.hangangnow.mainserver.domain.Weather;
+import com.hangangnow.mainserver.domain.park.Park;
+import com.hangangnow.mainserver.domain.park.Weather;
 import com.hangangnow.mainserver.domain.photo.ParkPhoto;
 import com.hangangnow.mainserver.service.ParkService;
 import com.hangangnow.mainserver.service.WeatherService;
 
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
@@ -24,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Embedded;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,7 +91,7 @@ public class ParkApiController {
                 request.getName(),
                 new Local(request.getLocalname(), request.x_pos, request.y_pos),
                 new Address(request.getSido(), request.getGu(), request.getGil(), request.getDetail()),
-                request.getContent()
+                request.getContent(), LocalDateTime.now()
         );
 
         Long id = parkService.addPark(park);

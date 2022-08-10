@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.repository;
 
-import com.hangangnow.mainserver.domain.Weather;
+import com.hangangnow.mainserver.domain.park.Weather;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

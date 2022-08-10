@@ -1,5 +1,6 @@
-package com.hangangnow.mainserver.domain;
+package com.hangangnow.mainserver.domain.park;
 
+import com.hangangnow.mainserver.domain.park.Park;
 import lombok.Getter;
 
 import javax.persistence.*;

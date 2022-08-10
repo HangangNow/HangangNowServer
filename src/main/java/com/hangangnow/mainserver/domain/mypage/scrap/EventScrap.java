@@ -1,8 +1,6 @@
 package com.hangangnow.mainserver.domain.mypage.scrap;
 
-import com.hangangnow.mainserver.domain.Event;
-import com.hangangnow.mainserver.domain.Local;
-import com.hangangnow.mainserver.domain.member.Member;
+import com.hangangnow.mainserver.domain.event.Event;
 import lombok.Getter;
 
 import javax.persistence.*;

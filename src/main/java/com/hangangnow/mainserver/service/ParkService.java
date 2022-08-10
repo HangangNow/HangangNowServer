@@ -1,7 +1,6 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.domain.Park;
-import com.hangangnow.mainserver.domain.photo.ParkPhoto;
+import com.hangangnow.mainserver.domain.park.Park;
 import com.hangangnow.mainserver.repository.ParkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class ParkService {
     }
 
     public Park findOne(Long parkId) {
-        return parkRepository.findOne(parkId);
+        return parkRepository.findById(parkId);
     }
 
     public List<Park> findAll(){

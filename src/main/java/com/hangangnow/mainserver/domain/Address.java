@@ -11,22 +11,23 @@ public class Address {
 
     private String sido;
     private String gu;
-    private String gil;
     private String detail;
 
     public Address(){
     }
 
+    public String fullAddress(){
+        return this.getSido() + " " + this.getGu() + " " + this.getDetail();
+    }
+
     public Address(String sido, String gu, String gil) {
         this.sido = sido;
         this.gu = gu;
-        this.gil = gil;
     }
 
     public Address(String sido, String gu, String gil, String detail) {
         this.sido = sido;
         this.gu = gu;
-        this.gil = gil;
         this.detail = detail;
     }
 }
