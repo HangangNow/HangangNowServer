@@ -29,11 +29,25 @@ public class EventRepository {
     public Optional<Event> findById(Long id){
         Event event = em.createQuery("select e from Event e" +
                         " join fetch e.photo ep" +
-                        " join fetch e.thumbnailPhoto et", Event.class)
+                        " join fetch e.thumbnailPhoto et" +
+                        " where e.id =:id", Event.class)
+                .setParameter("id", id)
                 .getSingleResult();
 
         return Optional.ofNullable(event);
     }
+
+
+    public Optional<Event> findByIdToScrap(Long id){
+        Event event = em.createQuery("select e from Event e" +
+                        " join fetch e.eventScraps es" +
+                        " where e.id =:id", Event.class)
+                .setParameter("id", id)
+                .getSingleResult();
+
+        return Optional.ofNullable(event);
+    }
+
 
 
     public void delete(Event event){

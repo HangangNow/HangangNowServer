@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.service;
 
+import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.config.s3.S3Uploader;
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
@@ -8,9 +9,13 @@ import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.event.Event;
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
 import com.hangangnow.mainserver.domain.event.dto.EventResponseDto;
+import com.hangangnow.mainserver.domain.member.Member;
+import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
 import com.hangangnow.mainserver.domain.photo.EventPhoto;
 import com.hangangnow.mainserver.domain.photo.ThumbnailPhoto;
 import com.hangangnow.mainserver.repository.EventRepository;
+import com.hangangnow.mainserver.repository.MemberRepository;
+import com.hangangnow.mainserver.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +33,9 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class EventService {
 
+    private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
+    private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
 
 
@@ -110,4 +117,30 @@ public class EventService {
 
         return new GenericResponseDto(results);
     }
+
+
+    @Transactional
+    public ResponseDto updateScrap(Long eventId){
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
+
+        Event findEvent = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
+
+
+        EventScrap eventScrap = scrapRepository.findEventScrapByMemberAndEvent(eventId, SecurityUtil.getCurrentMemberId())
+                .orElse(new EventScrap());
+
+        if(eventScrap.getEvent() == null){
+            eventScrap.addMemberAndEvent(findMember, findEvent);
+            return new ResponseDto("해당 이벤트 스크랩 설정이 정상적으로 처리되었습니다.");
+        }
+
+        else{
+            eventScrap.cancelMemberAndEvent(findMember, findEvent);
+            return new ResponseDto("해당 이벤트 스크랩 해제가 정상적으로 처리되었습니다.");
+        }
+
+    }
+
 }

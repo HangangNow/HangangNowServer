@@ -3,6 +3,8 @@ package com.hangangnow.mainserver.domain.event;
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
+import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
+import com.hangangnow.mainserver.domain.mypage.scrap.Scrap;
 import com.hangangnow.mainserver.domain.photo.EventPhoto;
 import com.hangangnow.mainserver.domain.photo.ThumbnailPhoto;
 import lombok.Getter;
@@ -12,6 +14,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,6 +50,9 @@ public class Event {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private EventPhoto photo;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EventScrap> eventScraps = new ArrayList<>();
+
 
     public Event(String title, Local local, Address address, LocalDate startDate, LocalDate endDate, String eventTime,
                  String price, String host, String management, String content,
@@ -72,6 +79,15 @@ public class Event {
 
     public void updateEventPhoto(EventPhoto eventPhoto){
         this.photo = eventPhoto;
+    }
+
+
+    public void addEventScrap(EventScrap eventScrap){
+        this.eventScraps.add(eventScrap);
+    }
+
+    public void deleteEventScrap(EventScrap eventScrap){
+        this.eventScraps.remove(eventScrap);
     }
 
 
