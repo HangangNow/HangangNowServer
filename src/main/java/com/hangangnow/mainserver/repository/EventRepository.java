@@ -19,7 +19,7 @@ public class EventRepository {
 
 
     public List<Event> findAllEvents(){
-        return em.createQuery("select distinct e from Event e" +
+        return em.createQuery("select e from Event e" +
                         " join fetch e.photo ep" +
                         " join fetch e.thumbnailPhoto et", Event.class)
                 .getResultList();
@@ -27,7 +27,12 @@ public class EventRepository {
 
 
     public Optional<Event> findById(Long id){
-        return Optional.ofNullable(em.find(Event.class, id));
+        Event event = em.createQuery("select e from Event e" +
+                        " join fetch e.photo ep" +
+                        " join fetch e.thumbnailPhoto et", Event.class)
+                .getSingleResult();
+
+        return Optional.ofNullable(event);
     }
 
 

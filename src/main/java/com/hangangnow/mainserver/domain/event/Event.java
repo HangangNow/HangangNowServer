@@ -7,12 +7,11 @@ import com.hangangnow.mainserver.domain.photo.EventPhoto;
 import com.hangangnow.mainserver.domain.photo.ThumbnailPhoto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -28,7 +27,8 @@ public class Event {
     private Local local;
     private Address address;
 
-    private String period;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String eventTime;
 
     private String price;
@@ -38,19 +38,23 @@ public class Event {
 
     private String content;
 
+    private LocalDateTime lastModifiedTime;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ThumbnailPhoto thumbnailPhoto;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private EventPhoto photo;
 
-    public Event(String title, Local local, Address address, String period, String eventTime,
+
+    public Event(String title, Local local, Address address, LocalDate startDate, LocalDate endDate, String eventTime,
                  String price, String host, String management, String content,
-                 ThumbnailPhoto thumbnailPhoto, EventPhoto photo) {
+                 ThumbnailPhoto thumbnailPhoto, EventPhoto photo, LocalDateTime lastModifiedTime) {
         this.title = title;
         this.local = local;
         this.address = address;
-        this.period = period;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.eventTime = eventTime;
         this.price = price;
         this.host = host;
@@ -58,21 +62,30 @@ public class Event {
         this.content = content;
         this.thumbnailPhoto = thumbnailPhoto;
         this.photo = photo;
+        this.lastModifiedTime = lastModifiedTime;
+    }
+
+    public void updateThumbnailPhoto(ThumbnailPhoto thumbnailPhoto){
+        this.thumbnailPhoto = thumbnailPhoto;
     }
 
 
-//    public void update(EventRequestDto eventRequestDto, ){
-//        this.title = event.getTitle();
-//        this.local = event.getLocal();
-//        this.address = event.getAddress();
-//        this.period = event.getPeriod();
-//        this.eventTime = event.getEventTime();
-//        this.price = event.getPrice();
-//        this.host =
-//        this.management =
-//        this.content =
-//        this.thumbnailPhoto =
-//        this.photo =
-//    }
+    public void updateEventPhoto(EventPhoto eventPhoto){
+        this.photo = eventPhoto;
+    }
+
+
+    public void update(EventRequestDto eventRequestDto, Local local, Address address){
+        this.title = eventRequestDto.getTitle();
+        this.local = local;
+        this.address = address;
+        this.startDate = LocalDate.parse(eventRequestDto.getStartDate(),DateTimeFormatter.ISO_DATE);
+        this.endDate = LocalDate.parse(eventRequestDto.getEndDate(),DateTimeFormatter.ISO_DATE);
+        this.eventTime = eventRequestDto.getEventTime();
+        this.price = eventRequestDto.getPrice();
+        this.host = eventRequestDto.getHost();
+        this.management = eventRequestDto.getManagement();
+        this.content = eventRequestDto.getContent();
+    }
 
 }

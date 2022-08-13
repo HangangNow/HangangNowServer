@@ -3,6 +3,7 @@ package com.hangangnow.mainserver.service;
 import com.hangangnow.mainserver.config.s3.S3Uploader;
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
+import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.event.Event;
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
@@ -16,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,11 +44,13 @@ public class EventService {
 
         ThumbnailPhoto thumbnailPhoto = new ThumbnailPhoto(s3Uploader.upload(thumbnail, "thumbnail"));
         EventPhoto eventPhoto = new EventPhoto(s3Uploader.upload(multipartFile, "event"));
-        Address address = new Address(eventRequestDto.getSi(), eventRequestDto.getGu(), eventRequestDto.getDetail());
-        Local local = new Local(eventRequestDto.getTitle(), null, null);
+        Address address = new Address(eventRequestDto.getAddress());
+        Local local = new Local(eventRequestDto.getTitle(), eventRequestDto.getX_pos(), eventRequestDto.getY_pos());
 
-        Event event = new Event(eventRequestDto.getTitle(), local, address, eventRequestDto.getPeriod(), eventRequestDto.getTime(), eventRequestDto.getPrice(),
-                eventRequestDto.getHost(), eventRequestDto.getManagement(), eventRequestDto.getContent(), thumbnailPhoto, eventPhoto);
+        LocalDate startDate = LocalDate.parse(eventRequestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(eventRequestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
+        Event event = new Event(eventRequestDto.getTitle(), local, address, startDate, endDate, eventRequestDto.getEventTime(), eventRequestDto.getPrice(),
+                eventRequestDto.getHost(), eventRequestDto.getManagement(), eventRequestDto.getContent(), thumbnailPhoto, eventPhoto, LocalDateTime.now());
 
         eventRepository.save(event);
 
@@ -62,13 +68,30 @@ public class EventService {
     }
 
 
-//    @Transactional
-//    public EventResponseDto update(Long id, EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile){
-//        Event findEvent = eventRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다"));
-//
-//
-//    }
+    @Transactional
+    public EventResponseDto update(Long id, EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
+        Event findEvent = eventRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다"));
+
+        if (thumbnail != null){
+            s3Uploader.delete(findEvent.getThumbnailPhoto().getS3Key());
+            ThumbnailPhoto thumbnailPhoto = new ThumbnailPhoto(s3Uploader.upload(thumbnail, "thumbnail"));
+            findEvent.updateThumbnailPhoto(thumbnailPhoto);
+        }
+
+        if(multipartFile != null){
+            s3Uploader.delete(findEvent.getPhoto().getS3Key());
+            EventPhoto eventPhoto = new EventPhoto(s3Uploader.upload(multipartFile, "event"));
+            findEvent.updateEventPhoto(eventPhoto);
+        }
+
+        Address address = new Address(eventRequestDto.getAddress());
+        Local local = new Local(eventRequestDto.getTitle(), findEvent.getLocal().getX_pos(), findEvent.getLocal().getY_pos());
+
+        findEvent.update(eventRequestDto, local, address);
+
+        return new EventResponseDto(findEvent);
+    }
 
 
     public EventResponseDto findOne(Long id){
@@ -79,10 +102,12 @@ public class EventService {
     }
 
 
-    public List<EventResponseDto> findAllEvents(){
-        return eventRepository.findAllEvents()
+    public GenericResponseDto findAllEvents(){
+        List<EventResponseDto> results = eventRepository.findAllEvents()
                 .stream()
                 .map(EventResponseDto::new)
                 .collect(Collectors.toList());
+
+        return new GenericResponseDto(results);
     }
 }
