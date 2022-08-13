@@ -23,6 +23,9 @@ public class Park {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String contentId;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Embedded
@@ -30,6 +33,14 @@ public class Park {
 
     @Embedded
     private Address address;
+
+    private String callNumber;
+
+    private String facilities;
+
+    private String funItems;
+
+    private String summary;
 
     private String content;
 
@@ -43,7 +54,6 @@ public class Park {
 
     @OneToMany(mappedBy = "park", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Parking> parkings = new ArrayList<>();
-
 
 
 
