@@ -134,7 +134,7 @@ public class EventController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
-    @PostMapping("/api/v1/events/{eventId}/scrap")
+    @PostMapping("/api/v1/events/{eventId}/scraps")
     public ResponseEntity<ResponseDto> createScarpEvent(@PathVariable Long eventId){
         return new ResponseEntity<>(eventService.updateScrap(eventId), HttpStatus.OK);
     }

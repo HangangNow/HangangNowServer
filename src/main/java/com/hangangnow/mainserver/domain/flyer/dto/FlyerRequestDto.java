@@ -7,8 +7,6 @@ import lombok.Data;
 public class FlyerRequestDto {
     private String name;
     private String parkName;
-    private String si;
-    private String gu;
-    private String detail;
+    private String address;
     private String call;
 }

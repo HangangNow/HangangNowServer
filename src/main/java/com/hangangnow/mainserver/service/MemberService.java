@@ -3,12 +3,16 @@ package com.hangangnow.mainserver.service;
 import com.hangangnow.mainserver.config.redis.RedisUtil;
 import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.config.s3.S3Uploader;
+import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.event.dto.EventResponseDto;
+import com.hangangnow.mainserver.domain.flyer.dto.FlyerResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import com.hangangnow.mainserver.repository.MemberRepository;
+import com.hangangnow.mainserver.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +27,9 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -34,6 +40,7 @@ import java.util.UUID;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final ScrapRepository scrapRepository;
     private final RedisUtil redisUtil;
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
@@ -232,4 +239,40 @@ public class MemberService {
 
         return new ResponseDto("알람설정 처리가 정상적으로 완료되었습니다.");
     }
+
+
+    public GenericResponseDto getEventScraps(){
+        List<EventResponseDto> results = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId())
+                .stream()
+                .map(EventResponseDto::new)
+                .collect(Collectors.toList());
+
+        return new GenericResponseDto(results);
+    }
+
+
+    public GenericResponseDto getFlyerScraps(){
+        List<FlyerResponseDto> results = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId())
+                .stream()
+                .map(FlyerResponseDto::new)
+                .collect(Collectors.toList());
+
+        return new GenericResponseDto(results);
+    }
+
+
+//    public GenericResponseDto getFlyerScraps(){
+//        scrapRepository.findAllScrapsByMemberId(SecurityUtil.getCurrentMemberId())
+//                .stream()
+//                .map()
+//                .collect(Collectors.toList())
+//    }
+
+
+//    public GenericResponseDto getCourseScraps(){
+//        scrapRepository.findAllScrapsByMemberId(SecurityUtil.getCurrentMemberId())
+//                .stream()
+//                .map()
+//                .collect(Collectors.toList())
+//    }
 }

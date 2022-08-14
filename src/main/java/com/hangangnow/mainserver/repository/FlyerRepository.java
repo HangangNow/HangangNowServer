@@ -24,13 +24,18 @@ public class FlyerRepository {
     }
 
     public List<Flyer> findAllFlyerByPark(Park park){
-        return em.createQuery("select f from Flyer f where f.park =:park", Flyer.class)
+        return em.createQuery("select f from Flyer f " +
+                        " join fetch f.park fp" +
+                        " join fetch f.photo fph" +
+                        " where f.park =:park", Flyer.class)
                 .setParameter("park", park)
                 .getResultList();
     }
 
     public List<Flyer> findAllFlyer(){
-        return em.createQuery("select f from Flyer f ", Flyer.class)
+        return em.createQuery("select f from Flyer f" +
+                        " join fetch f.photo ph" +
+                        " join fetch f.park p", Flyer.class)
                 .getResultList();
     }
 
