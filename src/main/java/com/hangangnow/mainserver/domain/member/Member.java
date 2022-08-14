@@ -146,7 +146,8 @@ public class Member{
         this.id = uuid;
     }
 
-    // INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST
+    // "INFLUENCER", "EXCITED", "ARTIST", "SOCIAL_DISTANCING",
+    // "ACTIVIST", "PLANNER", "EXPLORER", "STARGAZER"
     static public MemberMBTI fromStringToEmotion(String mbti){
         if(mbti == null){
             return null;
@@ -154,10 +155,13 @@ public class Member{
 
         switch (mbti){
             case "INFLUENCER": return MemberMBTI.INFLUENCER;
-            case "INSIDER": return MemberMBTI.INSIDER;
+            case "EXCITED": return MemberMBTI.EXCITED;
             case "ARTIST": return MemberMBTI.ARTIST;
             case "SOCIAL_DISTANCING": return MemberMBTI.SOCIAL_DISTANCING;
             case "ACTIVIST": return MemberMBTI.ACTIVIST;
+            case "PLANNER": return MemberMBTI.PLANNER;
+            case "EXPLORER": return MemberMBTI.EXPLORER;
+            case "STARGAZER": return MemberMBTI.STARGAZER;
             default: return null;
         }
     }
