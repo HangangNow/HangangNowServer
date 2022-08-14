@@ -152,7 +152,8 @@ public class MemberService {
 
     @Transactional
     public ResponseDto changeMemberMbti(String mbti) {
-        String[] mbtiList = new String[]{"INFLUENCER", "INSIDER", "ARTIST", "SOCIAL_DISTANCING", "ACTIVIST"};
+        String[] mbtiList = new String[]{"INFLUENCER", "EXCITED", "ARTIST", "SOCIAL_DISTANCING",
+                "ACTIVIST", "PLANNER", "EXPLORER", "STARGAZER"};
 
         if (!Arrays.asList(mbtiList).contains(mbti)){
             throw new IllegalArgumentException("존재하지 않는 MBTI 입니다");
