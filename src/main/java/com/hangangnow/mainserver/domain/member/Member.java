@@ -5,6 +5,7 @@ import com.fasterxml.uuid.Generators;
 import com.hangangnow.mainserver.domain.member.dto.Gender;
 import com.hangangnow.mainserver.domain.mypage.Diary;
 import com.hangangnow.mainserver.domain.mypage.Memo;
+import com.hangangnow.mainserver.domain.mypage.scrap.Scrap;
 import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,6 +73,8 @@ public class Member{
 
     private Boolean alarm_agree;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Scrap> scraps = new ArrayList<>();
 
 
     @Builder
@@ -118,6 +121,14 @@ public class Member{
 
     public void updateMarketingAgree(Boolean marketing_agree){
         this.marketing_agree = marketing_agree;
+    }
+
+    public void addScarp(Scrap scrap){
+        this.scraps.add(scrap);
+    }
+
+    public void deleteScarp(Scrap scrap){
+        this.scraps.remove(scrap);
     }
 
     @PrePersist

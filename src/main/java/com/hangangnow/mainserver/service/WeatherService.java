@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.domain.Weather;
+import com.hangangnow.mainserver.domain.park.Weather;
 import com.hangangnow.mainserver.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
