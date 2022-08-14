@@ -112,8 +112,9 @@ public class MemberController {
 
 
     @Operation(summary = "멤버 MBTI 설정, 변경", description = "멤버 MBTI 설정 URL." +
-            "\n### ?mbti=xxxxx" +
-            "\n### **INFLUENCER, INSIDER, ARTIST, SOCIAL_DISTANCING, ACTIVIST** 중 하나를 requestParam으로 보내면 됩니다." +
+            "\n### ?mbti=xxxxx  " +
+            "\n 인플루언서, 흥부자, 예술가, 사회적 거리두기, 활동가, 계획파, 탐구왕, 몽상가" +
+            "\n### **INFLUENCER, EXCITED, ARTIST, SOCIAL_DISTANCING, ACTIVIST, PLANNER, EXPLORER, STARGAZER** 중 하나를 requestParam으로 보내면 됩니다." +
             "\n### 일치하지 않는 mbti가 요청으로 넘어오는 경우 exception이 발생합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
