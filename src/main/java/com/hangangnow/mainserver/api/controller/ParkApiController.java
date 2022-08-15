@@ -3,18 +3,12 @@ package com.hangangnow.mainserver.api.controller;
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
 import com.hangangnow.mainserver.domain.Park;
-import com.hangangnow.mainserver.domain.Weather;
 import com.hangangnow.mainserver.domain.photo.ParkPhoto;
 import com.hangangnow.mainserver.service.ParkService;
-import com.hangangnow.mainserver.service.WeatherService;
 
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
@@ -34,7 +28,6 @@ import java.util.stream.Collectors;
 public class ParkApiController {
 
     private final ParkService parkService;
-    private final WeatherService weatherService;
 
     @GetMapping("")
     @Operation(summary = "모든 공원 조회", description = "공원 이름을 리스트 조회할 수 있습니다.")
@@ -64,23 +57,6 @@ public class ParkApiController {
                 findPark.getAddress(),
                 findPark.getContent(),
                 findPark.getPhotos()
-        );
-    }
-
-    @GetMapping("/{parkid}/weather")
-    @Operation(summary = "단일 공원 날씨 조회", description = "공원id를 이용해 해당 공원의 날씨정보를 조회할 수 있습니다. (현재 테스트는 불가능함)")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK !!")
-    })
-    public ParkWeatherResponse parkWeather(@PathVariable Long parkid) {
-
-        Weather findParkWeather = weatherService.findOne(parkid);
-
-        return new ParkWeatherResponse(
-                findParkWeather.getTemperature(),
-                findParkWeather.getWindPower(),
-                findParkWeather.getRainPercent(),
-                findParkWeather.getDust()
         );
     }
 
