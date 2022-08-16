@@ -13,10 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EventPhoto extends Photo{
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-    private Event event;
-
     @Column(nullable = false)
     protected String s3Key;
 
