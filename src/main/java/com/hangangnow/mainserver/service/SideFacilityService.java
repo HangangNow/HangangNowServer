@@ -1,7 +1,15 @@
 package com.hangangnow.mainserver.service;
 
+import com.hangangnow.mainserver.domain.Address;
+import com.hangangnow.mainserver.domain.Local;
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.sidefacility.FacilityResponseDto;
+import com.hangangnow.mainserver.domain.park.Park;
+import com.hangangnow.mainserver.domain.sidefacility.FacilityType;
+import com.hangangnow.mainserver.domain.sidefacility.SideFacility;
+import com.hangangnow.mainserver.domain.sidefacility.dto.FacilityRequestDto;
+import com.hangangnow.mainserver.domain.sidefacility.dto.FacilityKakaoResponseDto;
+import com.hangangnow.mainserver.domain.sidefacility.dto.FacilityResponseDto;
+import com.hangangnow.mainserver.repository.ParkRepository;
 import com.hangangnow.mainserver.repository.SideFacilityRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.io.BufferedReader;
@@ -25,6 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -32,12 +42,33 @@ import java.util.List;
 @PropertySource("classpath:/application-secret.properties")
 public class SideFacilityService {
 
+    private final ParkRepository parkRepository;
+    private final SideFacilityRepository sideFacilityRepository;
+
     @Value("${hangangnow.api.restapi.key}")
     private String key;
 
-    private final SideFacilityRepository sideFacilityRepository;
+    @Transactional
+    public GenericResponseDto registerFacility(FacilityRequestDto facilityRequestDto){
+        Park findPark = parkRepository.findByName(facilityRequestDto.getParkName())
+                .orElseThrow(() -> new IllegalArgumentException("해당 한강공원이 존재하지 않습니다"));
 
-    public GenericResponseDto getFacility(String x, String y, String category) {
+        Address address = new Address(facilityRequestDto.getAddress());
+        Local local = new Local(facilityRequestDto.getName(), facilityRequestDto.getX_pos(), facilityRequestDto.getY_pos());
+        SideFacility sideFacility = new SideFacility();
+        sideFacility.setSideFacility(address, local, findPark, facilityRequestDto.getType());
+
+        sideFacilityRepository.save(sideFacility);
+
+        FacilityKakaoResponseDto facilityKakaoResponseDto = new FacilityKakaoResponseDto();
+        facilityKakaoResponseDto.setAddress(sideFacility.getAddress().fullAddress());
+        facilityKakaoResponseDto.setName(sideFacility.getLocal().getLocalname());
+        facilityKakaoResponseDto.setCall(sideFacility.getFacilityType().toString());
+        return new GenericResponseDto(facilityKakaoResponseDto);
+    }
+
+    public GenericResponseDto getFacilities(String x, String y, String category) {
+
         // 편의점, 주차장, 식당, 카페
         String[] categories = new String[]{"CS2", "PK6", "FD6", "CE7"};
         if (!Arrays.asList(categories).contains(category)){
@@ -46,13 +77,13 @@ public class SideFacilityService {
 
         String data = "?x=" + x + "&y=" + y + "&category_group_code=" + category + "&radius=1000" + "&sort=distance";
 
-        List<FacilityResponseDto> facilityResponseDtos = callKakaoLocalAPI(data);
+        List<FacilityKakaoResponseDto> facilityKakaoResponseDtos = callKakaoLocalAPI(data);
 
-        return new GenericResponseDto(facilityResponseDtos);
+        return new GenericResponseDto(facilityKakaoResponseDtos);
     }
 
 
-    public List<FacilityResponseDto> callKakaoLocalAPI(String data) {
+    public List<FacilityKakaoResponseDto> callKakaoLocalAPI(String data) {
         StringBuffer response = new StringBuffer();
 
         try {
@@ -80,31 +111,85 @@ public class SideFacilityService {
             System.out.println(e);
         }
 
-        List<FacilityResponseDto> facilityResponseDtos = getFacilityDto(response.toString());
+        List<FacilityKakaoResponseDto> facilityKakaoResponseDtos = getFacilityDto(response.toString());
 
-        return facilityResponseDtos;
+        return facilityKakaoResponseDtos;
     }
 
-    private List<FacilityResponseDto> getFacilityDto(String jsonString) {
-        String value = "";
+    private List<FacilityKakaoResponseDto> getFacilityDto(String jsonString) {
         JSONObject jObj = (JSONObject) JSONValue.parse(jsonString);
         Object documents = jObj.get("documents");
 
         JSONArray jsonArr = (JSONArray) documents;
 
-        List<FacilityResponseDto> facilityResponseDtos = new ArrayList<>();
+        List<FacilityKakaoResponseDto> facilityKakaoResponseDtos = new ArrayList<>();
 
         if (jsonArr.size() > 0) {
             for (int i = 0; i < jsonArr.size(); i++) {
                 JSONObject jsonObj = (JSONObject) jsonArr.get(i);
 
-                FacilityResponseDto facilityResponseDto = new FacilityResponseDto(String.valueOf(jsonObj.get("place_name")), String.valueOf(jsonObj.get("address_name")) , String.valueOf(jsonObj.get("phone")),
-                        String.valueOf(jsonObj.get("place_url")), Double.parseDouble(String.valueOf(jsonObj.get("distance"))), Double.parseDouble(String.valueOf(jsonObj.get("x"))), Double.parseDouble(String.valueOf(jsonObj.get("y"))));
+                FacilityKakaoResponseDto facilityKakaoResponseDto = new FacilityKakaoResponseDto(String.valueOf(jsonObj.get("place_name")), String.valueOf(jsonObj.get("address_name")) , String.valueOf(jsonObj.get("phone")),
+                        String.valueOf(jsonObj.get("place_url")), Double.valueOf(String.valueOf(jsonObj.get("distance"))), Double.valueOf(String.valueOf(jsonObj.get("x"))), Double.valueOf(String.valueOf(jsonObj.get("y"))));
 
-                facilityResponseDtos.add(facilityResponseDto);
+                facilityKakaoResponseDtos.add(facilityKakaoResponseDto);
             }
         }
 
-        return facilityResponseDtos;
+        return facilityKakaoResponseDtos;
+    }
+
+
+    public GenericResponseDto getFacilitiesByParkIdAndType(Long parkId, String type){
+        String[] categories = new String[]{"TOILET", "SUN_SHADOW", "BICYCLE", "STORE", "VIEW", "DELIVERY_ZONE",
+                "LOAD_FOOD", "BASKETBALL", "SOCCER", "TENNIS", "SWIM"};
+
+        if (!Arrays.asList(categories).contains(type)){
+            throw new IllegalArgumentException("존재하지 않는 카테고리 코드 입니다");
+        }
+
+        FacilityType facilityType = getType(type);
+
+        parkRepository.findById(parkId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 공원이 존재하지 않습니다."));
+
+        List<FacilityResponseDto> results = sideFacilityRepository.findByParkAndType(parkId, facilityType)
+                .stream()
+                .map(FacilityResponseDto::new)
+                .collect(Collectors.toList());
+
+        return new GenericResponseDto(results);
+
+    }
+
+    private FacilityType getType(String type) {
+        // TOILET, SUN_SHADOW, BICYCLE, STORE, VIEW, DELIVERY_ZONE,
+        // LOAD_FOOD, BASKETBALL, SOCCER, TENNIS, SWIM
+        switch (type){
+            case "TOILET":
+                return FacilityType.TOILET;
+            case "SUN_SHADOW":
+                return FacilityType.SUN_SHADOW;
+            case "BICYCLE":
+                return FacilityType.BICYCLE;
+            case "STORE":
+                return FacilityType.STORE;
+            case "VIEW":
+                return FacilityType.VIEW;
+            case "DELIVERY_ZONE":
+                return FacilityType.DELIVERY_ZONE;
+            case "LOAD_FOOD":
+                return FacilityType.LOAD_FOOD;
+            case "BASKETBALL":
+                return FacilityType.BASKETBALL;
+            case "SOCCER":
+                return FacilityType.SOCCER;
+            case "TENNIS":
+                return FacilityType.TENNIS;
+            case "SWIM":
+                return FacilityType.SWIM;
+
+            default:
+                return null;
+        }
     }
 }
