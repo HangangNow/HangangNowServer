@@ -2,8 +2,10 @@ package com.hangangnow.mainserver.domain.sidefacility.dto;
 
 import com.hangangnow.mainserver.domain.sidefacility.SideFacility;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class FacilityResponseDto {
     private String name;
     private String address;

@@ -60,11 +60,12 @@ public class SideFacilityService {
 
         sideFacilityRepository.save(sideFacility);
 
-        FacilityKakaoResponseDto facilityKakaoResponseDto = new FacilityKakaoResponseDto();
-        facilityKakaoResponseDto.setAddress(sideFacility.getAddress().fullAddress());
-        facilityKakaoResponseDto.setName(sideFacility.getLocal().getLocalname());
-        facilityKakaoResponseDto.setCall(sideFacility.getFacilityType().toString());
-        return new GenericResponseDto(facilityKakaoResponseDto);
+        FacilityResponseDto facilityResponseDto = new FacilityResponseDto();
+        facilityResponseDto.setAddress(sideFacility.getAddress().fullAddress());
+        facilityResponseDto.setName(sideFacility.getLocal().getLocalname());
+        facilityResponseDto.setX_pos(sideFacility.getLocal().getX_pos());
+        facilityResponseDto.setY_pos(sideFacility.getLocal().getY_pos());
+        return new GenericResponseDto(facilityResponseDto);
     }
 
     public GenericResponseDto getFacilities(String x, String y, String category) {
@@ -191,5 +192,10 @@ public class SideFacilityService {
             default:
                 return null;
         }
+    }
+
+    @Transactional
+    public void save(SideFacility sideFacility){
+        sideFacilityRepository.save(sideFacility);
     }
 }
