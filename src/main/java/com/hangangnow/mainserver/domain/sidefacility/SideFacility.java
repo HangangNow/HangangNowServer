@@ -65,7 +65,8 @@ public class SideFacility {
                 return FacilityType.TENNIS;
             case "SWIM":
                 return FacilityType.SWIM;
-
+            case "BASEBALL":
+                return FacilityType.BASEBALL;
             default:
                 return null;
         }

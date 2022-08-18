@@ -142,7 +142,7 @@ public class SideFacilityService {
 
     public GenericResponseDto getFacilitiesByParkIdAndType(Long parkId, String type){
         String[] categories = new String[]{"TOILET", "SUN_SHADOW", "BICYCLE", "STORE", "VIEW", "DELIVERY_ZONE",
-                "LOAD_FOOD", "BASKETBALL", "SOCCER", "TENNIS", "SWIM"};
+                "LOAD_FOOD", "BASKETBALL", "BASEBALL", "SOCCER", "TENNIS", "SWIM"};
 
         if (!Arrays.asList(categories).contains(type)){
             throw new IllegalArgumentException("존재하지 않는 카테고리 코드 입니다");
@@ -188,6 +188,8 @@ public class SideFacilityService {
                 return FacilityType.TENNIS;
             case "SWIM":
                 return FacilityType.SWIM;
+            case "BASEBALL":
+                return FacilityType.BASEBALL;
 
             default:
                 return null;
