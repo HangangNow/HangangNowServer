@@ -200,4 +200,12 @@ public class SideFacilityService {
     public void save(SideFacility sideFacility){
         sideFacilityRepository.save(sideFacility);
     }
+
+
+    public FacilityResponseDto getSideFacilityByXposAndYpos(Double x, Double y){
+        SideFacility sideFacility = sideFacilityRepository.findByFacilityWithXY(x, y)
+                .orElseThrow(() -> new IllegalArgumentException("해당 위도, 경도에 해당하는 주변시설이 없습니다."));
+
+        return new FacilityResponseDto(sideFacility);
+    }
 }

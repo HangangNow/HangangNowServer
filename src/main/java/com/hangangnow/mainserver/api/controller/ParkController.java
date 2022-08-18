@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.api.controller;
 
 
+import com.hangangnow.mainserver.domain.park.dto.NearestParkDto;
 import com.hangangnow.mainserver.domain.park.dto.ParkResponseDto;
 import com.hangangnow.mainserver.service.ParkService;
 
@@ -21,6 +22,12 @@ public class ParkController {
     @GetMapping("/{parkId}")
     public ResponseEntity<ParkResponseDto> getParkInfoById(@PathVariable Long parkId){
         return new ResponseEntity<>(parkService.findOne(parkId), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/nearest")
+    public ResponseEntity<NearestParkDto> getNearestPark(@RequestParam Double x, @RequestParam Double y){
+        return new ResponseEntity<>(parkService.findNearestPark(x, y), HttpStatus.OK);
     }
 
 }
