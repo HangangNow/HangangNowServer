@@ -83,17 +83,17 @@ public class FlyerController {
 
 
     @Operation(summary = "공원 별 전단지 조회", description = "공원 ID를 이용해 공원 별 전단지를 조회할 수 있습니다.  " +
-            "\n 1: 광나루한강공원" +
-            "\n 2: 잠실한강공원" +
-            "\n 3: 뚝섬한강공원" +
-            "\n 4: 잠원한강공원" +
-            "\n 5: 반포한강공원" +
-            "\n 6: 이촌한강공원" +
-            "\n 7: 망원한강공원" +
-            "\n 8: 여의도한강공원" +
-            "\n 9: 난지한강공원" +
-            "\n 10: 강서한강공원" +
-            "\n 11: 양화한강공원" )
+            "\n 1: 광나루한강공원  " +
+            "\n 2: 잠실한강공원  " +
+            "\n 3: 뚝섬한강공원  " +
+            "\n 4: 잠원한강공원  " +
+            "\n 5: 반포한강공원  " +
+            "\n 6: 이촌한강공원  " +
+            "\n 7: 망원한강공원  " +
+            "\n 8: 여의도한강공원  "   +
+            "\n 9: 난지한강공원  " +
+            "\n 10: 강서한강공원  " +
+            "\n 11: 양화한강공원  " )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
