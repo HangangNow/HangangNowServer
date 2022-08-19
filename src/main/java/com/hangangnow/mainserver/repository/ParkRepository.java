@@ -24,13 +24,13 @@ public class ParkRepository {
 
 
     public Optional<Park> findParkInfoById(Long id){
-        Park park = em.createQuery("select p from Park p" +
+        List<Park> results = em.createQuery("select p from Park p" +
                         " join fetch p.photos pp" +
                         " where p.id =:id", Park.class)
                 .setParameter("id", id)
-                .getSingleResult();
+                .getResultList();
 
-        return Optional.ofNullable(park);
+        return results.stream().findAny();
     }
 
     public Optional<Park> findByName(String name){

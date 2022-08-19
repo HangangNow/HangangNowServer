@@ -141,8 +141,8 @@ public class SideFacilityService {
 
 
     public GenericResponseDto getFacilitiesByParkIdAndType(Long parkId, String type){
-        String[] categories = new String[]{"TOILET", "SUN_SHADOW", "BICYCLE", "STORE", "VIEW", "DELIVERY_ZONE",
-                "LOAD_FOOD", "BASKETBALL", "BASEBALL", "SOCCER", "TENNIS", "SWIM"};
+        String[] categories = new String[]{"TOILET", "SUN_SHADOW", "BICYCLE", "STORE", "VIEW", "DELIVERY_ZONE", "STORE",
+                "CAFE", "RESTAURANT", "PARKING","LOAD_FOOD", "BASKETBALL", "BASEBALL", "SOCCER", "TENNIS", "SWIM"};
 
         if (!Arrays.asList(categories).contains(type)){
             throw new IllegalArgumentException("존재하지 않는 카테고리 코드 입니다");
@@ -164,8 +164,8 @@ public class SideFacilityService {
 
     private FacilityType getType(String type) {
         // TOILET, SUN_SHADOW, BICYCLE, STORE, VIEW, DELIVERY_ZONE,
-        // LOAD_FOOD, BASKETBALL, SOCCER, TENNIS, SWIM
-        switch (type){
+        // LOAD_FOOD, BASKETBALL, SOCCER, TENNIS, SWIM, STORE, CAFE, RESTAURANT, PARKING
+        switch (type) {
             case "TOILET":
                 return FacilityType.TOILET;
             case "SUN_SHADOW":
@@ -174,6 +174,12 @@ public class SideFacilityService {
                 return FacilityType.BICYCLE;
             case "STORE":
                 return FacilityType.STORE;
+            case "CAFE":
+                return FacilityType.CAFE;
+            case "RESTAURANT":
+                return FacilityType.RESTAURANT;
+            case "PARKING":
+                return FacilityType.PARKING;
             case "VIEW":
                 return FacilityType.VIEW;
             case "DELIVERY_ZONE":
@@ -190,7 +196,6 @@ public class SideFacilityService {
                 return FacilityType.SWIM;
             case "BASEBALL":
                 return FacilityType.BASEBALL;
-
             default:
                 return null;
         }
@@ -200,7 +205,6 @@ public class SideFacilityService {
     public void save(SideFacility sideFacility){
         sideFacilityRepository.save(sideFacility);
     }
-
 
     public FacilityResponseDto getSideFacilityByXposAndYpos(Double x, Double y){
         SideFacility sideFacility = sideFacilityRepository.findByFacilityWithXY(x, y)

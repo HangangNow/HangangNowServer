@@ -10,9 +10,12 @@ import com.hangangnow.mainserver.domain.flyer.dto.FlyerResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.dto.*;
+import com.hangangnow.mainserver.domain.mypage.WithdrawalReason;
+import com.hangangnow.mainserver.domain.mypage.dto.WithdrawDto;
 import com.hangangnow.mainserver.domain.photo.MemberPhoto;
 import com.hangangnow.mainserver.repository.MemberRepository;
 import com.hangangnow.mainserver.repository.ScrapRepository;
+import com.hangangnow.mainserver.repository.mypageRepo.WithdrawalReasonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +44,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
+    private final WithdrawalReasonRepository withdrawalReasonRepository;
+
     private final RedisUtil redisUtil;
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
@@ -276,4 +281,17 @@ public class MemberService {
 //                .map()
 //                .collect(Collectors.toList())
 //    }
+
+
+    @Transactional
+    public ResponseDto createWithdrawReason(WithdrawDto withdrawDto){
+        WithdrawalReason withdrawalReason = new WithdrawalReason(
+                withdrawDto.getDifficulty(), withdrawDto.getFewerEvents(), withdrawDto.getAnotherApplication(),
+                withdrawDto.getNoCredibility(), withdrawDto.getNoNeed(), withdrawDto.getEtc(), withdrawDto.getEtcContent()
+        );
+
+        withdrawalReasonRepository.save(withdrawalReason);
+
+        return new ResponseDto("탈퇴 사유가 저장되었습니다.");
+    }
 }

@@ -51,6 +51,12 @@ public class SideFacility {
                 return FacilityType.BICYCLE;
             case "STORE":
                 return FacilityType.STORE;
+            case "CAFE":
+                return FacilityType.CAFE;
+            case "RESTAURANT":
+                return FacilityType.RESTAURANT;
+            case "PARKING":
+                return FacilityType.PARKING;
             case "VIEW":
                 return FacilityType.VIEW;
             case "DELIVERY_ZONE":

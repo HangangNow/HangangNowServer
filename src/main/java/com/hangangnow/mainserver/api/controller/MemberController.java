@@ -4,6 +4,7 @@ import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.MemberResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.PasswordRequestDto;
+import com.hangangnow.mainserver.domain.mypage.dto.WithdrawDto;
 import com.hangangnow.mainserver.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -247,6 +248,31 @@ public class MemberController {
     @GetMapping("/api/v1/members/scraps/flyers")
     public ResponseEntity<GenericResponseDto> getFlyerScrapInfo(){
         return new ResponseEntity<>(memberService.getFlyerScraps(), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "회원탈퇴 사유 등록", description = "회원탈퇴 사유 등록 URL.  " +
+            "\n 요청 예시:  " +
+            "{\n" +
+            "\t\"difficulty\" : \"true\",\n" +
+            "\t\"fewerEvents\" : \"false\",\n" +
+            "\t\"anotherApplication\" : \"false\",\n" +
+            "\t\"noCredibility\" : \"true\",\n" +
+            "\t\"noNeed\" : \"false\",\n" +
+            "\t\"etc\" : \"true\",\n" +
+            "    \"etcContent\" : \"회원탈퇴 사유 테스트입니다. \"\n" +
+            "}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+
+    })
+    @PostMapping("/api/v1/members/withdraw/reasons")
+    public ResponseEntity<ResponseDto> registerWithdrawReasons(@RequestBody WithdrawDto withdrawDto){
+        return new ResponseEntity<>(memberService.createWithdrawReason(withdrawDto), HttpStatus.OK);
     }
 
 

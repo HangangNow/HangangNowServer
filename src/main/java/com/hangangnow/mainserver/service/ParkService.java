@@ -53,8 +53,7 @@ public class ParkService {
         List<Map.Entry<Park, Double>> entryList = new LinkedList<>(map.entrySet());
         entryList.sort(Map.Entry.comparingByValue());
 
-
-        Park park = map.keySet().stream().findFirst().get();
+        Park park = entryList.get(0).getKey();
 
         return new NearestParkDto(park.getId(), park.getName(), park.getLocal().getX_pos(), park.getLocal().getY_pos());
 

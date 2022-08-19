@@ -58,10 +58,10 @@ public class SideFacilityController {
         return new ResponseEntity<>(sideFacilityService.getFacilities(x, y, category), HttpStatus.OK);
     }
 
-    @Operation(summary = "공원 별 주변시설 조회", description = "편의점, 주차장, 식당, 카페를 제외한 해당 공원 모든 주변시설 조회.  " +
+    @Operation(summary = "공원 별 주변시설 조회", description = "해당 공원 카테고리 별 모든 주변시설 조회.  " +
             "\nRequestParam: category(카테고리)  " +
-            "\n카테고리 코드는 **TOILET(화장실), SUN_SHADOW(그늘막), BICYCLE(자전거 대여소), VIEW(전망쉼터), DELIVERY_ZONE(배달존)  " +
-            "\n LOAD_FOOD(포장마차), BASKETBALL(농구장), SOCCER(축구장), BASEBALL(야구장), TENNIS(테니스장), SWIM(수영장)**. 이외 코드 -> 예외발생  " +
+            "\n카테고리 코드는 **TOILET(화장실), SUN_SHADOW(그늘막), BICYCLE(자전거 대여소), VIEW(전망쉼터), DELIVERY_ZONE(배달존) CAFE(카페), RESTAURANT(맛집), " +
+            "\n  PARKING(주차장), STORE(편의점), LOAD_FOOD(포장마차), BASKETBALL(농구장), SOCCER(축구장), BASEBALL(야구장), TENNIS(테니스장), SWIM(수영장)**. 없는 코드 -> 예외발생  " +
             "\n**요청 예시) /api/v1/facilities/1?category=TOILET**  " +
             "\n 1: 광나루한강공원  " +
             "\n 2: 잠실한강공원  " +
