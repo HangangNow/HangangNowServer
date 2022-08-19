@@ -36,15 +36,17 @@ public class Parking {
     private Local local;
 
     private int total_count;
-
     private int available_count;
 
-    private LocalDateTime lastModifiedTime;
+    //기본 30분, 간격 10분 기준
+    private String basicCharge;
+    private String intervalCharge;
+    private String fulldayCharge;
 
+    private LocalDateTime lastModifiedTime;
 
     public void setPark(Park park){
         this.park = park;
     }
-
 
 }
