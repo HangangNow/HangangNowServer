@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class RecomCourseWhere {
+public class RecomCoursePlace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,5 +15,5 @@ public class RecomCourseWhere {
     @JoinColumn(name = "recom_course_id")
     private RecomCourse RecomCourse;
 
-    private int whereId;
+    private String place;
 }
