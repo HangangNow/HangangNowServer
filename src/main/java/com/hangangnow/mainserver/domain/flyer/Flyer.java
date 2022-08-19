@@ -1,7 +1,6 @@
 package com.hangangnow.mainserver.domain.flyer;
 
 import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
 import com.hangangnow.mainserver.domain.mypage.scrap.FlyerScrap;
 import com.hangangnow.mainserver.domain.park.Park;
 import com.hangangnow.mainserver.domain.photo.FlyerPhoto;

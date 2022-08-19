@@ -45,9 +45,11 @@ public class Event {
     private LocalDateTime lastModifiedTime;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "thumbnailPhoto_id")
     private ThumbnailPhoto thumbnailPhoto;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "eventPhoto_id")
     private EventPhoto photo;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)

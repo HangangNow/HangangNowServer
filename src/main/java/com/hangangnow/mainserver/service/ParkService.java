@@ -1,13 +1,18 @@
 package com.hangangnow.mainserver.service;
 
+import com.hangangnow.mainserver.config.DistanceUtil;
 import com.hangangnow.mainserver.domain.park.Park;
+import com.hangangnow.mainserver.domain.park.dto.NearestParkDto;
 import com.hangangnow.mainserver.domain.park.dto.ParkResponseDto;
 import com.hangangnow.mainserver.repository.ParkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,19 +34,32 @@ public class ParkService {
         return parkResponseDto.toParkResponseDto(findPark);
     }
 
+
+
     public List<Park> findAll(){
         return parkRepository.findAll();
     }
 
-//    @Transactional
-//    public void updatePark(Park park){
-//        Park findPark = parkRepository.findOne(park.getId());
-//        findPark.setName(park.getName());
-//        findPark.setAddress(park.getAddress());
-//        findPark.setDescribe(park.getDescribe());
-//        findPark.setLocal(park.getLocal());
-//        포토는 일단 보류
-//        for (ParkPhoto photo : findPark.getPhotos()) {}
-//    }
+
+    public NearestParkDto findNearestPark(Double x, Double y){
+        HashMap<Park, Double> map = new HashMap<>();
+
+        List<Park> allParks = parkRepository.findAll();
+        for (Park park : allParks) {
+            double distance = DistanceUtil.distance(x, y, park.getLocal().getX_pos(), park.getLocal().getY_pos());
+            map.put(park, distance);
+        }
+
+        List<Map.Entry<Park, Double>> entryList = new LinkedList<>(map.entrySet());
+        entryList.sort(Map.Entry.comparingByValue());
+
+
+        Park park = map.keySet().stream().findFirst().get();
+
+        return new NearestParkDto(park.getId(), park.getName(), park.getLocal().getX_pos(), park.getLocal().getY_pos());
+
+    }
+
+
 
 }
