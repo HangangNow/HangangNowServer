@@ -17,7 +17,7 @@ public interface SpringDataJpaDiaryRepository extends JpaRepository<Diary, Long>
 
     default LocalDateTime update(Diary diary, DiaryDto diaryDto){
         diary.update(diaryDto);
-        return diary.getLastModifiedDateTime();
+        return diary.getLastModifiedTime();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.domain.mypage.scrap;
 
-import com.hangangnow.mainserver.domain.RecomPlace;
+import com.hangangnow.mainserver.domain.picnic.RecomPlace;
 import lombok.Getter;
 
 import javax.persistence.*;

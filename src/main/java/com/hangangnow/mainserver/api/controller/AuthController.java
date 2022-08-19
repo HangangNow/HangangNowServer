@@ -3,7 +3,6 @@ package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.common.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.*;
-import com.hangangnow.mainserver.repository.MemberRepository;
 import com.hangangnow.mainserver.service.AuthService;
 import com.hangangnow.mainserver.service.MailService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -89,7 +88,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/loginId")
-    public ResponseEntity<ResponseDto> findLoginId(@RequestBody LoginIdRequestDto loginIdRequestDto){
+    public ResponseEntity<ResponseDto> findLoginId(@RequestBody @Valid LoginIdRequestDto loginIdRequestDto){
         return new ResponseEntity<>(authService.findLoginIdByEmail(loginIdRequestDto), HttpStatus.OK);
     }
 
@@ -111,7 +110,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/dup/loginId")
-    public ResponseEntity<Boolean> loginIdDuplicateCheck(@RequestBody MemberDuplicateDto memberDuplicateDto){
+    public ResponseEntity<Boolean> loginIdDuplicateCheck(@RequestBody @Valid LoginIdDuplicateDto memberDuplicateDto){
         return new ResponseEntity<>(authService.duplicateCheckByLoginId(memberDuplicateDto), HttpStatus.OK);
     }
 
@@ -133,8 +132,8 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/dup/email")
-    public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody MemberDuplicateDto memberDuplicateDto){
-        return new ResponseEntity<>(authService.duplicateCheckByEmail(memberDuplicateDto), HttpStatus.OK);
+    public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody @Valid EmailDuplicateDto emailDuplicateDto){
+        return new ResponseEntity<>(authService.duplicateCheckByEmail(emailDuplicateDto), HttpStatus.OK);
     }
 
 
@@ -169,13 +168,13 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/emailAuth")
-    public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
+    public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody @Valid EmailAuthDto emailAuthDto){
         return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.OK);
     }
 
 
     @Operation(summary = "이메일 인증코드 확인", description = "이메일 인증코드 확인 요청 URL." +
-            "\n### 요청변수: email")
+            "\n### 요청변수: email, code")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
@@ -185,7 +184,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/emailAuth/code")
-    public ResponseEntity<Boolean> checkEmailAuthenticate(@RequestBody EmailAuthDto emailAuthDto){
+    public ResponseEntity<Boolean> checkEmailAuthenticate(@RequestBody @Valid EmailAuthDto emailAuthDto){
         return new ResponseEntity<>(mailService.checkEmailCode(emailAuthDto), HttpStatus.OK);
     }
 }

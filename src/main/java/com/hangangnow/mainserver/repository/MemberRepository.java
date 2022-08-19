@@ -54,4 +54,13 @@ public class MemberRepository {
                 .getResultList();
         return members.stream().findAny();
     }
+
+    public Optional<Member> findByIdWithScrap(UUID id){
+        List<Member> members = em.createQuery("select m from Member m" +
+                        " join fetch m.scraps" +
+                        " where m.id =:id", Member.class)
+                .setParameter("id", id)
+                .getResultList();
+        return members.stream().findAny();
+    }
 }

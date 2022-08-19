@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -29,7 +28,7 @@ public class Memo {
     private LocalDate memoDate;
 
     @Column(nullable = false)
-    private LocalDateTime lastModifiedDateTime;
+    private LocalDateTime lastModifiedTime;
 
     @Column(nullable = false)
     private String content;
@@ -39,35 +38,22 @@ public class Memo {
     private Member member;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MemoColor color;
+    private String color;
 
     public void update(String content, String memoColor){
         this.content = content;
-        this.color = FromStringToMemoColor(memoColor);
-        this.lastModifiedDateTime = LocalDateTime.now();
+        this.color = memoColor;
+        this.lastModifiedTime = LocalDateTime.now();
     }
 
     static public Memo of(MemoDto memoDto, Member member){
         return Memo.builder()
-                .color(FromStringToMemoColor(memoDto.getColor()))
+                .color(memoDto.getColor())
                 .content(memoDto.getContent())
-                .lastModifiedDateTime(LocalDateTime.now())
+                .lastModifiedTime(LocalDateTime.now())
                 .memoDate(LocalDate.parse(memoDto.getMemoDate(), DateTimeFormatter.ISO_DATE))
                 .member(member)
                 .build();
     }
 
-    static public MemoColor FromStringToMemoColor(String stringColor){
-        switch (Optional.ofNullable(stringColor).orElse("")){
-            case "RED" : return MemoColor.RED;
-            case "ORANGE" : return MemoColor.ORANGE;
-            case "YELLOW" : return MemoColor.YELLOW;
-            case "GREEN" : return MemoColor.GREEN;
-            case "BLUE" : return MemoColor.BLUE;
-            case "NAVY" : return MemoColor.NAVY;
-            case "PURPLE" : return MemoColor.PURPLE;
-            default: return MemoColor.GRAY;
-        }
-    }
 }
