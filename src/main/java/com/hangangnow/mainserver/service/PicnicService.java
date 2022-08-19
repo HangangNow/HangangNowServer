@@ -21,19 +21,11 @@ public class PicnicService {
                 .orElseThrow(() -> new NullPointerException("Failed: Not found Place"));
     }
 
-    public List<RecomPlace> recomPlaces (RecomPlaceRequestDto recomPlaceRequestDto){
+    public List<RecomPlace> recomPlaces (Double x_pos, Double y_pos, Long limitSize){
         return picnicRepository.findAllPlace()
                 .stream()
-                .sorted(Comparator.comparingDouble(p -> p.getDistance(recomPlaceRequestDto.getX_pos(), recomPlaceRequestDto.getY_pos())))
-                .limit(10L)
-                .collect(Collectors.toList());
-    }
-
-    public List<RecomPlace> recomPlacesInCourse(RecomCourseRequestDto recomCourseRequestDto){
-        return picnicRepository.findAllPlace()
-                .stream()
-                .sorted(Comparator.comparingDouble(p -> p.getDistance(recomCourseRequestDto.getX_pos(), recomCourseRequestDto.getY_pos())))
-                .limit(2L)
+                .sorted(Comparator.comparingDouble(p -> p.getDistance(x_pos, y_pos)))
+                .limit(limitSize)
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +59,7 @@ public class PicnicService {
     }
 
     public RecomCourseResponseDto recomCourses(RecomCourseRequestDto recomCourseRequestDto){
-        List<RecomPlace> recomPlaces = recomPlacesInCourse(recomCourseRequestDto);
+        List<RecomPlace> recomPlaces = recomPlaces(recomCourseRequestDto.getX_pos(), recomCourseRequestDto.getY_pos(), 2L);
         List<RecomCourseDto> recomCourses = recomCoursesWithoutPlace(recomCourseRequestDto);
         if(recomCourses.isEmpty()){
             recomCourses = picnicRepository.findAllCourseByTheme(recomCourseRequestDto.getThemes())

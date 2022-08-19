@@ -3,7 +3,7 @@ package com.hangangnow.mainserver.domain.picnic;
 import lombok.Data;
 import lombok.Getter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +11,15 @@ import java.util.List;
 @Getter
 public class RecomCourseRequestDto {
 
-    @NotEmpty
+    @NotNull
     private Double x_pos;
-    @NotEmpty
+    @NotNull
     private Double y_pos;
+    @NotNull
+    private String companion;
 
     private List<String> places = new ArrayList<>();
     private List<String> themes = new ArrayList<>();
-    private String companion;
 
     public void updateThemeByCompainon(){
         this.themes = new ArrayList<>();
