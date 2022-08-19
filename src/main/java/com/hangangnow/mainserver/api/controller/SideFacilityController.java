@@ -20,9 +20,10 @@ public class SideFacilityController {
     private final SideFacilityService sideFacilityService;
 
 
-    @Operation(summary = "위도, 경도에 해당하는 주변시설 조회", description = "위도 경도를 이용한 단일 주변시설 조회.  " +
+    @Operation(summary = "주변시설 위도, 경도에 해당하는 주변시설 내용 조회", description = "위도 경도를 이용한 단일 주변시설 내용 조회.  " +
             "\n**RequestParam: y(위도), x(경도).  " +
-            "\n 편의점, 식당, 카페, 주차장은 카카오 API를 직접 호출하기 때문에 제공하지 않습니다."
+            "\n 편의점, 식당, 카페, 주차장은 카카오 API를 직접 호출하기 때문에 제공하지 않습니다.  " +
+            "\n 데이터베이스에 존재하는 주변시설 데이터와 일치하지 않는 위도 경도가 요청된 경우, 예외가 발생합니다."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -57,11 +58,22 @@ public class SideFacilityController {
         return new ResponseEntity<>(sideFacilityService.getFacilities(x, y, category), HttpStatus.OK);
     }
 
-    @Operation(summary = "공원 별 주변시설 조회", description = "편의점, 주차장, 식당, 카페를 제외한 주변시설 조회.  " +
+    @Operation(summary = "공원 별 주변시설 조회", description = "편의점, 주차장, 식당, 카페를 제외한 해당 공원 모든 주변시설 조회.  " +
             "\nRequestParam: category(카테고리)  " +
             "\n카테고리 코드는 **TOILET(화장실), SUN_SHADOW(그늘막), BICYCLE(자전거 대여소), VIEW(전망쉼터), DELIVERY_ZONE(배달존)  " +
-            "\n LOAD_FOOD(포장마차), BASKETBALL(농구장), SOCCER(축구장), BASEBALL(야구장), TENNIS(테니스장), SWIM(수영장). 이외 코드 -> 예외발생  " +
-            "\n**요청 예시) /api/v1/facilities/1?category=TOILET  **"
+            "\n LOAD_FOOD(포장마차), BASKETBALL(농구장), SOCCER(축구장), BASEBALL(야구장), TENNIS(테니스장), SWIM(수영장)**. 이외 코드 -> 예외발생  " +
+            "\n**요청 예시) /api/v1/facilities/1?category=TOILET**  " +
+            "\n 1: 광나루한강공원  " +
+            "\n 2: 잠실한강공원  " +
+            "\n 3: 뚝섬한강공원  " +
+            "\n 4: 잠원한강공원  " +
+            "\n 5: 반포한강공원  " +
+            "\n 6: 이촌한강공원  " +
+            "\n 7: 망원한강공원  " +
+            "\n 8: 여의도한강공원  "   +
+            "\n 9: 난지한강공원  " +
+            "\n 10: 강서한강공원  " +
+            "\n 11: 양화한강공원  "
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -77,11 +89,11 @@ public class SideFacilityController {
     }
 
 
-    @Operation(summary = "테스트 용도 (사용 X)", description = "사용 X.  ")
-    @PostMapping("/api/v1/facilities")
-    public ResponseEntity<GenericResponseDto> registerFacilityWithLocation(
-            @RequestBody FacilityRequestDto facilityRequestDto){
-        return new ResponseEntity<>(sideFacilityService.registerFacility(facilityRequestDto), HttpStatus.OK);
-    }
+//    @Operation(summary = "테스트 용도 (사용 X)", description = "사용 X.  ")
+//    @PostMapping("/api/v1/facilities")
+//    public ResponseEntity<GenericResponseDto> registerFacilityWithLocation(
+//            @RequestBody FacilityRequestDto facilityRequestDto){
+//        return new ResponseEntity<>(sideFacilityService.registerFacility(facilityRequestDto), HttpStatus.OK);
+//    }
 
 }
