@@ -119,28 +119,4 @@ public class EventService {
     }
 
 
-    @Transactional
-    public ResponseDto updateScrap(Long eventId){
-        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
-
-        Event findEvent = eventRepository.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
-
-
-        EventScrap eventScrap = scrapRepository.findEventScrapByMemberAndEvent(eventId, SecurityUtil.getCurrentMemberId())
-                .orElse(new EventScrap());
-
-        if(eventScrap.getEvent() == null){
-            eventScrap.addMemberAndEvent(findMember, findEvent);
-            return new ResponseDto("해당 이벤트 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else{
-            eventScrap.cancelMemberAndEvent(findMember, findEvent);
-            return new ResponseDto("해당 이벤트 스크랩 해제가 정상적으로 처리되었습니다.");
-        }
-
-    }
-
 }

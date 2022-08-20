@@ -1,5 +1,7 @@
-package com.hangangnow.mainserver.domain.picnic;
+package com.hangangnow.mainserver.domain.picnic.dto;
 
+import com.hangangnow.mainserver.domain.picnic.RecomPlace;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

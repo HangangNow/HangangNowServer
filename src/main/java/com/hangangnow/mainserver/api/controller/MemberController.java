@@ -221,36 +221,6 @@ public class MemberController {
 
 
 
-    @Operation(summary = "멤버 이벤트 스크랩 조회", description = "멤버 이벤트 스크랩 조회 URL.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
-
-    })
-    @GetMapping("/api/v1/members/scraps/events")
-    public ResponseEntity<GenericResponseDto> getEventScrapInfo(){
-        return new ResponseEntity<>(memberService.getEventScraps(), HttpStatus.OK);
-    }
-
-
-    @Operation(summary = "멤버 전단지 스크랩 조회", description = "멤버 전단지 스크랩 조회 URL.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
-
-    })
-    @GetMapping("/api/v1/members/scraps/flyers")
-    public ResponseEntity<GenericResponseDto> getFlyerScrapInfo(){
-        return new ResponseEntity<>(memberService.getFlyerScraps(), HttpStatus.OK);
-    }
-
-
     @Operation(summary = "회원탈퇴 사유 등록", description = "회원탈퇴 사유 등록 URL.  " +
             "\n 요청 예시:  " +
             "{\n" +

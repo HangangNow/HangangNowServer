@@ -153,19 +153,6 @@ public class FlyerController {
     }
 
 
-    @Operation(summary = "단일 전단지 스크랩", description = "단일 전단지를 스크랩할 수 있습니다.  " +
-            "\n스크랩 하지 않은 이벤트를 스크랩 하는 경우 -> 스크랩 설정  " +
-            "\n스크랩 된 이벤트를 한번 더 요청하는 경우 -> 스크랩 해제")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
-    })
-    @PostMapping("/api/v1/flyers/{flyerId}/scraps")
-    public ResponseEntity<ResponseDto> scrapFlyer(@PathVariable Long flyerId){
-        return new ResponseEntity<>(flyerService.updateScrap(flyerId), HttpStatus.CREATED);
-    }
+
 
 }

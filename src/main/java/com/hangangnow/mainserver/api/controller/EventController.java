@@ -124,19 +124,6 @@ public class EventController {
     }
 
 
-    @Operation(summary = "이벤트 스크랩 설정 or 해제", description = "이벤트를 스크랩 설정하거나 해제할 수 있습니다.  " +
-            "\n스크랩 하지 않은 이벤트를 스크랩 하는 경우 -> 스크랩 설정  " +
-            "\n스크랩 된 이벤트를 한번 더 요청하는 경우 -> 스크랩 해제")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
-    })
-    @PostMapping("/api/v1/events/{eventId}/scraps")
-    public ResponseEntity<ResponseDto> createScarpEvent(@PathVariable Long eventId){
-        return new ResponseEntity<>(eventService.updateScrap(eventId), HttpStatus.OK);
-    }
+
 
 }

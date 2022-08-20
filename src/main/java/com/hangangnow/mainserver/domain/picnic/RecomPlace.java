@@ -2,12 +2,13 @@ package com.hangangnow.mainserver.domain.picnic;
 
 import com.hangangnow.mainserver.domain.Address;
 import com.hangangnow.mainserver.domain.Local;
+import com.hangangnow.mainserver.domain.mypage.scrap.RecomPlaceScrap;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
@@ -25,6 +26,10 @@ public class RecomPlace {
     private Address address;
 
     private Local local;
+
+    @OneToMany(mappedBy = "recomPlace", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecomPlaceScrap> recomPlaceScraps = new ArrayList<>();
+
 
     public Double getDistance(Double x_pos, Double y_pos){
         return sqrt(pow(this.local.getX_pos()-x_pos, 2) + pow(this.local.getY_pos()-y_pos, 2));

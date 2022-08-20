@@ -1,6 +1,9 @@
 package com.hangangnow.mainserver.api.controller;
 
 import com.hangangnow.mainserver.domain.picnic.*;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseDto;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseRequestDto;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseResponseDto;
 import com.hangangnow.mainserver.service.PicnicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

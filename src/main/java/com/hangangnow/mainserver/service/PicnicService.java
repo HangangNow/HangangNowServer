@@ -1,6 +1,9 @@
 package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.domain.picnic.*;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseDto;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseRequestDto;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseResponseDto;
 import com.hangangnow.mainserver.repository.PicnicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

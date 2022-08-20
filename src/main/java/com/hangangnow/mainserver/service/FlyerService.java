@@ -120,27 +120,4 @@ public class FlyerService {
         return new GenericResponseDto(results);
     }
 
-
-    @Transactional
-    public ResponseDto updateScrap(Long flyerId){
-        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
-
-        Flyer findFlyer = flyerRepository.findById(flyerId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 전단지를 찾을 수 없습니다."));
-
-        FlyerScrap flyerScrap = scrapRepository.findFlyerScrapByMemberAndEvent(flyerId, SecurityUtil.getCurrentMemberId())
-                .orElse(new FlyerScrap());
-
-        if(flyerScrap.getFlyer() == null){
-            flyerScrap.addMemberAndEvent(findMember, findFlyer);
-            return new ResponseDto("해당 전단지 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else {
-            flyerScrap.cancelMemberAndEvent(findMember, findFlyer);
-            return new ResponseDto("해당 전단지 스크랩 해제가 정상적으로 처리되었습니다.");
-        }
-
-    }
 }

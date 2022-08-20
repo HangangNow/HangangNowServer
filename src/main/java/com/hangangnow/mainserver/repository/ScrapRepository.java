@@ -45,7 +45,7 @@ public class ScrapRepository {
     public List<Event> findEventScrapsByMemberId(UUID memberId){
         return em.createQuery("select es.event from EventScrap es " +
                 " join fetch es.event.photo" +
-                " join fetch es.event.thumbnailPhoto" +
+//                " join fetch es.event.thumbnailPhoto" +
                 " where es.member.id =:memberId", Event.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
