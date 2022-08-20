@@ -78,6 +78,68 @@ public class ScrapController {
     })
     @PostMapping("/api/v1/scraps/flyers/{flyerId}")
     public ResponseEntity<ResponseDto> scrapFlyer(@PathVariable Long flyerId){
-        return new ResponseEntity<>(scrapService.updateFlyerScrap(flyerId), HttpStatus.CREATED);
+        return new ResponseEntity<>(scrapService.updateFlyerScrap(flyerId), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "멤버 추천코스 스크랩 조회", description = "멤버 추천코스 스크랩 조회 URL.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+
+    })
+    @GetMapping("/api/v1/scraps/recomCourses")
+    public ResponseEntity<GenericResponseDto> getRecomCourseScrapInfo(){
+        return new ResponseEntity<>(scrapService.getRecomCourseScraps(), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "단일 추천코스 스크랩", description = "단일 추천코스를 스크랩할 수 있습니다.  " +
+            "\n스크랩 하지 않은 추천코스를 스크랩 하는 경우 -> 스크랩 설정  " +
+            "\n스크랩 된 추천코스를 한번 더 요청하는 경우 -> 스크랩 해제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
+    })
+    @PostMapping("/api/v1/scraps/recomCourses/{recomCourseId}")
+    public ResponseEntity<ResponseDto> scrapRecomCourse(@PathVariable Long recomCourseId){
+        return new ResponseEntity<>(scrapService.updateRecomCourseScrap(recomCourseId), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "멤버 추천장소 스크랩 조회", description = "멤버 추천장소 스크랩 조회 URL.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
+
+    })
+    @GetMapping("/api/v1/scraps/recomPlaces")
+    public ResponseEntity<GenericResponseDto> getRecomPlaceScrapInfo(){
+        return new ResponseEntity<>(scrapService.getRecomPlaceScraps(), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "단일 추천장소 스크랩", description = "단일 추천장소를 스크랩할 수 있습니다.  " +
+            "\n스크랩 하지 않은 추천장소를 스크랩 하는 경우 -> 스크랩 설정  " +
+            "\n스크랩 된 추천장소를 한번 더 요청하는 경우 -> 스크랩 해제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
+    })
+    @PostMapping("/api/v1/scraps/recomPlaces/{recomPlaceId}")
+    public ResponseEntity<ResponseDto> scrapRecomPlace(@PathVariable Long recomPlaceId){
+        return new ResponseEntity<>(scrapService.updateRecomPlaceScrap(recomPlaceId), HttpStatus.OK);
     }
 }

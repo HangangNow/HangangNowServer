@@ -10,10 +10,13 @@ import com.hangangnow.mainserver.domain.flyer.dto.FlyerResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
 import com.hangangnow.mainserver.domain.mypage.scrap.FlyerScrap;
-import com.hangangnow.mainserver.repository.EventRepository;
-import com.hangangnow.mainserver.repository.FlyerRepository;
-import com.hangangnow.mainserver.repository.MemberRepository;
-import com.hangangnow.mainserver.repository.ScrapRepository;
+import com.hangangnow.mainserver.domain.mypage.scrap.RecomCourseScrap;
+import com.hangangnow.mainserver.domain.mypage.scrap.RecomPlaceScrap;
+import com.hangangnow.mainserver.domain.picnic.RecomCourse;
+import com.hangangnow.mainserver.domain.picnic.RecomPlace;
+import com.hangangnow.mainserver.domain.mypage.dto.RecomCourseScrapDto;
+import com.hangangnow.mainserver.domain.mypage.dto.RecomPlaceScrapDto;
+import com.hangangnow.mainserver.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,7 @@ public class ScrapService {
     private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
     private final FlyerRepository flyerRepository;
+    private final PicnicRepository picnicRepository;
 
 
     public GenericResponseDto getEventScraps(){
@@ -94,6 +98,74 @@ public class ScrapService {
         else {
             flyerScrap.cancelMemberAndEvent(findMember, findFlyer);
             return new ResponseDto("해당 전단지 스크랩 해제가 정상적으로 처리되었습니다.");
+        }
+
+    }
+
+
+    public GenericResponseDto getRecomCourseScraps(){
+        List<RecomCourseScrapDto> results = scrapRepository.findRecomCourseByMemberId(SecurityUtil.getCurrentMemberId())
+                .stream()
+                .map(RecomCourseScrapDto::new)
+                .collect(Collectors.toList());
+
+        return new GenericResponseDto(results);
+    }
+
+
+    @Transactional
+    public ResponseDto updateRecomCourseScrap(Long recomCourseId){
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+
+        RecomCourse recomCourse = picnicRepository.findCourseById(recomCourseId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 코스를 찾을 수 없습니다."));
+
+        RecomCourseScrap recomCourseScrap = scrapRepository.findRecomCourseScrapByMemberAndEvent(recomCourseId, SecurityUtil.getCurrentMemberId())
+                .orElse(new RecomCourseScrap());
+
+        if(recomCourseScrap.getRecomCourse() == null){
+            recomCourseScrap.addMemberAndRecomCourse(findMember, recomCourse);
+            return new ResponseDto("해당 추천코스 스크랩 설정이 정상적으로 처리되었습니다.");
+        }
+
+        else {
+            recomCourseScrap.cancelMemberAndRecomCourse(findMember, recomCourse);
+            return new ResponseDto("해당 추천코스 스크랩 해제가 정상적으로 처리되었습니다.");
+        }
+
+    }
+
+
+    public GenericResponseDto getRecomPlaceScraps(){
+        List<RecomPlaceScrapDto> results = scrapRepository.findRecomPlaceByMemberId(SecurityUtil.getCurrentMemberId())
+                .stream()
+                .map(RecomPlaceScrapDto::new)
+                .collect(Collectors.toList());
+
+        return new GenericResponseDto(results);
+    }
+
+
+    @Transactional
+    public ResponseDto updateRecomPlaceScrap(Long recomPlaceId){
+        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
+
+        RecomPlace recomPlace = picnicRepository.findPlaceById(recomPlaceId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 추천장소를 찾을 수 없습니다."));
+
+        RecomPlaceScrap recomPlaceScrap = scrapRepository.findRecomPlaceScrapByMemberAndEvent(recomPlaceId, SecurityUtil.getCurrentMemberId())
+                .orElse(new RecomPlaceScrap());
+
+        if(recomPlaceScrap.getRecomPlace() == null){
+            recomPlaceScrap.addMemberAndRecomPlace(findMember, recomPlace);
+            return new ResponseDto("해당 추천장소 스크랩 설정이 정상적으로 처리되었습니다.");
+        }
+
+        else {
+            recomPlaceScrap.cancelMemberAndRecomPlace(findMember, recomPlace);
+            return new ResponseDto("해당 추천코스 스크랩 해제가 정상적으로 처리되었습니다.");
         }
 
     }
