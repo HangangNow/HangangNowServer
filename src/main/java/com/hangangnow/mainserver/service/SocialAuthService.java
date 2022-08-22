@@ -135,6 +135,8 @@ public class SocialAuthService {
                     .gender(memberKakaoDto.getGender())
                     .authority(Authority.ROLE_USER)
                     .memberProvider(MemberProvider.KAKAO)
+                    .alarm_agree(false)
+                    .marketing_agree(false)
                     .build();
             memberRepository.save(findMemberByKakao);
         }
