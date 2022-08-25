@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class EventService {
 
 
     @Transactional
-    public EventResponseDto save(EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
+    public EventResponseDto save(@Valid EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
         if (thumbnail == null){
             throw new IllegalArgumentException("이벤트 썸네일 이미지는 필수입니다.");
         }
@@ -76,7 +77,7 @@ public class EventService {
 
 
     @Transactional
-    public EventResponseDto update(Long id, EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
+    public EventResponseDto update(Long id, @Valid EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다"));
 

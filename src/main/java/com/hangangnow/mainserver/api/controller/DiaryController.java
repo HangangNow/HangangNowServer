@@ -1,6 +1,5 @@
 package com.hangangnow.mainserver.api.controller;
 
-import com.hangangnow.mainserver.domain.common.IdResponseDto;
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.mypage.dto.DiaryDateRequestDto;
 import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
@@ -10,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @Validated
@@ -25,8 +26,10 @@ import javax.validation.constraints.Min;
 @RequestMapping("/api/v1/diary")
 public class DiaryController {
 
+    private final ConversionService conversionService;
     private final DiaryService diaryService;
 
+    
     @GetMapping("/{diaryid}")
     @Operation(summary = "단일 일기 조회", description = "일기id를 이용해 일기를 상세 조회할 수 있습니다.")
     @ApiResponses({
@@ -39,6 +42,7 @@ public class DiaryController {
         return diaryService.findOne(diaryid);
     }
 
+
     @GetMapping("")
     @Operation(summary = "멤버 전체 일기 조회", description = "멤버의 모든 일기 리스트 조회할 수 있습니다.")
     @ApiResponses({
@@ -49,6 +53,8 @@ public class DiaryController {
     public GenericResponseDto Diaries(){
         return new GenericResponseDto(diaryService.findAllMemberDiary());
     }
+
+
 
     @GetMapping("/years/{year}/months/{month}")
     @Operation(summary = "멤버 달력 일기 조회", description = "년도, 월 별로 멤버의 달력 일기 리스트를 조회할 수 있습니다.  " +
@@ -64,6 +70,8 @@ public class DiaryController {
         return new GenericResponseDto(diaryService.findAllCalendarDiary(year, month));
     }
 
+
+
     @Operation(summary = "멤버 일자 일기 조회(해당 일자 일기 모아보기)", description = "일자로 멤버의 달력 일기 리스트를 조회할 수 있습니다.  " +
             "\ndate string form: 20xx-xx-xx  " +
             "정규식: ^(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$")
@@ -76,6 +84,8 @@ public class DiaryController {
     public GenericResponseDto DateDiaries(@Valid @RequestBody DiaryDateRequestDto diaryDateRequestDto){
         return new GenericResponseDto(diaryService.findAllDateDiary(diaryDateRequestDto));
     }
+
+
 
     @PostMapping("")
     @Operation(summary = "일기 추가", description = "일기를 추가할 수 있습니다.  " +
@@ -92,10 +102,13 @@ public class DiaryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public DiaryDto addDiary(@Valid @RequestPart(value = "jsonData") DiaryDto request,
-                                  @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
-        return diaryService.addDiary(request, imageRequest);
+    public DiaryDto addDiary(@NotBlank @RequestPart(value = "jsonData") String jsonStringRequest,
+                             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
+        DiaryDto diaryDto = conversionService.convert(jsonStringRequest, DiaryDto.class);
+        return diaryService.addDiary(diaryDto, imageRequest);
     }
+
+
 
     @PutMapping("/{diaryid}")
     @Operation(summary = "일기 수정", description = "일기를 수정할 수 있습니다.  " +
@@ -113,10 +126,12 @@ public class DiaryController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
     public Boolean ModifyDiary( @PathVariable("diaryid") Long diaryid,
-                                @Valid @RequestPart(value = "jsonData") DiaryDto request,
+                                @Valid @RequestPart(value = "jsonData") String jsonStringRequest,
                                 @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
-        return diaryService.modifyDiary(diaryid, request, imageRequest);
+        DiaryDto diaryDto = conversionService.convert(jsonStringRequest, DiaryDto.class);
+        return diaryService.modifyDiary(diaryid, diaryDto, imageRequest);
     }
+
 
 
     @DeleteMapping("/{diaryid}")

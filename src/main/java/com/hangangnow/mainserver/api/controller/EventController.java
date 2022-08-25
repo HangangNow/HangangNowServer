@@ -9,20 +9,22 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 public class EventController {
 
+    private final ConversionService conversionService;
     private final EventService eventService;
-
 
     @Operation(summary = "이벤트 추가", description = "이벤트를 추가할 수 있습니다.  " +
             "\nform-data key-value형식으로 데이터를 요청, 추가된 event 응답, swagger에서 테스트 시 content-type error가 발생할 수 있습니다.  " +
@@ -54,9 +56,10 @@ public class EventController {
     })
     @PostMapping("/api/v1/events")
     public ResponseEntity<EventResponseDto> registerEvent(
-            @Valid @RequestPart(value = "jsonData") EventRequestDto eventRequestDto,
+            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest,
             @Valid @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws IOException {
+        EventRequestDto eventRequestDto = conversionService.convert(jsonStringRequest, EventRequestDto.class);
         return new ResponseEntity<>(eventService.save(eventRequestDto, thumbnail, imageRequest), HttpStatus.CREATED);
     }
 
@@ -89,7 +92,6 @@ public class EventController {
     }
 
 
-
     @Operation(summary = "단일 이벤트 수정", description = "단일 이벤트를 수정할 수 있습니다.  " +
             "\nform-data key-value형식으로 데이터를 요청, 수정된 event 응답  " +
             "\n이벤트를 등록(POST)하는 방식과 요청방식이 같습니다. 기존데이터에서 수정된 부분을 반영하여 함께 요청을 보내야합니다.  " +
@@ -103,9 +105,10 @@ public class EventController {
     })
     @PutMapping("/api/v1/events/{eventId}")
     public ResponseEntity<EventResponseDto> modifyEventById(@PathVariable Long eventId,
-            @Valid @RequestPart(value = "jsonData") EventRequestDto eventRequestDto,
+            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest,
             @Valid @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws IOException {
+        EventRequestDto eventRequestDto = conversionService.convert(jsonStringRequest, EventRequestDto.class);
         return new ResponseEntity<>(eventService.update(eventId, eventRequestDto, thumbnail, imageRequest), HttpStatus.OK);
     }
 
@@ -122,8 +125,5 @@ public class EventController {
     public ResponseEntity<ResponseDto> deleteEvent(@PathVariable Long eventId){
         return new ResponseEntity<>(eventService.delete(eventId), HttpStatus.OK);
     }
-
-
-
 
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Converter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 

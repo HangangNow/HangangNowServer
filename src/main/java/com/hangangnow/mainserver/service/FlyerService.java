@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class FlyerService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public FlyerResponseDto save(MultipartFile multipartFile, FlyerRequestDto flyerRequestDto) throws IOException {
+    public FlyerResponseDto save(MultipartFile multipartFile, @Valid FlyerRequestDto flyerRequestDto) throws IOException {
         if (multipartFile == null){
             throw new IllegalArgumentException("전단지 이미지 파일이 존재하지 않습니다.");
         }
@@ -57,7 +58,7 @@ public class FlyerService {
 
 
     @Transactional
-    public FlyerResponseDto update(Long flyerId, MultipartFile multipartFile, FlyerRequestDto flyerRequestDto) throws IOException {
+    public FlyerResponseDto update(Long flyerId, MultipartFile multipartFile, @Valid FlyerRequestDto flyerRequestDto) throws IOException {
         Flyer findFlyer = flyerRepository.findById(flyerId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 전단지가 존재하지 않습니다."));
 

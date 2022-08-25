@@ -1,5 +1,9 @@
 package com.hangangnow.mainserver.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hangangnow.mainserver.config.security.HttpRequestEndpointChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,5 +26,14 @@ public class BeanConfig {
     @Bean
     public HttpRequestEndpointChecker endpointChecker() {
         return new HttpRequestEndpointChecker(dispatcherServlet);
+    }
+
+    @Bean
+    public static ObjectMapper objectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper()
+                .registerModule(new SimpleModule())
+                .registerModule(new JavaTimeModule())
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
     }
 }
