@@ -15,6 +15,7 @@ public class FlyerResponseDto {
     private String parkName;
     private String photoUrl;
     private String address;
+    private String content;
     private String call;
 
     public FlyerResponseDto(Flyer flyer){
@@ -23,6 +24,7 @@ public class FlyerResponseDto {
         this.parkName = flyer.getPark().getName();
         this.photoUrl = flyer.getPhoto().getUrl();
         this.address = flyer.getAddress().fullAddress();
+        this.content = flyer.getContent();
         this.call = flyer.getCallNumber();
     }
 }

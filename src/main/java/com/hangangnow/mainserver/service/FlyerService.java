@@ -34,8 +34,6 @@ public class FlyerService {
 
     private final FlyerRepository flyerRepository;
     private final ParkRepository parkRepository;
-    private final MemberRepository memberRepository;
-    private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
 
     @Transactional
@@ -49,7 +47,7 @@ public class FlyerService {
         Address address = new Address(flyerRequestDto.getAddress());
         FlyerPhoto flyerPhoto = new FlyerPhoto(s3Uploader.upload(multipartFile, "flyer"));
 
-        Flyer flyer = new Flyer(flyerRequestDto.getName(), flyerPhoto, address, flyerRequestDto.getCall());
+        Flyer flyer = new Flyer(flyerRequestDto.getName(), flyerPhoto, address, flyerRequestDto.getContent(), flyerRequestDto.getCall());
         flyerRepository.save(flyer);
         findPark.addFlyer(flyer);
 
@@ -72,7 +70,7 @@ public class FlyerService {
         }
 
         Address address = new Address(flyerRequestDto.getAddress());
-        findFlyer.update(flyerRequestDto.getName(), address, flyerRequestDto.getCall());
+        findFlyer.update(flyerRequestDto.getName(), address, flyerRequestDto.getContent(),flyerRequestDto.getCall());
         findPark.addFlyer(findFlyer);
 
         return new FlyerResponseDto(findFlyer);

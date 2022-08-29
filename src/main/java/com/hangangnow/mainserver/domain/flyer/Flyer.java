@@ -35,24 +35,28 @@ public class Flyer {
     @Embedded
     private Address address;
 
+    private String content;
+
     private String callNumber;
 
     @OneToMany(mappedBy = "flyer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FlyerScrap> flyerScraps = new ArrayList<>();
 
 
-    public Flyer(String name, FlyerPhoto photo, Address address, String callNumber) {
+    public Flyer(String name, FlyerPhoto photo, Address address, String content, String callNumber) {
         this.name = name;
         this.photo = photo;
         this.address = address;
+        this.content = content;
         this.callNumber = callNumber;
     }
 
 
-    public void update(String name, Address address, String call){
+    public void update(String name, Address address, String content, String call){
         this.name = name;
         this.address = address;
         this.callNumber = call;
+        this.content = content;
     }
 
     public void updatePhoto(FlyerPhoto flyerPhoto){
