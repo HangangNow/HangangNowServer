@@ -4,6 +4,7 @@ import com.hangangnow.mainserver.domain.picnic.*;
 import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseDto;
 import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseRequestDto;
 import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseResponseDto;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomPlaceResponseDto;
 import com.hangangnow.mainserver.service.PicnicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,7 +45,7 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public RecomPlace PlaceOne(@PathVariable("placeid") Long placeid){
+    public RecomPlaceResponseDto PlaceOne(@PathVariable("placeid") Long placeid){
         return picnicService.placeOne(placeid);
     }
 
@@ -55,7 +56,7 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public List<RecomPlace> RecomCourse(@RequestParam("x_pos") @Min(-180) @Max(180) Double x_pos,
+    public List<RecomPlaceResponseDto> RecomCourse(@RequestParam("x_pos") @Min(-180) @Max(180) Double x_pos,
                                         @RequestParam("y_pos") @Min(-90) @Max(90) Double y_pos){
         return picnicService.recomPlaces(x_pos, y_pos, 10L);
     }

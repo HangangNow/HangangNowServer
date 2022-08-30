@@ -4,6 +4,7 @@ import com.hangangnow.mainserver.domain.picnic.*;
 import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseDto;
 import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseRequestDto;
 import com.hangangnow.mainserver.domain.picnic.dto.RecomCourseResponseDto;
+import com.hangangnow.mainserver.domain.picnic.dto.RecomPlaceResponseDto;
 import com.hangangnow.mainserver.repository.PicnicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,18 @@ import java.util.stream.Collectors;
 public class PicnicService {
     private final PicnicRepository picnicRepository;
 
-    public RecomPlace placeOne(Long id){
-        return picnicRepository.findPlaceById(id)
+    public RecomPlaceResponseDto placeOne(Long id){
+        RecomPlace recomPlace = picnicRepository.findPlaceById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found Place"));
+        return new RecomPlaceResponseDto(recomPlace);
     }
 
-    public List<RecomPlace> recomPlaces (Double x_pos, Double y_pos, Long limitSize){
+    public List<RecomPlaceResponseDto> recomPlaces (Double x_pos, Double y_pos, Long limitSize){
         return picnicRepository.findAllPlace()
                 .stream()
                 .sorted(Comparator.comparingDouble(p -> p.getDistance(x_pos, y_pos)))
                 .limit(limitSize)
+                .map(RecomPlaceResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -62,7 +65,7 @@ public class PicnicService {
     }
 
     public RecomCourseResponseDto recomCourses(RecomCourseRequestDto recomCourseRequestDto){
-        List<RecomPlace> recomPlaces = recomPlaces(recomCourseRequestDto.getX_pos(), recomCourseRequestDto.getY_pos(), 2L);
+        List<RecomPlaceResponseDto> recomPlaces = recomPlaces(recomCourseRequestDto.getX_pos(), recomCourseRequestDto.getY_pos(), 2L);
         List<RecomCourseDto> recomCourses = recomCoursesWithoutPlace(recomCourseRequestDto);
         if(recomCourses.isEmpty()){
             recomCourses = picnicRepository.findAllCourseByTheme(recomCourseRequestDto.getThemes())

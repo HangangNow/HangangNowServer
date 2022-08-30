@@ -92,7 +92,7 @@ public class DiaryController {
             "\nform-data key-value형식으로 데이터를 요청, 추가된 diary id 응답  " +
             "\nkey: jsonData(필수), multipartData(선택)  " +
             "\njsonData의 title, content, diaryDate 필드는 필수 값, emotion, diaryWeather는 선택 값 입니다.  " +
-            "\n주의 - jsonData content-type application/json으로 설정  \n  " +
+            "\n주의 - jsonData content-type multipart/form-data으로 설정  \n  " +
             "\njsonData example: { \"title\":\"거짓말\", \"content\":\"즐거운 개발\", \"diaryDate\": \"2022-07-25\", \"emotion\": \"ANGRY\"}  " +
             "\nemotion type: EXCITED, LOVELY, BIG_SMILE, FUNNY, PEACEFUL, SMILE, SAD, ANGRY, FROWNING, DIZZY  " +
             "\ndiaryWeather type: SUN, SUN_CLOUD, CLOUD, CLOUD_RAIN, CLOUD_SNOW, SNOWMAN, UMBRELLA, WIND")
@@ -118,7 +118,7 @@ public class DiaryController {
             "\n사진이 있는 일기에 사진을 지우고 싶은 경우, url을 비우고 jsonData만 요청  " +
             "\n사진을 바꾸고 싶은 경우 & 사진이 없는 일기에 사진을 추가하고 싶은 경우, multipartData에 파일데이터를 포함하여 요청  " +
             "\n이외 다른 일기의 데이터를 수정하고 싶은 경우는 jsonData필드에 원하는 값을 수정  \n  " +
-            "\n주의 - jsonData content-type application/json으로 설정  ")
+            "\n주의 - jsonData content-type multipart/form-data으로 설정  ")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),

@@ -17,5 +17,5 @@ public class RecomCourseResponseDto {
 
     private Boolean matchingSuccess;
     private List<RecomCourseDto> courses;
-    private List<RecomPlace> places;
+    private List<RecomPlaceResponseDto> places;
 }
