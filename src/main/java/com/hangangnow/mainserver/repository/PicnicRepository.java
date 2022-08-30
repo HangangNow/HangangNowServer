@@ -34,7 +34,7 @@ public class PicnicRepository {
 
     public List<RecomCourse> findAllCourseByTheme(List<String> themes){
         return em.createQuery("select r.RecomCourse from RecomCourseTheme r " +
-                "join fetch r.RecomCourse " +
+                "join r.RecomCourse " +
                 "where r.theme in :themes", RecomCourse.class)
                 .setParameter("themes", themes)
                 .getResultList();
