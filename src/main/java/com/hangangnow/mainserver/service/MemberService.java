@@ -91,7 +91,7 @@ public class MemberService {
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-//            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : " + responseCode + " 카카오 회원탈퇴 완료");
 
         } catch (IOException e) {
             e.printStackTrace();
