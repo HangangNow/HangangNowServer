@@ -18,10 +18,16 @@ public class RecomPlaceResponseDto {
 
     private Local local;
 
+    private Boolean isScrap;
+
     public RecomPlaceResponseDto(RecomPlace recomPlace){
         this.id = recomPlace.getId();
         this.name = recomPlace.getName();
         this.address = recomPlace.getAddress();
         this.local = recomPlace.getLocal();
+    }
+
+    public void setIsScrap(Boolean isScrap){
+        this.isScrap = isScrap;
     }
 }

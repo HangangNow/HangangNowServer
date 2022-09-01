@@ -17,6 +17,7 @@ public class FlyerResponseDto {
     private String address;
     private String content;
     private String call;
+    private Boolean isScrap;
 
     public FlyerResponseDto(Flyer flyer){
         this.id = flyer.getId();
@@ -26,5 +27,9 @@ public class FlyerResponseDto {
         this.address = flyer.getAddress().fullAddress();
         this.content = flyer.getContent();
         this.call = flyer.getCallNumber();
+    }
+
+    public void setIsScrap(Boolean isScrap){
+        this.isScrap = isScrap;
     }
 }

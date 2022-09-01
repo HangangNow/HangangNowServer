@@ -30,7 +30,7 @@ public class ScrapRepository {
     }
 
 
-    public Optional<FlyerScrap> findFlyerScrapByMemberAndEvent(Long flyerId, UUID memberId){
+    public Optional<FlyerScrap> findFlyerScrapByMemberAndFlyer(Long flyerId, UUID memberId){
 
         List<FlyerScrap> resultList = em.createQuery("select fs from FlyerScrap fs" +
                         " where fs.flyer.id =:flyerId and fs.member.id =:memberId", FlyerScrap.class)

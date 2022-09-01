@@ -87,7 +87,7 @@ public class ScrapService {
         Flyer findFlyer = flyerRepository.findById(flyerId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 전단지를 찾을 수 없습니다."));
 
-        FlyerScrap flyerScrap = scrapRepository.findFlyerScrapByMemberAndEvent(flyerId, SecurityUtil.getCurrentMemberId())
+        FlyerScrap flyerScrap = scrapRepository.findFlyerScrapByMemberAndFlyer(flyerId, SecurityUtil.getCurrentMemberId())
                 .orElse(new FlyerScrap());
 
         if(flyerScrap.getFlyer() == null){

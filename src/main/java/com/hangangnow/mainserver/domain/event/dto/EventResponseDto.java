@@ -27,6 +27,7 @@ public class EventResponseDto {
     private String thumbnailUrl;
     private String photoUrl;
     private LocalDateTime lastModifiedTime;
+    private Boolean isScrap;
 
     public EventResponseDto(Event event) {
         this.id = event.getId();
@@ -44,6 +45,10 @@ public class EventResponseDto {
         this.thumbnailUrl = event.getThumbnailPhoto().getUrl();
         this.photoUrl = event.getPhoto().getUrl();
         this.lastModifiedTime = event.getLastModifiedTime();
+    }
+
+    public void setIsScrap(Boolean isScrap){
+        this.isScrap = isScrap;
     }
 
 }

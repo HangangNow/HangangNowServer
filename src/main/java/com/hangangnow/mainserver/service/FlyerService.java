@@ -34,6 +34,7 @@ public class FlyerService {
 
     private final FlyerRepository flyerRepository;
     private final ParkRepository parkRepository;
+    private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
 
     @Transactional
@@ -91,16 +92,40 @@ public class FlyerService {
         Flyer findFlyer = flyerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 전단지가 존재하지 않습니다."));
 
-        return new FlyerResponseDto(findFlyer);
+        List<Flyer> flyerScraps = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
+
+        FlyerResponseDto flyerResponseDto = new FlyerResponseDto(findFlyer);
+
+        if(flyerScraps.contains(findFlyer)){
+            flyerResponseDto.setIsScrap(true);
+        }
+        else{
+            flyerResponseDto.setIsScrap(false);
+        }
+
+        return flyerResponseDto;
     }
 
 
     public GenericResponseDto findAllFlyers(){
         List<Flyer> allFlyer = flyerRepository.findAllFlyer();
+        List<Flyer> flyerScrap = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
 
-        List<FlyerResponseDto> results = allFlyer.stream()
-                .map(f -> new FlyerResponseDto(f))
-                .collect(Collectors.toList());
+        List<FlyerResponseDto> results = new ArrayList<>();
+
+        for (Flyer flyer : allFlyer) {
+            FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
+
+            if(flyerScrap.contains(flyer)){
+                flyerResponseDto.setIsScrap(true);
+            }
+            else{
+                flyerResponseDto.setIsScrap(false);
+            }
+
+            results.add(flyerResponseDto);
+        }
+
 
         return new GenericResponseDto(results);
     }
@@ -112,9 +137,20 @@ public class FlyerService {
 
         List<Flyer> allFlyerByPark = flyerRepository.findAllFlyerByPark(findPark);
 
-        List<FlyerResponseDto> results = allFlyerByPark.stream()
-                .map(f -> new FlyerResponseDto(f))
-                .collect(Collectors.toList());
+        List<FlyerResponseDto> results = new ArrayList<>();
+
+        for (Flyer flyer : allFlyerByPark) {
+            FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
+
+            if(allFlyerByPark.contains(flyer)){
+                flyerResponseDto.setIsScrap(true);
+            }
+            else{
+                flyerResponseDto.setIsScrap(false);
+            }
+
+            results.add(flyerResponseDto);
+        }
 
         return new GenericResponseDto(results);
     }

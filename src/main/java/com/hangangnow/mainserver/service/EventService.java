@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class EventService {
 
-    private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
     private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
@@ -106,15 +106,40 @@ public class EventService {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다."));
 
-        return new EventResponseDto(findEvent);
+        EventResponseDto eventResponseDto = new EventResponseDto(findEvent);
+
+        List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
+
+        if(eventScraps.contains(findEvent)){
+            eventResponseDto.setIsScrap(true);
+        }
+
+        else{
+            eventResponseDto.setIsScrap(false);
+        }
+
+        return eventResponseDto;
     }
 
 
     public GenericResponseDto findAllEvents(){
-        List<EventResponseDto> results = eventRepository.findAllEvents()
-                .stream()
-                .map(EventResponseDto::new)
-                .collect(Collectors.toList());
+        List<Event> allEvents = eventRepository.findAllEvents();
+        List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
+
+        List<EventResponseDto> results = new ArrayList<>();
+
+        for (Event event : allEvents) {
+            EventResponseDto eventResponseDto = new EventResponseDto(event);
+
+            if(eventScraps.contains(event)){
+                eventResponseDto.setIsScrap(true);
+            }
+            else{
+                eventResponseDto.setIsScrap(false);
+            }
+
+            results.add(eventResponseDto);
+        }
 
         return new GenericResponseDto(results);
     }
