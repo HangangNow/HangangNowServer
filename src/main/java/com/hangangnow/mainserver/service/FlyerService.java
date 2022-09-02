@@ -135,6 +135,7 @@ public class FlyerService {
         Park findPark = parkRepository.findById(parkId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공원이 존재하지 않습니다."));
 
+        List<Flyer> flyerScrap = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
         List<Flyer> allFlyerByPark = flyerRepository.findAllFlyerByPark(findPark);
 
         List<FlyerResponseDto> results = new ArrayList<>();
@@ -142,7 +143,7 @@ public class FlyerService {
         for (Flyer flyer : allFlyerByPark) {
             FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
 
-            if(allFlyerByPark.contains(flyer)){
+            if(flyerScrap.contains(flyer)){
                 flyerResponseDto.setIsScrap(true);
             }
             else{
