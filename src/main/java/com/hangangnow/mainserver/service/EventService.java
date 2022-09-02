@@ -21,10 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +35,13 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class EventService {
 
-    private final MemberRepository memberRepository;
     private final EventRepository eventRepository;
     private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
 
 
     @Transactional
-    public EventResponseDto save(EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
+    public EventResponseDto save(@Valid EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
         if (thumbnail == null){
             throw new IllegalArgumentException("이벤트 썸네일 이미지는 필수입니다.");
         }
@@ -76,7 +77,7 @@ public class EventService {
 
 
     @Transactional
-    public EventResponseDto update(Long id, EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
+    public EventResponseDto update(Long id, @Valid EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다"));
 
@@ -105,42 +106,43 @@ public class EventService {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다."));
 
-        return new EventResponseDto(findEvent);
+        EventResponseDto eventResponseDto = new EventResponseDto(findEvent);
+
+        List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
+
+        if(eventScraps.contains(findEvent)){
+            eventResponseDto.setIsScrap(true);
+        }
+
+        else{
+            eventResponseDto.setIsScrap(false);
+        }
+
+        return eventResponseDto;
     }
 
 
     public GenericResponseDto findAllEvents(){
-        List<EventResponseDto> results = eventRepository.findAllEvents()
-                .stream()
-                .map(EventResponseDto::new)
-                .collect(Collectors.toList());
+        List<Event> allEvents = eventRepository.findAllEvents();
+        List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
+
+        List<EventResponseDto> results = new ArrayList<>();
+
+        for (Event event : allEvents) {
+            EventResponseDto eventResponseDto = new EventResponseDto(event);
+
+            if(eventScraps.contains(event)){
+                eventResponseDto.setIsScrap(true);
+            }
+            else{
+                eventResponseDto.setIsScrap(false);
+            }
+
+            results.add(eventResponseDto);
+        }
 
         return new GenericResponseDto(results);
     }
 
-
-    @Transactional
-    public ResponseDto updateScrap(Long eventId){
-        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
-
-        Event findEvent = eventRepository.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
-
-
-        EventScrap eventScrap = scrapRepository.findEventScrapByMemberAndEvent(eventId, SecurityUtil.getCurrentMemberId())
-                .orElse(new EventScrap());
-
-        if(eventScrap.getEvent() == null){
-            eventScrap.addMemberAndEvent(findMember, findEvent);
-            return new ResponseDto("해당 이벤트 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else{
-            eventScrap.cancelMemberAndEvent(findMember, findEvent);
-            return new ResponseDto("해당 이벤트 스크랩 해제가 정상적으로 처리되었습니다.");
-        }
-
-    }
 
 }

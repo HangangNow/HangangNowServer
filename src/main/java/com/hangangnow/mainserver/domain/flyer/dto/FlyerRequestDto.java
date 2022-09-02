@@ -14,4 +14,6 @@ public class FlyerRequestDto {
     private String address;
     @NotBlank
     private String call;
+
+    private String content;
 }

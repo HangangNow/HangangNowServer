@@ -15,7 +15,9 @@ public class FlyerResponseDto {
     private String parkName;
     private String photoUrl;
     private String address;
+    private String content;
     private String call;
+    private Boolean isScrap;
 
     public FlyerResponseDto(Flyer flyer){
         this.id = flyer.getId();
@@ -23,6 +25,11 @@ public class FlyerResponseDto {
         this.parkName = flyer.getPark().getName();
         this.photoUrl = flyer.getPhoto().getUrl();
         this.address = flyer.getAddress().fullAddress();
+        this.content = flyer.getContent();
         this.call = flyer.getCallNumber();
+    }
+
+    public void setIsScrap(Boolean isScrap){
+        this.isScrap = isScrap;
     }
 }

@@ -2,9 +2,9 @@ package com.hangangnow.mainserver.repository;
 
 import com.hangangnow.mainserver.domain.event.Event;
 import com.hangangnow.mainserver.domain.flyer.Flyer;
-import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
-import com.hangangnow.mainserver.domain.mypage.scrap.FlyerScrap;
-import com.hangangnow.mainserver.domain.mypage.scrap.Scrap;
+import com.hangangnow.mainserver.domain.mypage.scrap.*;
+import com.hangangnow.mainserver.domain.picnic.RecomCourse;
+import com.hangangnow.mainserver.domain.picnic.RecomPlace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +30,7 @@ public class ScrapRepository {
     }
 
 
-    public Optional<FlyerScrap> findFlyerScrapByMemberAndEvent(Long flyerId, UUID memberId){
+    public Optional<FlyerScrap> findFlyerScrapByMemberAndFlyer(Long flyerId, UUID memberId){
 
         List<FlyerScrap> resultList = em.createQuery("select fs from FlyerScrap fs" +
                         " where fs.flyer.id =:flyerId and fs.member.id =:memberId", FlyerScrap.class)
@@ -41,11 +41,34 @@ public class ScrapRepository {
         return resultList.stream().findAny();
     }
 
+    public Optional<RecomCourseScrap> findRecomCourseScrapByMemberAndEvent(Long recomCourseId, UUID memberId){
+
+        List<RecomCourseScrap> resultList = em.createQuery("select rcs from RecomCourseScrap rcs" +
+                        " where rcs.recomCourse.id =:recomCourseId and rcs.member.id =:memberId", RecomCourseScrap.class)
+                .setParameter("recomCourseId", recomCourseId)
+                .setParameter("memberId", memberId)
+                .getResultList();
+
+        return resultList.stream().findAny();
+    }
+
+
+    public Optional<RecomPlaceScrap> findRecomPlaceScrapByMemberAndEvent(Long recomPlaceId, UUID memberId){
+
+        List<RecomPlaceScrap> resultList = em.createQuery("select rps from RecomPlaceScrap rps" +
+                        " where rps.recomPlace.id =:recomPlaceId and rps.member.id =:memberId", RecomPlaceScrap.class)
+                .setParameter("recomPlaceId", recomPlaceId)
+                .setParameter("memberId", memberId)
+                .getResultList();
+
+        return resultList.stream().findAny();
+    }
+
 
     public List<Event> findEventScrapsByMemberId(UUID memberId){
         return em.createQuery("select es.event from EventScrap es " +
                 " join fetch es.event.photo" +
-                " join fetch es.event.thumbnailPhoto" +
+//                " join fetch es.event.thumbnailPhoto" +
                 " where es.member.id =:memberId", Event.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
@@ -57,6 +80,22 @@ public class ScrapRepository {
                 " join fetch fs.flyer.photo" +
 //                " join fetch fs.flyer.park" +
                 " where fs.member.id =:memberId", Flyer.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
+
+
+    public List<RecomCourse> findRecomCourseByMemberId(UUID memberId){
+        return em.createQuery("select rcs.recomCourse from RecomCourseScrap rcs" +
+                " where rcs.member.id =:memberId", RecomCourse.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
+
+
+    public List<RecomPlace> findRecomPlaceByMemberId(UUID memberId){
+        return em.createQuery("select rps.recomPlace from RecomPlaceScrap rps" +
+                        " where rps.member.id =:memberId", RecomPlace.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,11 @@ public class FlyerService {
 
     private final FlyerRepository flyerRepository;
     private final ParkRepository parkRepository;
-    private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public FlyerResponseDto save(MultipartFile multipartFile, FlyerRequestDto flyerRequestDto) throws IOException {
+    public FlyerResponseDto save(MultipartFile multipartFile, @Valid FlyerRequestDto flyerRequestDto) throws IOException {
         if (multipartFile == null){
             throw new IllegalArgumentException("전단지 이미지 파일이 존재하지 않습니다.");
         }
@@ -48,7 +48,7 @@ public class FlyerService {
         Address address = new Address(flyerRequestDto.getAddress());
         FlyerPhoto flyerPhoto = new FlyerPhoto(s3Uploader.upload(multipartFile, "flyer"));
 
-        Flyer flyer = new Flyer(flyerRequestDto.getName(), flyerPhoto, address, flyerRequestDto.getCall());
+        Flyer flyer = new Flyer(flyerRequestDto.getName(), flyerPhoto, address, flyerRequestDto.getContent(), flyerRequestDto.getCall());
         flyerRepository.save(flyer);
         findPark.addFlyer(flyer);
 
@@ -57,7 +57,7 @@ public class FlyerService {
 
 
     @Transactional
-    public FlyerResponseDto update(Long flyerId, MultipartFile multipartFile, FlyerRequestDto flyerRequestDto) throws IOException {
+    public FlyerResponseDto update(Long flyerId, MultipartFile multipartFile, @Valid FlyerRequestDto flyerRequestDto) throws IOException {
         Flyer findFlyer = flyerRepository.findById(flyerId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 전단지가 존재하지 않습니다."));
 
@@ -71,7 +71,7 @@ public class FlyerService {
         }
 
         Address address = new Address(flyerRequestDto.getAddress());
-        findFlyer.update(flyerRequestDto.getName(), address, flyerRequestDto.getCall());
+        findFlyer.update(flyerRequestDto.getName(), address, flyerRequestDto.getContent(),flyerRequestDto.getCall());
         findPark.addFlyer(findFlyer);
 
         return new FlyerResponseDto(findFlyer);
@@ -92,16 +92,40 @@ public class FlyerService {
         Flyer findFlyer = flyerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 전단지가 존재하지 않습니다."));
 
-        return new FlyerResponseDto(findFlyer);
+        List<Flyer> flyerScraps = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
+
+        FlyerResponseDto flyerResponseDto = new FlyerResponseDto(findFlyer);
+
+        if(flyerScraps.contains(findFlyer)){
+            flyerResponseDto.setIsScrap(true);
+        }
+        else{
+            flyerResponseDto.setIsScrap(false);
+        }
+
+        return flyerResponseDto;
     }
 
 
     public GenericResponseDto findAllFlyers(){
         List<Flyer> allFlyer = flyerRepository.findAllFlyer();
+        List<Flyer> flyerScrap = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
 
-        List<FlyerResponseDto> results = allFlyer.stream()
-                .map(f -> new FlyerResponseDto(f))
-                .collect(Collectors.toList());
+        List<FlyerResponseDto> results = new ArrayList<>();
+
+        for (Flyer flyer : allFlyer) {
+            FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
+
+            if(flyerScrap.contains(flyer)){
+                flyerResponseDto.setIsScrap(true);
+            }
+            else{
+                flyerResponseDto.setIsScrap(false);
+            }
+
+            results.add(flyerResponseDto);
+        }
+
 
         return new GenericResponseDto(results);
     }
@@ -111,36 +135,25 @@ public class FlyerService {
         Park findPark = parkRepository.findById(parkId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공원이 존재하지 않습니다."));
 
+        List<Flyer> flyerScrap = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
         List<Flyer> allFlyerByPark = flyerRepository.findAllFlyerByPark(findPark);
 
-        List<FlyerResponseDto> results = allFlyerByPark.stream()
-                .map(f -> new FlyerResponseDto(f))
-                .collect(Collectors.toList());
+        List<FlyerResponseDto> results = new ArrayList<>();
+
+        for (Flyer flyer : allFlyerByPark) {
+            FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
+
+            if(flyerScrap.contains(flyer)){
+                flyerResponseDto.setIsScrap(true);
+            }
+            else{
+                flyerResponseDto.setIsScrap(false);
+            }
+
+            results.add(flyerResponseDto);
+        }
 
         return new GenericResponseDto(results);
     }
 
-
-    @Transactional
-    public ResponseDto updateScrap(Long flyerId){
-        Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
-
-        Flyer findFlyer = flyerRepository.findById(flyerId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 전단지를 찾을 수 없습니다."));
-
-        FlyerScrap flyerScrap = scrapRepository.findFlyerScrapByMemberAndEvent(flyerId, SecurityUtil.getCurrentMemberId())
-                .orElse(new FlyerScrap());
-
-        if(flyerScrap.getFlyer() == null){
-            flyerScrap.addMemberAndEvent(findMember, findFlyer);
-            return new ResponseDto("해당 전단지 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else {
-            flyerScrap.cancelMemberAndEvent(findMember, findFlyer);
-            return new ResponseDto("해당 전단지 스크랩 해제가 정상적으로 처리되었습니다.");
-        }
-
-    }
 }

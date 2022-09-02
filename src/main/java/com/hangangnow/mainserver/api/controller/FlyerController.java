@@ -9,12 +9,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 
 
@@ -22,7 +24,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FlyerController {
 
+    private final ConversionService conversionService;
     private final FlyerService flyerService;
+
 
     @Operation(summary = "전단지 추가", description = "전단지를 추가할 수 있습니다.  " +
             "\nform-data key-value형식으로 데이터를 요청, 추가된 전단지 응답, swagger에서 테스트 시 content-type error가 발생할 수 있습니다.  " +
@@ -49,7 +53,8 @@ public class FlyerController {
     @PostMapping("/api/v1/flyers")
     public ResponseEntity<FlyerResponseDto> registerFlyer(
             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest,
-            @Valid @RequestPart(value = "jsonData") FlyerRequestDto flyerRequestDto) throws Exception{
+            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest) throws Exception{
+        FlyerRequestDto flyerRequestDto = conversionService.convert(jsonStringRequest, FlyerRequestDto.class);
         return new ResponseEntity<>(flyerService.save(imageRequest, flyerRequestDto), HttpStatus.CREATED);
     }
 
@@ -107,7 +112,6 @@ public class FlyerController {
     }
 
 
-
     @Operation(summary = "전단지 수정", description = "해당 전단지를 수정할 수 있습니다.  " +
             "\nform-data key-value형식으로 데이터를 요청, 수정된 전단지 응답, swagger에서 테스트 시 content-type error가 발생할 수 있습니다.  " +
             "\n사용자를 위한 컨트롤러가 아닌 **ADMIN 계정을 위한 컨트롤러입니다.** 현재는 테스트를 위해 제약을 걸지 않았습니다.  " +
@@ -133,10 +137,10 @@ public class FlyerController {
     @PutMapping("/api/v1/flyers/{flyerId}")
     public ResponseEntity<FlyerResponseDto> modifyFlyer(@PathVariable Long flyerId,
             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest,
-            @Valid @RequestPart(value = "jsonData") FlyerRequestDto flyerRequestDto) throws IOException {
+            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest) throws IOException {
+        FlyerRequestDto flyerRequestDto = conversionService.convert(jsonStringRequest, FlyerRequestDto.class);
         return new ResponseEntity<>(flyerService.update(flyerId, imageRequest, flyerRequestDto), HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "단일 전단지 삭제", description = "단일 전단지를 삭제할 수 있습니다.")
@@ -150,22 +154,6 @@ public class FlyerController {
     @DeleteMapping("/api/v1/flyers/{flyerId}")
     public ResponseEntity<ResponseDto> deleteFlyer(@PathVariable Long flyerId){
         return new ResponseEntity<>(flyerService.delete(flyerId), HttpStatus.OK);
-    }
-
-
-    @Operation(summary = "단일 전단지 스크랩", description = "단일 전단지를 스크랩할 수 있습니다.  " +
-            "\n스크랩 하지 않은 이벤트를 스크랩 하는 경우 -> 스크랩 설정  " +
-            "\n스크랩 된 이벤트를 한번 더 요청하는 경우 -> 스크랩 해제")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
-    })
-    @PostMapping("/api/v1/flyers/{flyerId}/scraps")
-    public ResponseEntity<ResponseDto> scrapFlyer(@PathVariable Long flyerId){
-        return new ResponseEntity<>(flyerService.updateScrap(flyerId), HttpStatus.CREATED);
     }
 
 }

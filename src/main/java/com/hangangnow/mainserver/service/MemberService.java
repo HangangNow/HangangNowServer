@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final ScrapRepository scrapRepository;
     private final WithdrawalReasonRepository withdrawalReasonRepository;
 
     private final RedisUtil redisUtil;
@@ -92,7 +91,7 @@ public class MemberService {
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-//            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : " + responseCode + " 카카오 회원탈퇴 완료");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -246,25 +245,6 @@ public class MemberService {
         return new ResponseDto("알람설정 처리가 정상적으로 완료되었습니다.");
     }
 
-
-    public GenericResponseDto getEventScraps(){
-        List<EventResponseDto> results = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId())
-                .stream()
-                .map(EventResponseDto::new)
-                .collect(Collectors.toList());
-
-        return new GenericResponseDto(results);
-    }
-
-
-    public GenericResponseDto getFlyerScraps(){
-        List<FlyerResponseDto> results = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId())
-                .stream()
-                .map(FlyerResponseDto::new)
-                .collect(Collectors.toList());
-
-        return new GenericResponseDto(results);
-    }
 
 
 //    public GenericResponseDto getFlyerScraps(){

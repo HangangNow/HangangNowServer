@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.picnic;
+package com.hangangnow.mainserver.domain.picnic.dto;
 
 import lombok.Data;
 import lombok.Getter;

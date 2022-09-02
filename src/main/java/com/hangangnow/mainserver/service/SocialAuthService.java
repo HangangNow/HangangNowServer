@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.service;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hangangnow.mainserver.config.security.KakaoAuthenticationProvider;
 import com.hangangnow.mainserver.config.redis.RedisUtil;
@@ -71,6 +72,7 @@ public class SocialAuthService {
 
             //요청을 통해 얻은 JSON 타입 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            System.out.println("br = " + br);
             String line = "";
             String result = "";
 
@@ -84,6 +86,10 @@ public class SocialAuthService {
             JsonElement element = parser.parse(result);
 
             memberKakaoDto = getKakaoUserAttribute(element);
+
+            System.out.println("memberKakaoDto = " + memberKakaoDto.getKakaoId());
+            System.out.println("memberKakaoDto.getEmail() = " + memberKakaoDto.getEmail());
+            System.out.println("memberKakaoDto.getName() = " + memberKakaoDto.getName());
 
             br.close();
 
@@ -99,6 +105,8 @@ public class SocialAuthService {
 
     private KakaoMemberDto getKakaoUserAttribute(JsonElement element) {
 
+        System.out.println("element = " + element);
+
         long kakaoId = element.getAsJsonObject().get("id").getAsLong();
         String name = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
         String email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
@@ -106,15 +114,20 @@ public class SocialAuthService {
 
         Gender gender = null;
         if (hasGender){
-            System.out.println("gender = " + element.getAsJsonObject().get("kakao_account" ).getAsJsonObject().get("gender").getAsString().toUpperCase());
-            if (element.getAsJsonObject().get("kakao_account" ).getAsJsonObject().get("gender").getAsString().equalsIgnoreCase("MALE")){
-                gender = Gender.MALE;
+            JsonObject object = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+            if(object.has("gender")){
+                String strGender = object.get("gender").getAsString();
+
+                if (strGender.equalsIgnoreCase("MALE")){
+                    gender = Gender.MALE;
+                }
+                else gender = Gender.FEMALE;
             }
-            else gender = Gender.FEMALE;
         }
 
         int index = email.indexOf("@");
         String loginId = email.substring(0, index) + "_kakao";
+
 
         return new KakaoMemberDto(kakaoId, loginId, email, name, gender);
     }
@@ -135,6 +148,8 @@ public class SocialAuthService {
                     .gender(memberKakaoDto.getGender())
                     .authority(Authority.ROLE_USER)
                     .memberProvider(MemberProvider.KAKAO)
+                    .alarm_agree(false)
+                    .marketing_agree(false)
                     .build();
             memberRepository.save(findMemberByKakao);
         }

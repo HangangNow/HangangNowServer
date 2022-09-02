@@ -14,17 +14,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Validated
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -33,9 +40,20 @@ public class DiaryService {
     private final MemberRepository memberRepository;
     private final DiaryRepository diaryRepository;
     private final S3Uploader s3Uploader;
+    private final Validator validator;
 
     @Transactional
-    public DiaryDto addDiary(DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
+    public DiaryDto addDiary(@Valid DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
+        Set<ConstraintViolation<DiaryDto>> violations = validator.validate(diaryDto);
+
+        if (!violations.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (ConstraintViolation<DiaryDto> constraintViolation : violations) {
+                sb.append(constraintViolation.getMessage());
+            }
+            throw new ConstraintViolationException("Error occurred: " + sb.toString(), violations);
+        }
+
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new NullPointerException("Failed: Not found member"));
 
@@ -103,7 +121,7 @@ public class DiaryService {
      *           파라미터로 멀티파트파일이 넘어오면, 기존 사진을 지우고 새로운 사진으로 수정 or 기존 사진이 없다면 다이어리에 사진 추가
      */
     @Transactional
-    public Boolean modifyDiary(Long id, DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
+    public Boolean modifyDiary(Long id, @Valid DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
         Diary findDiary = diaryRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found diary"));
         if(multipartFile != null) {
