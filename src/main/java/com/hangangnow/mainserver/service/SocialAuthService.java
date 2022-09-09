@@ -56,7 +56,7 @@ public class SocialAuthService {
         KakaoMemberDto memberKakaoDto = new KakaoMemberDto();
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
-        log.info("Kakao Login Service called");
+
         //access_token 이용해 사용자 정보 조회
         try {
             URL url = new URL(reqURL);
@@ -68,28 +68,22 @@ public class SocialAuthService {
 
             //결과 코드가 200 -> 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : " + responseCode);
 
             //요청을 통해 얻은 JSON 타입 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            System.out.println("br = " + br);
             String line = "";
             String result = "";
 
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-//            System.out.println("response body : " + result);
 
             //Gson 라이브러리로 JSON 파싱
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
             memberKakaoDto = getKakaoUserAttribute(element);
-
-            System.out.println("memberKakaoDto = " + memberKakaoDto.getKakaoId());
-            System.out.println("memberKakaoDto.getEmail() = " + memberKakaoDto.getEmail());
-            System.out.println("memberKakaoDto.getName() = " + memberKakaoDto.getName());
 
             br.close();
 
@@ -105,8 +99,8 @@ public class SocialAuthService {
 
     private KakaoMemberDto getKakaoUserAttribute(JsonElement element) {
 
-        System.out.println("element = " + element);
-        log.info("Kakao Login get kakao user Service called");
+        log.info("kakao login response: " + element);
+
         long kakaoId = element.getAsJsonObject().get("id").getAsLong();
         String name = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
         String email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
@@ -134,7 +128,6 @@ public class SocialAuthService {
 
 
     public MemberKakaoTokenDto login(KakaoMemberDto memberKakaoDto, Boolean autoLogin){
-        log.info("Kakao Login server login Service called");
         Member findMemberByKakao = memberRepository.findByEmail(memberKakaoDto.getEmail())
                 .orElse(null);
 
@@ -185,7 +178,6 @@ public class SocialAuthService {
             memberTokenDto.setRefreshToken(existsRefreshToken);
         }
 
-        log.info("Kakao Login server login service completed");
         return MemberKakaoTokenDto.builder()
                 .grantType(memberTokenDto.getGrantType())
                 .accessToken(memberTokenDto.getAccessToken())
