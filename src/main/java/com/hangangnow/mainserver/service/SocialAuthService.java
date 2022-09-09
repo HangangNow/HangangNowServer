@@ -56,7 +56,7 @@ public class SocialAuthService {
         KakaoMemberDto memberKakaoDto = new KakaoMemberDto();
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
-
+        log.info("Kakao Login Service called");
         //access_token 이용해 사용자 정보 조회
         try {
             URL url = new URL(reqURL);
@@ -106,7 +106,7 @@ public class SocialAuthService {
     private KakaoMemberDto getKakaoUserAttribute(JsonElement element) {
 
         System.out.println("element = " + element);
-
+        log.info("Kakao Login get kakao user Service called");
         long kakaoId = element.getAsJsonObject().get("id").getAsLong();
         String name = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
         String email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
@@ -134,6 +134,7 @@ public class SocialAuthService {
 
 
     public MemberKakaoTokenDto login(KakaoMemberDto memberKakaoDto, Boolean autoLogin){
+        log.info("Kakao Login server login Service called");
         Member findMemberByKakao = memberRepository.findByEmail(memberKakaoDto.getEmail())
                 .orElse(null);
 
@@ -184,7 +185,7 @@ public class SocialAuthService {
             memberTokenDto.setRefreshToken(existsRefreshToken);
         }
 
-
+        log.info("Kakao Login server login service completed");
         return MemberKakaoTokenDto.builder()
                 .grantType(memberTokenDto.getGrantType())
                 .accessToken(memberTokenDto.getAccessToken())

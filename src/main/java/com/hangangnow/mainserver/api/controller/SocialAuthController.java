@@ -41,6 +41,7 @@ public class SocialAuthController {
     })
     @PostMapping("/api/v1/auth/kakao")
     public ResponseEntity<MemberKakaoTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin){
+        log.info("Kakao Login API Called");
         return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, autoLogin), HttpStatus.OK);
     }
 }
