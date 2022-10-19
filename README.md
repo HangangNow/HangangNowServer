@@ -14,3 +14,11 @@
 ![entityManagerFactory(EntityManagerFactoryBuilder)](https://user-images.githubusercontent.com/68818952/189495181-87bb2f74-4786-40a6-a226-f3745f0df896.png)
 
 
+## 탭 별 기능소개
+
+
+### 한강나우
+### 나들이
+### 홈
+### 주변시설
+### 마이페이지
