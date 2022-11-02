@@ -111,7 +111,7 @@ public class AuthController {
     })
     @PostMapping("/api/v1/auth/dup/loginId")
     public ResponseEntity<Boolean> loginIdDuplicateCheck(@RequestBody @Valid LoginIdDuplicateDto memberDuplicateDto){
-        return new ResponseEntity<>(authService.duplicateCheckByLoginId(memberDuplicateDto), HttpStatus.OK);
+        return new ResponseEntity<>(authService.checkDuplicateLoginId(memberDuplicateDto), HttpStatus.OK);
     }
 
 
@@ -133,7 +133,7 @@ public class AuthController {
     })
     @PostMapping("/api/v1/auth/dup/email")
     public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody @Valid EmailDuplicateDto emailDuplicateDto){
-        return new ResponseEntity<>(authService.duplicateCheckByEmail(emailDuplicateDto), HttpStatus.OK);
+        return new ResponseEntity<>(authService.checkDuplicateEmail(emailDuplicateDto), HttpStatus.OK);
     }
 
 
@@ -152,7 +152,7 @@ public class AuthController {
     })
     @PostMapping("/api/v1/auth/reissue")
     public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto){
-        return new ResponseEntity<>(authService.reissue(memberTokenRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(authService.reissueToken(memberTokenRequestDto), HttpStatus.OK);
     }
 
 
