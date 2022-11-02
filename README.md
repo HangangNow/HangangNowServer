@@ -1,24 +1,59 @@
-# 한강나우 백엔드 서버
-구글 플레이스토어에 **한강나우**를 검색하세요 !
-<img width="1269" alt="스크린샷 2022-10-10 오후 4 45 23" src="https://user-images.githubusercontent.com/68818952/196185488-1dce56f6-7617-40fa-a478-199aacb065d9.png">
+## 한강나우 백엔드 서버
+<img width="800" alt="스크린샷 2022-10-10 오후 4 45 23" src="https://user-images.githubusercontent.com/68818952/196185488-1dce56f6-7617-40fa-a478-199aacb065d9.png">
+
+한강 나들이에 필요한 모든 지식을 담은 **한강나우**
+  
+> 🏞 한강의 현재 상황을 한 눈에 볼 수 있어요. 날씨와 비교하여 옷차림을 추천 받고, 주차장 혼잡도 등을 통해 한강 공원의 현재 상황을 만나보세요.
+  
+> 🤷 어떤 한강공원으로 놀러갈지 모르는 사람들을 위해, 사용자 기반 한강공원 맞춤형 코스를 추천해드립니다.
+
+> ⭐️ 한강 전단지와 축제, 공연, 이벤트 정보를 한눈에 모아볼 수 있도록 준비했습니다.
+  
+> 🌇 한강 공원에 존재하는 화장실, 편의점, 자전거 대여소 등 당신이 필요로 하는 모든 주변시설의 위치를 보여드립니다.
+
+> 💁🏻‍♂️ 한강유형검사를 통해 나의 한강유형을 파악해보고, 한강에서의 하루를 기록해보아요.
+
+## 개발 인원 및 기간
+* 개발기간: 2022/06/15 ~ 2022/09/02
+* 개발 인원: 기획 3명, 디자이너 1명, 프론트엔드 1명, 백엔드 2명, 크롤링 1명
+
 
 
 ## Server Architecture
-![스크린샷 2022-10-17 오후 10 06 15](https://user-images.githubusercontent.com/68818952/196185022-15451621-96ce-4a34-a45b-40aacd699f5c.png)
+<img width="800" alt="스크린샷 2022-10-17 오후 10 06 15" src="https://user-images.githubusercontent.com/68818952/196185022-15451621-96ce-4a34-a45b-40aacd699f5c.png">
 
 
-## Class Diagram
-<img width="739" alt="image" src="https://user-images.githubusercontent.com/59243761/174078323-72ba3b97-2ee1-4567-b497-b8cab0d7fd26.png">
 
-## ERD
-![entityManagerFactory(EntityManagerFactoryBuilder)](https://user-images.githubusercontent.com/68818952/189495181-87bb2f74-4786-40a6-a226-f3745f0df896.png)
+## 데모 영상
 
 
-## 탭 별 기능소개
+## 기술 스택
+* Java: 11
+* Spring Boot: 2.5.8
+* MariaDB: 10.6.10
+* Redis: 7.0.4
+* JPA: 2.5.8
+* AWS EC2, S3
 
 
-### 한강나우
-### 나들이
-### 홈
-### 주변시설
-### 마이페이지
+## 기능 소개
+```
+- 사용자 인증
+사용자 ID/PW를 전달받아 멤버 인증에 성공한 후, JWT accessToken을 클라이언트에게 전달
+클라이언트는 전달받은 토큰 값을 모든 요청의 header에 담아 요청
+클라이언트에게 받은 토큰이 만료된 경우, refreshToken의 기간을 확인해 토큰 재발급
+Refresh Token의 만료를 위해 redis에 refreshToken값 저장
+
+- 로그인
+AuthenticationProvider를 이용해 일반 로그인, 카카오 로그인 2가지 각각 구현해 적용.
+```
+
+```
+- 한강공원 정보 동기화
+Open API 동기화 및 크롤링 자동화를 위한 별도의 EC2 서버 구현
+스프링의 @EnableScheduling, @Scheduled를 이용해 자동화
+
+```
+
+
+
