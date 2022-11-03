@@ -44,6 +44,7 @@
 [![마이페이지 탭](http://img.youtube.com/vi/IcvUSecQ45M/0.jpg)](https://youtu.be/IcvUSecQ45M)
 
 ## 기술 스택
+```
 - Language
   - Java 11
   
@@ -64,7 +65,7 @@
   - Git(gitflow)
   - Discord
   - Notion
-
+```
 
 ## 주요 기능 소개
 ```
