@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.api.controller;
+package com.hangangnow.mainserver.api.controller.park;
 
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.park.dto.ParkingResponseDto;

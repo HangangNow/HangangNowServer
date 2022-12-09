@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.api.controller;
+package com.hangangnow.mainserver.api.controller.event;
 
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import com.hangangnow.mainserver.domain.common.ResponseDto;

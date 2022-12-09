@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.repository.mypageRepo;
+package com.hangangnow.mainserver.repository;
 
 import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
 import com.hangangnow.mainserver.domain.photo.MemberPhoto;

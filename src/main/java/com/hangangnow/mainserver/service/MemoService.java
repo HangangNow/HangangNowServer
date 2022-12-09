@@ -1,11 +1,11 @@
-package com.hangangnow.mainserver.service.myPageService;
+package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.mypage.Memo;
 import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
 import com.hangangnow.mainserver.repository.MemberRepository;
-import com.hangangnow.mainserver.repository.mypageRepo.MemoRepository;
+import com.hangangnow.mainserver.repository.MemoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

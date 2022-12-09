@@ -1,8 +1,7 @@
-package com.hangangnow.mainserver.api.controller;
+package com.hangangnow.mainserver.api.controller.memo;
 
-import com.hangangnow.mainserver.domain.common.IdResponseDto;
 import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
-import com.hangangnow.mainserver.service.myPageService.MemoService;
+import com.hangangnow.mainserver.service.MemoService;
 import com.hangangnow.mainserver.domain.common.GenericResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.service.myPageService;
+package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.config.s3.S3Uploader;
@@ -8,7 +8,7 @@ import com.hangangnow.mainserver.domain.mypage.dto.DiaryDateRequestDto;
 import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
 import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
 import com.hangangnow.mainserver.repository.MemberRepository;
-import com.hangangnow.mainserver.repository.mypageRepo.DiaryRepository;
+import com.hangangnow.mainserver.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

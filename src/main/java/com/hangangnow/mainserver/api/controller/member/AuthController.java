@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.api.controller;
+package com.hangangnow.mainserver.api.controller.member;
 
 
 import com.hangangnow.mainserver.domain.common.ResponseDto;
