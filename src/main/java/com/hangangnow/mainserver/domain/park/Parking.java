@@ -1,16 +1,13 @@
 package com.hangangnow.mainserver.domain.park;
 
-import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.Local;
-import com.hangangnow.mainserver.domain.park.Park;
+import com.hangangnow.mainserver.domain.common.Address;
+import com.hangangnow.mainserver.domain.common.Local;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter

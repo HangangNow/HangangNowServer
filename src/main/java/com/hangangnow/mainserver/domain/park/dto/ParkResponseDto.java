@@ -1,6 +1,5 @@
 package com.hangangnow.mainserver.domain.park.dto;
 
-import com.hangangnow.mainserver.domain.Local;
 import com.hangangnow.mainserver.domain.park.Park;
 import com.hangangnow.mainserver.domain.photo.ParkPhoto;
 import lombok.AllArgsConstructor;

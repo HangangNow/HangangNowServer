@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.api.controller.flyer;
 
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.ResponseDto;
 import com.hangangnow.mainserver.domain.flyer.dto.FlyerRequestDto;
 import com.hangangnow.mainserver.domain.flyer.dto.FlyerResponseDto;
 import com.hangangnow.mainserver.service.FlyerService;

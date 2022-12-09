@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.domain.picnic.dto;
 
-import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.Local;
+import com.hangangnow.mainserver.domain.common.Address;
+import com.hangangnow.mainserver.domain.common.Local;
 import com.hangangnow.mainserver.domain.picnic.RecomPlace;
 import lombok.Data;
 import lombok.Getter;

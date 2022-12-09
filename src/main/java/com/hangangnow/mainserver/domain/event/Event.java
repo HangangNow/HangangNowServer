@@ -1,10 +1,9 @@
 package com.hangangnow.mainserver.domain.event;
 
-import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.Local;
+import com.hangangnow.mainserver.domain.common.Address;
+import com.hangangnow.mainserver.domain.common.Local;
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
-import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
-import com.hangangnow.mainserver.domain.mypage.scrap.Scrap;
+import com.hangangnow.mainserver.domain.scrap.EventScrap;
 import com.hangangnow.mainserver.domain.photo.EventPhoto;
 import com.hangangnow.mainserver.domain.photo.ThumbnailPhoto;
 import lombok.Getter;

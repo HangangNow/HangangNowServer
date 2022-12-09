@@ -1,10 +1,9 @@
-package com.hangangnow.mainserver.domain.mypage.dto;
+package com.hangangnow.mainserver.domain.memo.dto;
 
-import com.hangangnow.mainserver.domain.mypage.Memo;
+import com.hangangnow.mainserver.domain.memo.Memo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;

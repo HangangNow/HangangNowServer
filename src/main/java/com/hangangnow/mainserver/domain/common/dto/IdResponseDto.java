@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.common;
+package com.hangangnow.mainserver.domain.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

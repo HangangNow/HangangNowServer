@@ -1,8 +1,7 @@
-package com.hangangnow.mainserver.domain.mypage;
+package com.hangangnow.mainserver.domain.diary;
 
+import com.hangangnow.mainserver.domain.diary.dto.DiaryDto;
 import com.hangangnow.mainserver.domain.member.Member;
-import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
-import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
 import com.hangangnow.mainserver.domain.photo.DiaryPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +12,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Entity
 @Getter

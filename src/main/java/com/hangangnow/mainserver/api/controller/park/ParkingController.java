@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.api.controller.park;
 
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
 import com.hangangnow.mainserver.domain.park.dto.ParkingResponseDto;
 import com.hangangnow.mainserver.service.ParkingService;
 import io.swagger.v3.oas.annotations.Operation;

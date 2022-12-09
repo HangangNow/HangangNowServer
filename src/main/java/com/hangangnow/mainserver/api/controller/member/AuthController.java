@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.api.controller.member;
 
 
-import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.*;
 import com.hangangnow.mainserver.service.AuthService;
 import com.hangangnow.mainserver.service.MailService;

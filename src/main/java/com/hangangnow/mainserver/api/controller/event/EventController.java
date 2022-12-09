@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.api.controller.event;
 
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.ResponseDto;
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
 import com.hangangnow.mainserver.domain.event.dto.EventResponseDto;
 import com.hangangnow.mainserver.service.EventService;

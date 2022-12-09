@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.domain.park;
 
-import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.Local;
+import com.hangangnow.mainserver.domain.common.Address;
+import com.hangangnow.mainserver.domain.common.Local;
 import com.hangangnow.mainserver.domain.flyer.Flyer;
 import com.hangangnow.mainserver.domain.photo.ParkPhoto;
 import lombok.Getter;

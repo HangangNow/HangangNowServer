@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.domain.picnic;
 
-import com.hangangnow.mainserver.domain.Local;
-import com.hangangnow.mainserver.domain.mypage.scrap.RecomCourseScrap;
+import com.hangangnow.mainserver.domain.common.Local;
+import com.hangangnow.mainserver.domain.scrap.RecomCourseScrap;
 import lombok.Getter;
 
 import javax.persistence.*;

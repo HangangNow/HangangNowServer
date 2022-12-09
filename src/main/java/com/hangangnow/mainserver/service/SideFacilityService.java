@@ -1,8 +1,8 @@
 package com.hangangnow.mainserver.service;
 
-import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.Local;
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
+import com.hangangnow.mainserver.domain.common.Address;
+import com.hangangnow.mainserver.domain.common.Local;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
 import com.hangangnow.mainserver.domain.park.Park;
 import com.hangangnow.mainserver.domain.sidefacility.FacilityType;
 import com.hangangnow.mainserver.domain.sidefacility.SideFacility;

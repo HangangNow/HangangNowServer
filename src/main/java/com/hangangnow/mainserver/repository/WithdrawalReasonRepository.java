@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.repository;
 
-import com.hangangnow.mainserver.domain.mypage.WithdrawalReason;
+import com.hangangnow.mainserver.domain.withdraw.WithdrawalReason;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

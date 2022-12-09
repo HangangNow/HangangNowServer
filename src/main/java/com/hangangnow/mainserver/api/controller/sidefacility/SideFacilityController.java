@@ -1,8 +1,6 @@
 package com.hangangnow.mainserver.api.controller.sidefacility;
 
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.common.ResponseDto;
-import com.hangangnow.mainserver.domain.sidefacility.dto.FacilityRequestDto;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
 import com.hangangnow.mainserver.domain.sidefacility.dto.FacilityResponseDto;
 import com.hangangnow.mainserver.service.SideFacilityService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -3,7 +3,7 @@ package com.hangangnow.mainserver.service;
 import com.hangangnow.mainserver.config.security.MemberAuthenticationProvider;
 
 import com.hangangnow.mainserver.config.redis.RedisUtil;
-import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.ResponseDto;
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.member.MemberProvider;
 import com.hangangnow.mainserver.domain.member.dto.*;

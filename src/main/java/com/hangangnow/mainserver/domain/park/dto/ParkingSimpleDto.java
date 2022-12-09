@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.domain.park.dto;
 
-import com.hangangnow.mainserver.domain.Address;
+import com.hangangnow.mainserver.domain.common.Address;
 import com.hangangnow.mainserver.domain.park.Parking;
 import lombok.AllArgsConstructor;
 import lombok.Data;

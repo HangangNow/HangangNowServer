@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.api.controller;
+package com.hangangnow.mainserver.util;
 
 import com.hangangnow.mainserver.exception.GeneralException;
 import com.hangangnow.mainserver.exception.MethodArgsException;

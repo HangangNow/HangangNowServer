@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.mypage.scrap;
+package com.hangangnow.mainserver.domain.scrap;
 
 import com.hangangnow.mainserver.domain.event.Event;
 import com.hangangnow.mainserver.domain.member.Member;

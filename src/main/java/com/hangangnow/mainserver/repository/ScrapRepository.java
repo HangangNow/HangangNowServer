@@ -2,9 +2,9 @@ package com.hangangnow.mainserver.repository;
 
 import com.hangangnow.mainserver.domain.event.Event;
 import com.hangangnow.mainserver.domain.flyer.Flyer;
-import com.hangangnow.mainserver.domain.mypage.scrap.*;
 import com.hangangnow.mainserver.domain.picnic.RecomCourse;
 import com.hangangnow.mainserver.domain.picnic.RecomPlace;
+import com.hangangnow.mainserver.domain.scrap.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

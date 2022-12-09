@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain;
+package com.hangangnow.mainserver.domain.common;
 
 import lombok.Getter;
 

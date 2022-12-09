@@ -1,16 +1,14 @@
 package com.hangangnow.mainserver.repository;
 
 import com.hangangnow.mainserver.domain.member.Member;
-import com.hangangnow.mainserver.domain.mypage.Diary;
-import com.hangangnow.mainserver.domain.mypage.Memo;
-import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
+import com.hangangnow.mainserver.domain.diary.Diary;
+import com.hangangnow.mainserver.domain.diary.dto.DiaryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

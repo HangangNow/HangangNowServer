@@ -1,7 +1,7 @@
-package com.hangangnow.mainserver.domain.mypage;
+package com.hangangnow.mainserver.domain.memo;
 
 import com.hangangnow.mainserver.domain.member.Member;
-import com.hangangnow.mainserver.domain.mypage.dto.MemoDto;
+import com.hangangnow.mainserver.domain.memo.dto.MemoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

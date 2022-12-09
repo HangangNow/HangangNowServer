@@ -1,12 +1,10 @@
 package com.hangangnow.mainserver.domain.park.dto;
 
-import com.hangangnow.mainserver.domain.Local;
+import com.hangangnow.mainserver.domain.common.Local;
 import com.hangangnow.mainserver.domain.park.Parking;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Embedded;
 
 @Data
 @NoArgsConstructor

@@ -1,8 +1,8 @@
 package com.hangangnow.mainserver.repository;
 
 import com.hangangnow.mainserver.domain.member.Member;
-import com.hangangnow.mainserver.domain.mypage.Diary;
-import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
+import com.hangangnow.mainserver.domain.diary.Diary;
+import com.hangangnow.mainserver.domain.diary.dto.DiaryDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

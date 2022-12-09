@@ -1,12 +1,11 @@
-package com.hangangnow.mainserver.domain.mypage.dto;
+package com.hangangnow.mainserver.domain.diary.dto;
 
-import com.hangangnow.mainserver.domain.mypage.Diary;
+import com.hangangnow.mainserver.domain.diary.Diary;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Converter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 

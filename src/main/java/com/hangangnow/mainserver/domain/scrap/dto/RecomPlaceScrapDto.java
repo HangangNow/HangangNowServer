@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.mypage.dto;
+package com.hangangnow.mainserver.domain.scrap.dto;
 
 import com.hangangnow.mainserver.domain.picnic.RecomPlace;
 import lombok.AllArgsConstructor;

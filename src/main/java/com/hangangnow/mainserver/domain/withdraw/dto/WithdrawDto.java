@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.mypage.dto;
+package com.hangangnow.mainserver.domain.withdraw.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

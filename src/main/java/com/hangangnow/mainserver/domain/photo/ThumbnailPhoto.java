@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.domain.photo;
 
-import com.hangangnow.mainserver.domain.S3UploadData;
+import com.hangangnow.mainserver.domain.common.S3UploadData;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

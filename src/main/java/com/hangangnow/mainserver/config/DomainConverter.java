@@ -2,7 +2,7 @@ package com.hangangnow.mainserver.config;
 
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
 import com.hangangnow.mainserver.domain.flyer.dto.FlyerRequestDto;
-import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
+import com.hangangnow.mainserver.domain.diary.dto.DiaryDto;
 import lombok.SneakyThrows;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

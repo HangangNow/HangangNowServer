@@ -1,7 +1,8 @@
-package com.hangangnow.mainserver.domain.mypage.scrap;
+package com.hangangnow.mainserver.domain.scrap;
 
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.picnic.RecomCourse;
+import com.hangangnow.mainserver.domain.scrap.Scrap;
 import lombok.Getter;
 
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
-public class RecomCourseScrap extends Scrap{
+public class RecomCourseScrap extends Scrap {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recom_course_id", nullable = false)

@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.repository;
 
 import com.hangangnow.mainserver.domain.member.Member;
-import com.hangangnow.mainserver.domain.mypage.Memo;
+import com.hangangnow.mainserver.domain.memo.Memo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

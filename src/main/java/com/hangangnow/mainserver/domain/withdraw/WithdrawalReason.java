@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.mypage;
+package com.hangangnow.mainserver.domain.withdraw;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

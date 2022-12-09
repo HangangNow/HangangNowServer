@@ -1,10 +1,9 @@
 package com.hangangnow.mainserver.api.controller.member;
 
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.ResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.MemberResponseDto;
 import com.hangangnow.mainserver.domain.member.dto.PasswordRequestDto;
-import com.hangangnow.mainserver.domain.mypage.dto.WithdrawDto;
+import com.hangangnow.mainserver.domain.withdraw.dto.WithdrawDto;
 import com.hangangnow.mainserver.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,8 +1,8 @@
 package com.hangangnow.mainserver.api.controller.diary;
 
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.mypage.dto.DiaryDateRequestDto;
-import com.hangangnow.mainserver.domain.mypage.dto.DiaryDto;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
+import com.hangangnow.mainserver.domain.diary.dto.DiaryDateRequestDto;
+import com.hangangnow.mainserver.domain.diary.dto.DiaryDto;
 import com.hangangnow.mainserver.service.DiaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

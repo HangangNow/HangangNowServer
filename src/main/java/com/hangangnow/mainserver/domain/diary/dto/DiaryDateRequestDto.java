@@ -1,4 +1,4 @@
-package com.hangangnow.mainserver.domain.mypage.dto;
+package com.hangangnow.mainserver.domain.diary.dto;
 
 import lombok.Data;
 

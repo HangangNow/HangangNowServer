@@ -1,7 +1,6 @@
 package com.hangangnow.mainserver.domain.photo;
 
-import com.hangangnow.mainserver.domain.S3UploadData;
-import com.hangangnow.mainserver.domain.member.Member;
+import com.hangangnow.mainserver.domain.common.S3UploadData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Entity

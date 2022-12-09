@@ -1,14 +1,15 @@
-package com.hangangnow.mainserver.domain.mypage.scrap;
+package com.hangangnow.mainserver.domain.scrap;
 
 import com.hangangnow.mainserver.domain.member.Member;
 import com.hangangnow.mainserver.domain.picnic.RecomPlace;
+import com.hangangnow.mainserver.domain.scrap.Scrap;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-public class RecomPlaceScrap extends Scrap{
+public class RecomPlaceScrap extends Scrap {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recom_place_id", nullable = false)

@@ -2,19 +2,16 @@ package com.hangangnow.mainserver.service;
 
 import com.hangangnow.mainserver.config.jwt.SecurityUtil;
 import com.hangangnow.mainserver.config.s3.S3Uploader;
-import com.hangangnow.mainserver.domain.Address;
-import com.hangangnow.mainserver.domain.Local;
-import com.hangangnow.mainserver.domain.common.GenericResponseDto;
-import com.hangangnow.mainserver.domain.common.ResponseDto;
+import com.hangangnow.mainserver.domain.common.Address;
+import com.hangangnow.mainserver.domain.common.Local;
+import com.hangangnow.mainserver.domain.common.dto.GenericResponseDto;
+import com.hangangnow.mainserver.domain.common.dto.ResponseDto;
 import com.hangangnow.mainserver.domain.event.Event;
 import com.hangangnow.mainserver.domain.event.dto.EventRequestDto;
 import com.hangangnow.mainserver.domain.event.dto.EventResponseDto;
-import com.hangangnow.mainserver.domain.member.Member;
-import com.hangangnow.mainserver.domain.mypage.scrap.EventScrap;
 import com.hangangnow.mainserver.domain.photo.EventPhoto;
 import com.hangangnow.mainserver.domain.photo.ThumbnailPhoto;
 import com.hangangnow.mainserver.repository.EventRepository;
-import com.hangangnow.mainserver.repository.MemberRepository;
 import com.hangangnow.mainserver.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
