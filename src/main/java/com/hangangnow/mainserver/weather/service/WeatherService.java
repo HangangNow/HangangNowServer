@@ -9,11 +9,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class HangangNowService {
+public class WeatherService {
+
+    private static final Long FIRST_INDEX = 1L;
+
     private final EntityManager em;
 
-    public HangangNowData hangangNowData(){
-        return Optional.ofNullable(em.find(HangangNowData.class, 1L))
+    public HangangNowData getHangangnowData(){
+        return Optional.ofNullable(em.find(HangangNowData.class, FIRST_INDEX))
                 .orElseThrow(() -> new NullPointerException("Failed: Not found hangangNowData"));
     }
 }

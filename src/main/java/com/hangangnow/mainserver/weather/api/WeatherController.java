@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.weather.api;
 
 import com.hangangnow.mainserver.weather.entity.HangangNowData;
-import com.hangangnow.mainserver.weather.service.HangangNowService;
+import com.hangangnow.mainserver.weather.service.WeatherService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/hangangnow")
 public class WeatherController {
-    private final HangangNowService hangangNowService;
+    private final WeatherService weatherService;
 
     @GetMapping("")
     @Operation(summary = "한강나우 정보 조회", description = "한강나우 정보를 조회할 수 있습니다.  \n" +
@@ -26,7 +26,7 @@ public class WeatherController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public HangangNowData HangangNowData(){
-        return hangangNowService.hangangNowData();
+    public HangangNowData getHangangnowData(){
+        return weatherService.getHangangnowData();
     }
 }
