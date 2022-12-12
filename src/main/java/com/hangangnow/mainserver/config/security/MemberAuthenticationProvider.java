@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.config.security;
 
-import com.hangangnow.mainserver.service.CustomMemberDetailsService;
+import com.hangangnow.mainserver.member.service.CustomMemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;

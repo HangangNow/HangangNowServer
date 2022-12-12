@@ -4,8 +4,6 @@ import com.hangangnow.mainserver.config.jwt.JwtAccessDeniedHandler;
 import com.hangangnow.mainserver.config.jwt.JwtAuthenticationEntryPoint;
 import com.hangangnow.mainserver.config.jwt.JwtSecurityConfig;
 import com.hangangnow.mainserver.config.jwt.TokenProvider;
-import com.hangangnow.mainserver.config.security.KakaoAuthenticationProvider;
-import com.hangangnow.mainserver.config.security.MemberAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

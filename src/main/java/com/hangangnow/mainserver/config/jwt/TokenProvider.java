@@ -1,6 +1,6 @@
 package com.hangangnow.mainserver.config.jwt;
 
-import com.hangangnow.mainserver.domain.member.dto.MemberTokenDto;
+import com.hangangnow.mainserver.member.dto.MemberTokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -1,7 +1,7 @@
 package com.hangangnow.mainserver.util;
 
-import com.hangangnow.mainserver.exception.GeneralException;
-import com.hangangnow.mainserver.exception.MethodArgsException;
+import com.hangangnow.mainserver.common.exception.GeneralException;
+import com.hangangnow.mainserver.common.exception.MethodArgsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
