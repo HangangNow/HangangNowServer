@@ -39,7 +39,7 @@ public class ScrapService {
     private final PicnicRepository picnicRepository;
 
 
-    public GenericResponseDto getEventScraps(){
+    public GenericResponseDto getEventScraps() {
         List<EventResponseDto> results = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId())
                 .stream()
                 .map(EventResponseDto::new)
@@ -49,31 +49,27 @@ public class ScrapService {
     }
 
     @Transactional
-    public ResponseDto updateEventScrap(Long eventId){
+    public ResponseDto updateEventScrap(Long eventId) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
 
         Event findEvent = eventRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
 
-
         EventScrap eventScrap = scrapRepository.findEventScrapByMemberAndEvent(eventId, SecurityUtil.getCurrentMemberId())
                 .orElse(new EventScrap());
 
-        if(eventScrap.getEvent() == null){
+        if (eventScrap.getEvent() == null) {
             eventScrap.addMemberAndEvent(findMember, findEvent);
             return new ResponseDto("해당 이벤트 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else{
+        } else {
             eventScrap.cancelMemberAndEvent(findMember, findEvent);
             return new ResponseDto("해당 이벤트 스크랩 해제가 정상적으로 처리되었습니다.");
         }
-
     }
 
 
-    public GenericResponseDto getFlyerScraps(){
+    public GenericResponseDto getFlyerScraps() {
         List<FlyerResponseDto> results = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId())
                 .stream()
                 .map(FlyerResponseDto::new)
@@ -84,7 +80,7 @@ public class ScrapService {
 
 
     @Transactional
-    public ResponseDto updateFlyerScrap(Long flyerId){
+    public ResponseDto updateFlyerScrap(Long flyerId) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
 
@@ -94,20 +90,17 @@ public class ScrapService {
         FlyerScrap flyerScrap = scrapRepository.findFlyerScrapByMemberAndFlyer(flyerId, SecurityUtil.getCurrentMemberId())
                 .orElse(new FlyerScrap());
 
-        if(flyerScrap.getFlyer() == null){
+        if (flyerScrap.getFlyer() == null) {
             flyerScrap.addMemberAndEvent(findMember, findFlyer);
             return new ResponseDto("해당 전단지 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else {
+        } else {
             flyerScrap.cancelMemberAndEvent(findMember, findFlyer);
             return new ResponseDto("해당 전단지 스크랩 해제가 정상적으로 처리되었습니다.");
         }
-
     }
 
 
-    public GenericResponseDto getRecomCourseScraps(){
+    public GenericResponseDto getRecomCourseScraps() {
         List<RecomCourseScrapDto> results = scrapRepository.findRecomCourseByMemberId(SecurityUtil.getCurrentMemberId())
                 .stream()
                 .map(RecomCourseScrapDto::new)
@@ -118,7 +111,7 @@ public class ScrapService {
 
 
     @Transactional
-    public ResponseDto updateRecomCourseScrap(Long recomCourseId){
+    public ResponseDto updateRecomCourseScrap(Long recomCourseId) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
 
@@ -128,20 +121,17 @@ public class ScrapService {
         RecomCourseScrap recomCourseScrap = scrapRepository.findRecomCourseScrapByMemberAndEvent(recomCourseId, SecurityUtil.getCurrentMemberId())
                 .orElse(new RecomCourseScrap());
 
-        if(recomCourseScrap.getRecomCourse() == null){
+        if (recomCourseScrap.getRecomCourse() == null) {
             recomCourseScrap.addMemberAndRecomCourse(findMember, recomCourse);
             return new ResponseDto("해당 추천코스 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else {
+        } else {
             recomCourseScrap.cancelMemberAndRecomCourse(findMember, recomCourse);
             return new ResponseDto("해당 추천코스 스크랩 해제가 정상적으로 처리되었습니다.");
         }
-
     }
 
 
-    public GenericResponseDto getRecomPlaceScraps(){
+    public GenericResponseDto getRecomPlaceScraps() {
         List<RecomPlaceScrapDto> results = scrapRepository.findRecomPlaceByMemberId(SecurityUtil.getCurrentMemberId())
                 .stream()
                 .map(RecomPlaceScrapDto::new)
@@ -152,7 +142,7 @@ public class ScrapService {
 
 
     @Transactional
-    public ResponseDto updateRecomPlaceScrap(Long recomPlaceId){
+    public ResponseDto updateRecomPlaceScrap(Long recomPlaceId) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
 
@@ -162,15 +152,12 @@ public class ScrapService {
         RecomPlaceScrap recomPlaceScrap = scrapRepository.findRecomPlaceScrapByMemberAndEvent(recomPlaceId, SecurityUtil.getCurrentMemberId())
                 .orElse(new RecomPlaceScrap());
 
-        if(recomPlaceScrap.getRecomPlace() == null){
+        if (recomPlaceScrap.getRecomPlace() == null) {
             recomPlaceScrap.addMemberAndRecomPlace(findMember, recomPlace);
             return new ResponseDto("해당 추천장소 스크랩 설정이 정상적으로 처리되었습니다.");
-        }
-
-        else {
+        } else {
             recomPlaceScrap.cancelMemberAndRecomPlace(findMember, recomPlace);
             return new ResponseDto("해당 추천코스 스크랩 해제가 정상적으로 처리되었습니다.");
         }
-
     }
 }
