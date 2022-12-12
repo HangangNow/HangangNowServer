@@ -38,9 +38,9 @@ public class DiaryDto {
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.diaryDate = diary.getDiaryDate().toString();
-        if(diary.getPhoto()!=null) this.url = diary.getPhoto().getUrl();
-        if(diary.getEmotion()!=null) this.emotion = diary.getEmotion().toString();
-        if(diary.getDiaryWeather()!=null) this.diaryWeather = diary.getDiaryWeather().toString();
+        if (diary.getPhoto() != null) this.url = diary.getPhoto().getUrl();
+        if (diary.getEmotion() != null) this.emotion = diary.getEmotion().toString();
+        if (diary.getDiaryWeather() != null) this.diaryWeather = diary.getDiaryWeather().toString();
     }
 
 }

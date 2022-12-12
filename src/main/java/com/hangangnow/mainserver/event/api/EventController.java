@@ -73,7 +73,7 @@ public class EventController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/api/v1/events")
-    public ResponseEntity<GenericResponseDto> getAllEvents(){
+    public ResponseEntity<GenericResponseDto> getAllEvents() {
         return new ResponseEntity<>(eventService.findAllEvents(), HttpStatus.OK);
     }
 
@@ -87,7 +87,7 @@ public class EventController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/api/v1/events/{eventId}")
-    public ResponseEntity<EventResponseDto> getEventById(@PathVariable Long eventId){
+    public ResponseEntity<EventResponseDto> getEventById(@PathVariable Long eventId) {
         return new ResponseEntity<>(eventService.findOne(eventId), HttpStatus.OK);
     }
 
@@ -105,9 +105,9 @@ public class EventController {
     })
     @PutMapping("/api/v1/events/{eventId}")
     public ResponseEntity<EventResponseDto> modifyEventById(@PathVariable Long eventId,
-            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest,
-            @Valid @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
-            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws IOException {
+                                                            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest,
+                                                            @Valid @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+                                                            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws IOException {
         EventRequestDto eventRequestDto = conversionService.convert(jsonStringRequest, EventRequestDto.class);
         return new ResponseEntity<>(eventService.update(eventId, eventRequestDto, thumbnail, imageRequest), HttpStatus.OK);
     }
@@ -122,7 +122,7 @@ public class EventController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @DeleteMapping("/api/v1/events/{eventId}")
-    public ResponseEntity<ResponseDto> deleteEvent(@PathVariable Long eventId){
+    public ResponseEntity<ResponseDto> deleteEvent(@PathVariable Long eventId) {
         return new ResponseEntity<>(eventService.delete(eventId), HttpStatus.OK);
     }
 

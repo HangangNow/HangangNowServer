@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class EventPhoto extends Photo{
+public class EventPhoto extends Photo {
 
     @Column(nullable = false)
     protected String s3Key;

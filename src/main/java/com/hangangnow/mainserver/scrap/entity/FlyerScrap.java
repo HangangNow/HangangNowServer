@@ -17,7 +17,6 @@ public class FlyerScrap extends Scrap{
     @JoinColumn(name = "flyer_id", nullable = false)
     private Flyer flyer;
 
-
     public void addMemberAndEvent(Member member, Flyer flyer){
         this.member = member;
         member.addScarp(this);
@@ -25,7 +24,6 @@ public class FlyerScrap extends Scrap{
         this.flyer = flyer;
         flyer.addFlyerScrap(this);
     }
-
 
     public void cancelMemberAndEvent(Member member, Flyer flyer){
         this.member = null;

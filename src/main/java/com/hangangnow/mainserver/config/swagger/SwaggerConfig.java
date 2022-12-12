@@ -19,7 +19,6 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    /** swagger */
     @Bean
     public Docket ShopApi() {
         return new Docket(DocumentationType.OAS_30)

@@ -29,7 +29,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public static ObjectMapper objectMapper(){
+    public static ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper()
                 .registerModule(new SimpleModule())
                 .registerModule(new JavaTimeModule())

@@ -31,7 +31,7 @@ public class RecomCourseDto {
 
     private Boolean isScrap;
 
-    public RecomCourseDto(RecomCourse recomCourse){
+    public RecomCourseDto(RecomCourse recomCourse) {
         this.id = recomCourse.getId();
         this.name = recomCourse.getName();
         this.startPlaceName = recomCourse.getStartPlaceLocal().getLocalname();
@@ -39,7 +39,7 @@ public class RecomCourseDto {
         this.course = Arrays.stream(recomCourse.getCourse().split("-")).collect(Collectors.toList());
     }
 
-    public void setIsScrap(Boolean isScrap){
+    public void setIsScrap(Boolean isScrap) {
         this.isScrap = isScrap;
     }
 }

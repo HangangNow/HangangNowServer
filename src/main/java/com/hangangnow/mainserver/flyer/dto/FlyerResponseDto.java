@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlyerResponseDto {
+
     private Long id;
     private String name;
     private String parkName;
@@ -19,7 +20,7 @@ public class FlyerResponseDto {
     private String call;
     private Boolean isScrap;
 
-    public FlyerResponseDto(Flyer flyer){
+    public FlyerResponseDto(Flyer flyer) {
         this.id = flyer.getId();
         this.name = flyer.getName();
         this.parkName = flyer.getPark().getName();
@@ -29,7 +30,7 @@ public class FlyerResponseDto {
         this.call = flyer.getCallNumber();
     }
 
-    public void setIsScrap(Boolean isScrap){
+    public void setIsScrap(Boolean isScrap) {
         this.isScrap = isScrap;
     }
 }

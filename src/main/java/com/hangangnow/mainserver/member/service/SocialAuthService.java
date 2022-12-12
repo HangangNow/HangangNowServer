@@ -49,7 +49,7 @@ public class SocialAuthService {
     private String restApiKey;
 
 
-    public MemberKakaoTokenDto loginByKakaoToken(String accessToken, Boolean autoLogin){
+    public MemberKakaoTokenDto loginByKakaoToken(String accessToken, Boolean autoLogin) {
 
         KakaoMemberDto memberKakaoDto = new KakaoMemberDto();
 
@@ -87,9 +87,7 @@ public class SocialAuthService {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        finally {
+        } finally {
             return login(memberKakaoDto, autoLogin);
         }
     }
@@ -102,18 +100,17 @@ public class SocialAuthService {
         long kakaoId = element.getAsJsonObject().get("id").getAsLong();
         String name = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
         String email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
-        boolean hasGender = element.getAsJsonObject().get("kakao_account" ).getAsJsonObject().get("has_gender").getAsBoolean();
+        boolean hasGender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_gender").getAsBoolean();
 
         Gender gender = null;
-        if (hasGender){
+        if (hasGender) {
             JsonObject object = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
-            if(object.has("gender")){
+            if (object.has("gender")) {
                 String strGender = object.get("gender").getAsString();
 
-                if (strGender.equalsIgnoreCase("MALE")){
+                if (strGender.equalsIgnoreCase("MALE")) {
                     gender = Gender.MALE;
-                }
-                else gender = Gender.FEMALE;
+                } else gender = Gender.FEMALE;
             }
         }
 
@@ -125,11 +122,11 @@ public class SocialAuthService {
     }
 
 
-    public MemberKakaoTokenDto login(KakaoMemberDto memberKakaoDto, Boolean autoLogin){
+    public MemberKakaoTokenDto login(KakaoMemberDto memberKakaoDto, Boolean autoLogin) {
         Member findMemberByKakao = memberRepository.findByEmail(memberKakaoDto.getEmail())
                 .orElse(null);
 
-        if(findMemberByKakao == null){
+        if (findMemberByKakao == null) {
             log.info(memberKakaoDto.getEmail() + "님은 한강나우 회원이 아닙니다. 회원가입을 진행합니다");
             findMemberByKakao = Member.builder()
                     .loginId(memberKakaoDto.getLoginId())
@@ -153,23 +150,17 @@ public class SocialAuthService {
         MemberTokenDto memberTokenDto = tokenProvider.generateTokenDto(authentication, autoLogin);
 
         String existsRefreshToken = redisUtil.getDataWithKey(authentication.getName());
-        if (existsRefreshToken == null){
+        if (existsRefreshToken == null) {
             // Redis <String, String> -> <memberId, refreshToken> 으로 저장
-            if(memberTokenDto.getAutoLogin()){
+            if (memberTokenDto.getAutoLogin()) {
                 redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_AUTOLOGIN_TTL);
-            }
-
-            else{
+            } else {
                 redisUtil.setDataWithExpire(authentication.getName(), memberTokenDto.getRefreshToken(), REFRESH_TOKEN_TTL);
             }
-        }
-
-        else{
-            if(memberTokenDto.getAutoLogin()){
+        } else {
+            if (memberTokenDto.getAutoLogin()) {
                 redisUtil.setDataWithExpire(authentication.getName(), existsRefreshToken, REFRESH_TOKEN_AUTOLOGIN_TTL);
-            }
-
-            else{
+            } else {
                 redisUtil.setDataWithExpire(authentication.getName(), existsRefreshToken, REFRESH_TOKEN_TTL);
             }
 
@@ -190,7 +181,7 @@ public class SocialAuthService {
 
 
     // 카카오 서버에서 벡엔드로 코드 보내주는 테스트 용도
-    public String getKakaoAccessToken (String code) {
+    public String getKakaoAccessToken(String code) {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";

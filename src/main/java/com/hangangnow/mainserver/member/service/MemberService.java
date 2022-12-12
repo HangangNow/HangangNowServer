@@ -49,12 +49,12 @@ public class MemberService {
 
 
     @Transactional
-    public ResponseDto deleteMember(){
+    public ResponseDto deleteMember() {
         UUID memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("유저 정보를 찾을 수 없습니다"));
 
-        if(member.getMemberProvider() == MemberProvider.KAKAO){
+        if (member.getMemberProvider() == MemberProvider.KAKAO) {
             disconnectKakaoAccount(member);
         }
 
@@ -64,7 +64,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void disconnectKakaoAccount(Member member){
+    public void disconnectKakaoAccount(Member member) {
         String reqURL = "https://kauth.kakao.com/v1/user/unlink";
 
 
@@ -103,7 +103,7 @@ public class MemberService {
     }
 
 
-    public MemberResponseDto getMemberInfoByEmail(String email){
+    public MemberResponseDto getMemberInfoByEmail(String email) {
         Member findMember = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
 
@@ -131,11 +131,11 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보가 없습니다."));
 
 
-        if (!passwordRequestDto.getPassword1().equals(passwordRequestDto.getPassword2())){
+        if (!passwordRequestDto.getPassword1().equals(passwordRequestDto.getPassword2())) {
             throw new IllegalArgumentException("비밀번호가 서로 일치하지 않습니다");
         }
 
-        if (passwordEncoder.matches(passwordRequestDto.getPassword1(), findMember.getPassword())){
+        if (passwordEncoder.matches(passwordRequestDto.getPassword1(), findMember.getPassword())) {
             throw new IllegalArgumentException("기존 비밀번호와 일치합니다.");
         }
 
@@ -154,7 +154,7 @@ public class MemberService {
         String[] mbtiList = new String[]{"INFLUENCER", "EXCITED", "ARTIST", "SOCIAL_DISTANCING",
                 "ACTIVIST", "PLANNER", "EXPLORER", "STARGAZER"};
 
-        if (!Arrays.asList(mbtiList).contains(mbti)){
+        if (!Arrays.asList(mbtiList).contains(mbti)) {
             throw new IllegalArgumentException("존재하지 않는 MBTI 입니다");
         }
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
@@ -180,18 +180,16 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("멤버 조회를 실패했습니다."));
 
         // 프로필을 없애는 경우
-        if (multipartFile == null){
+        if (multipartFile == null) {
             throw new IllegalArgumentException("이미지 파일이 존재하지 않습니다.");
         }
 
         MemberPhoto findMemberPhoto = findMember.getPhoto();
 
-        if(findMemberPhoto == null){
+        if (findMemberPhoto == null) {
             MemberPhoto memberPhoto = new MemberPhoto(s3Uploader.upload(multipartFile, "profile"));
             findMember.updatePhoto(memberPhoto);
-        }
-
-        else{
+        } else {
             s3Uploader.delete(findMemberPhoto.getS3Key());
             MemberPhoto memberPhoto = new MemberPhoto(s3Uploader.upload(multipartFile, "profile"));
             findMember.updatePhoto(memberPhoto);
@@ -203,13 +201,13 @@ public class MemberService {
 
 
     @Transactional
-    public ResponseDto deletePhoto() throws IOException{
+    public ResponseDto deletePhoto() throws IOException {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다"));
 
         MemberPhoto findMemberPhoto = findMember.getPhoto();
 
-        if (findMemberPhoto == null){
+        if (findMemberPhoto == null) {
             throw new RuntimeException("회원 프로필 사진이 없습니다.");
         }
 
@@ -241,7 +239,6 @@ public class MemberService {
     }
 
 
-
 //    public GenericResponseDto getFlyerScraps(){
 //        scrapRepository.findAllScrapsByMemberId(SecurityUtil.getCurrentMemberId())
 //                .stream()
@@ -259,7 +256,7 @@ public class MemberService {
 
 
     @Transactional
-    public ResponseDto createWithdrawReason(WithdrawDto withdrawDto){
+    public ResponseDto createWithdrawReason(WithdrawDto withdrawDto) {
         WithdrawalReason withdrawalReason = new WithdrawalReason(
                 withdrawDto.getDifficulty(), withdrawDto.getFewerEvents(), withdrawDto.getAnotherApplication(),
                 withdrawDto.getNoCredibility(), withdrawDto.getNoNeed(), withdrawDto.getEtc(), withdrawDto.getEtcContent()

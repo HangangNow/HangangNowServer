@@ -8,13 +8,13 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class EventScrap extends Scrap{
+public class EventScrap extends Scrap {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    public void addMemberAndEvent(Member member, Event event){
+    public void addMemberAndEvent(Member member, Event event) {
         this.member = member;
         member.addScarp(this);
 
@@ -22,13 +22,11 @@ public class EventScrap extends Scrap{
         event.addEventScrap(this);
     }
 
-
-    public void cancelMemberAndEvent(Member member, Event event){
+    public void cancelMemberAndEvent(Member member, Event event) {
         this.member = null;
         member.deleteScarp(this);
 
         this.event = null;
         event.deleteEventScrap(this);
     }
-
 }

@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParkingMapDto {
+
     private Long id;
     private Local local;
 
-    public ParkingMapDto(Parking parking){
+    public ParkingMapDto(Parking parking) {
         this.id = parking.getId();
         this.local = parking.getLocal();
     }

@@ -78,7 +78,6 @@ public class ScrapService {
         return new GenericResponseDto(results);
     }
 
-
     @Transactional
     public ResponseDto updateFlyerScrap(Long flyerId) {
         Member findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
@@ -99,7 +98,6 @@ public class ScrapService {
         }
     }
 
-
     public GenericResponseDto getRecomCourseScraps() {
         List<RecomCourseScrapDto> results = scrapRepository.findRecomCourseByMemberId(SecurityUtil.getCurrentMemberId())
                 .stream()
@@ -108,7 +106,6 @@ public class ScrapService {
 
         return new GenericResponseDto(results);
     }
-
 
     @Transactional
     public ResponseDto updateRecomCourseScrap(Long recomCourseId) {
@@ -130,7 +127,6 @@ public class ScrapService {
         }
     }
 
-
     public GenericResponseDto getRecomPlaceScraps() {
         List<RecomPlaceScrapDto> results = scrapRepository.findRecomPlaceByMemberId(SecurityUtil.getCurrentMemberId())
                 .stream()
@@ -139,7 +135,6 @@ public class ScrapService {
 
         return new GenericResponseDto(results);
     }
-
 
     @Transactional
     public ResponseDto updateRecomPlaceScrap(Long recomPlaceId) {

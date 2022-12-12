@@ -32,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers(
                         "/h2-console/**"
-                        ,"/favicon.ico"
-                        ,"/error"
+                        , "/favicon.ico"
+                        , "/error"
                 );
     }
 
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(memberAuthenticationProvider);
         auth.authenticationProvider(kakaoAuthenticationProvider);
     }
-    
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/auth/**",
 
             "/actuator/**",
-            
+
             /* swagger v2 */
             "/v2/api-docs",
             "/swagger-resources",
@@ -88,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
-            
+
             /* swagger v3 */
             "/v3/api-docs/**",
             "/swagger-ui/**"

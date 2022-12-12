@@ -72,7 +72,7 @@ public class AuthController {
 
     })
     @PutMapping("/api/v1/auth/password")
-    public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid PasswordRequestDto passwordRequestDto){
+    public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid PasswordRequestDto passwordRequestDto) {
         return new ResponseEntity<>(authService.changePassword(passwordRequestDto), HttpStatus.OK);
     }
 
@@ -88,7 +88,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/loginId")
-    public ResponseEntity<ResponseDto> findLoginId(@RequestBody @Valid LoginIdRequestDto loginIdRequestDto){
+    public ResponseEntity<ResponseDto> findLoginId(@RequestBody @Valid LoginIdRequestDto loginIdRequestDto) {
         return new ResponseEntity<>(authService.findLoginIdByEmail(loginIdRequestDto), HttpStatus.OK);
     }
 
@@ -110,10 +110,9 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/dup/loginId")
-    public ResponseEntity<Boolean> loginIdDuplicateCheck(@RequestBody @Valid LoginIdDuplicateDto memberDuplicateDto){
+    public ResponseEntity<Boolean> loginIdDuplicateCheck(@RequestBody @Valid LoginIdDuplicateDto memberDuplicateDto) {
         return new ResponseEntity<>(authService.checkDuplicateLoginId(memberDuplicateDto), HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "이메일 중복 체크",
@@ -132,10 +131,9 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/dup/email")
-    public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody @Valid EmailDuplicateDto emailDuplicateDto){
+    public ResponseEntity<Boolean> emailDuplicateCheck(@RequestBody @Valid EmailDuplicateDto emailDuplicateDto) {
         return new ResponseEntity<>(authService.checkDuplicateEmail(emailDuplicateDto), HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "토큰 재발급", description = "Access Token 만료 시 재발급 요청 URL" +
@@ -151,10 +149,9 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/reissue")
-    public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto){
+    public ResponseEntity<MemberTokenDto> reissue(@RequestBody MemberTokenRequestDto memberTokenRequestDto) {
         return new ResponseEntity<>(authService.reissueToken(memberTokenRequestDto), HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "이메일 인증코드 발송", description = "이메일 인증코드 발송 요청 URL." +
@@ -168,7 +165,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/emailAuth")
-    public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody @Valid EmailAuthDto emailAuthDto){
+    public ResponseEntity<EmailAuthDto> sendEmailAuthenticate(@RequestBody @Valid EmailAuthDto emailAuthDto) {
         return new ResponseEntity<>(mailService.authEmail(emailAuthDto), HttpStatus.OK);
     }
 
@@ -184,7 +181,7 @@ public class AuthController {
 
     })
     @PostMapping("/api/v1/auth/emailAuth/code")
-    public ResponseEntity<Boolean> checkEmailAuthenticate(@RequestBody @Valid EmailAuthDto emailAuthDto){
+    public ResponseEntity<Boolean> checkEmailAuthenticate(@RequestBody @Valid EmailAuthDto emailAuthDto) {
         return new ResponseEntity<>(mailService.checkEmailCode(emailAuthDto), HttpStatus.OK);
     }
 }

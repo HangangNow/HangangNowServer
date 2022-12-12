@@ -34,14 +34,11 @@ public class ParkService {
         return parkResponseDto.toParkResponseDto(findPark);
     }
 
-
-
-    public List<Park> findAll(){
+    public List<Park> findAll() {
         return parkRepository.findAll();
     }
 
-
-    public NearestParkDto findNearestPark(Double x, Double y){
+    public NearestParkDto findNearestPark(Double x, Double y) {
         HashMap<Park, Double> map = new HashMap<>();
 
         List<Park> allParks = parkRepository.findAll();
@@ -58,7 +55,4 @@ public class ParkService {
         return new NearestParkDto(park.getId(), park.getName(), park.getLocal().getX_pos(), park.getLocal().getY_pos());
 
     }
-
-
-
 }

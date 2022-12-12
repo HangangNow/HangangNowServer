@@ -32,7 +32,7 @@ public class SideFacilityController {
     })
     @GetMapping("/api/v1/facilities")
     public ResponseEntity<FacilityResponseDto> getFacilityWithLocation(
-            @RequestParam Double x, @RequestParam Double y){
+            @RequestParam Double x, @RequestParam Double y) {
         return new ResponseEntity<>(sideFacilityService.getSideFacilityByXposAndYpos(x, y), HttpStatus.OK);
     }
 
@@ -52,7 +52,7 @@ public class SideFacilityController {
     })
     @GetMapping("/api/v1/facilities/categories")
     public ResponseEntity<GenericResponseDto> getFacilityWithLocation(
-            @RequestParam String x, @RequestParam String y, @RequestParam String category){
+            @RequestParam String x, @RequestParam String y, @RequestParam String category) {
         return new ResponseEntity<>(sideFacilityService.getFacilities(x, y, category), HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class SideFacilityController {
             "\n 5: 반포한강공원  " +
             "\n 6: 이촌한강공원  " +
             "\n 7: 망원한강공원  " +
-            "\n 8: 여의도한강공원  "   +
+            "\n 8: 여의도한강공원  " +
             "\n 9: 난지한강공원  " +
             "\n 10: 강서한강공원  " +
             "\n 11: 양화한강공원  "
@@ -82,7 +82,7 @@ public class SideFacilityController {
     })
     @GetMapping("/api/v1/facilities/{parkId}")
     public ResponseEntity<GenericResponseDto> getFacilityWithParkIdAndType(
-            @PathVariable Long parkId, @RequestParam String category){
+            @PathVariable Long parkId, @RequestParam String category) {
         return new ResponseEntity<>(sideFacilityService.getFacilitiesByParkIdAndType(parkId, category), HttpStatus.OK);
     }
 

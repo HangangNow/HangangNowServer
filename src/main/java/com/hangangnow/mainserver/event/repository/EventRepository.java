@@ -13,12 +13,12 @@ import java.util.Optional;
 public class EventRepository {
     private final EntityManager em;
 
-    public void save(Event event){
+    public void save(Event event) {
         em.persist(event);
     }
 
 
-    public List<Event> findAllEvents(){
+    public List<Event> findAllEvents() {
         return em.createQuery("select e from Event e" +
                         " join fetch e.photo ep" +
                         " join fetch e.thumbnailPhoto et", Event.class)
@@ -26,7 +26,7 @@ public class EventRepository {
     }
 
 
-    public Optional<Event> findById(Long id){
+    public Optional<Event> findById(Long id) {
         Event event = em.createQuery("select e from Event e" +
                         " join fetch e.photo ep" +
                         " join fetch e.thumbnailPhoto et" +
@@ -38,7 +38,7 @@ public class EventRepository {
     }
 
 
-    public Optional<Event> findByIdToScrap(Long id){
+    public Optional<Event> findByIdToScrap(Long id) {
         Event event = em.createQuery("select e from Event e" +
                         " join fetch e.eventScraps es" +
                         " where e.id =:id", Event.class)
@@ -49,8 +49,7 @@ public class EventRepository {
     }
 
 
-
-    public void delete(Event event){
+    public void delete(Event event) {
         em.remove(event);
     }
 }

@@ -19,14 +19,11 @@ public class SocialAuthController {
     private final SocialAuthService socialAuthService;
 
     @GetMapping("/api/v1/auth/kakao")
-    public ResponseEntity<MemberKakaoTokenDto> kakaoCode(@RequestParam String code){
+    public ResponseEntity<MemberKakaoTokenDto> kakaoCode(@RequestParam String code) {
         System.out.println("code = " + code);
         String accessToken = socialAuthService.getKakaoAccessToken(code);
         return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, false), HttpStatus.OK);
     }
-
-
-
 
     @Operation(summary = "카카오 로그인", description = "카카오 로그인 URL. " +
             "\n### RequestParam: accessToken, autoLogin" +
@@ -40,7 +37,7 @@ public class SocialAuthController {
 
     })
     @PostMapping("/api/v1/auth/kakao")
-    public ResponseEntity<MemberKakaoTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin){
+    public ResponseEntity<MemberKakaoTokenDto> kakaoLogin(@RequestParam String accessToken, @RequestParam(defaultValue = "false") Boolean autoLogin) {
         log.info("Kakao Login API Called");
         return new ResponseEntity<>(socialAuthService.loginByKakaoToken(accessToken, autoLogin), HttpStatus.OK);
     }

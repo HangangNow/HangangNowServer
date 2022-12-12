@@ -18,7 +18,7 @@ public class RecomCourseScrap extends Scrap {
     private RecomCourse recomCourse;
 
 
-    public void addMemberAndRecomCourse(Member member, RecomCourse recomCourse){
+    public void addMemberAndRecomCourse(Member member, RecomCourse recomCourse) {
         this.member = member;
         member.addScarp(this);
 
@@ -26,8 +26,7 @@ public class RecomCourseScrap extends Scrap {
         recomCourse.addRecomCourseScrap(this);
     }
 
-
-    public void cancelMemberAndRecomCourse(Member member, RecomCourse recomCourse){
+    public void cancelMemberAndRecomCourse(Member member, RecomCourse recomCourse) {
         this.member = null;
         member.deleteScarp(this);
 

@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Builder
 public class MemberSignupRequestDto {
+
     @NotBlank(message = "아이디는 필수 값 입니다.")
     @Pattern(regexp = "^[a-z0-9]{5,20}$", message = "아이디는 5~20자의 영문 소문자, 숫자만 사용 가능합니다.")
     private String loginId;
@@ -40,7 +41,7 @@ public class MemberSignupRequestDto {
 
 
     public Member toMember(PasswordEncoder passwordEncoder) {
-        if ("MALE".equals(gender)){
+        if ("MALE".equals(gender)) {
             return Member.builder()
                     .loginId(loginId)
                     .email(email)
@@ -53,8 +54,7 @@ public class MemberSignupRequestDto {
                     .marketing_agree(false)
                     .alarm_agree(false)
                     .build();
-        }
-        else{
+        } else {
             return Member.builder()
                     .loginId(loginId)
                     .email(email)

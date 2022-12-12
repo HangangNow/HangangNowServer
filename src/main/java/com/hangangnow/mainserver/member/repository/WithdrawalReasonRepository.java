@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 public class WithdrawalReasonRepository {
     private final EntityManager em;
 
-    public void save(WithdrawalReason withdrawalReason){
+    public void save(WithdrawalReason withdrawalReason) {
         em.persist(withdrawalReason);
     }
 }

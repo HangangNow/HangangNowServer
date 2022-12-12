@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @NoArgsConstructor
 @AllArgsConstructor
 public class KakaoMemberDto {
+
     private Long kakaoId;
     private String loginId;
     private String email;

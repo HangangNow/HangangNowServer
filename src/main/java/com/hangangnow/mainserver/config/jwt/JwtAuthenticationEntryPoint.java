@@ -25,14 +25,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        
 
-        if(!endpointChecker.isEndpointExist(request)){
+
+        if (!endpointChecker.isEndpointExist(request)) {
             log.error("No handler found for " + request.getMethod() + " " + request.getRequestURI());
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Page NOT FOUND");
-        }
-
-        else{
+        } else {
             // 유효한 자격증명을 제공하지 않고 접근하려 할때 401
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }

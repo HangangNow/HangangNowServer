@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 @Data
 @AllArgsConstructor
 public class MethodArgsException {
+
     private String code;
     private LinkedHashMap<String, String> message;
 }

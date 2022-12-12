@@ -15,7 +15,7 @@ public class DomainConverter {
     public static class StringToDiaryDtoConvert implements Converter<String, DiaryDto> {
         @SneakyThrows
         @Override
-        public DiaryDto convert(String value){
+        public DiaryDto convert(String value) {
             return objectMapper().readValue(value, DiaryDto.class);
         }
     }
@@ -24,7 +24,7 @@ public class DomainConverter {
     public static class StringToEventRequestDtoConvert implements Converter<String, EventRequestDto> {
         @SneakyThrows
         @Override
-        public EventRequestDto convert(String value){
+        public EventRequestDto convert(String value) {
             return objectMapper().readValue(value, EventRequestDto.class);
         }
     }
@@ -33,7 +33,7 @@ public class DomainConverter {
     public static class StringToFlyerRequestDtoConvert implements Converter<String, FlyerRequestDto> {
         @SneakyThrows
         @Override
-        public FlyerRequestDto convert(String value){
+        public FlyerRequestDto convert(String value) {
             return objectMapper().readValue(value, FlyerRequestDto.class);
         }
     }

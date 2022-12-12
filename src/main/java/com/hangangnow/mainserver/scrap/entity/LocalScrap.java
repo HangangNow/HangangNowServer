@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class LocalScrap extends Scrap{
+public class LocalScrap extends Scrap {
 
     @Column(nullable = false)
     private Local local;

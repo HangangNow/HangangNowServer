@@ -30,7 +30,7 @@ public class ParkController {
             "\n 5: 반포한강공원  " +
             "\n 6: 이촌한강공원  " +
             "\n 7: 망원한강공원  " +
-            "\n 8: 여의도한강공원  "   +
+            "\n 8: 여의도한강공원  " +
             "\n 9: 난지한강공원  " +
             "\n 10: 강서한강공원  " +
             "\n 11: 양화한강공원  ")
@@ -42,7 +42,7 @@ public class ParkController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/{parkId}")
-    public ResponseEntity<ParkResponseDto> getParkInfoById(@PathVariable Long parkId){
+    public ResponseEntity<ParkResponseDto> getParkInfoById(@PathVariable Long parkId) {
         return new ResponseEntity<>(parkService.findOne(parkId), HttpStatus.OK);
     }
 
@@ -57,7 +57,7 @@ public class ParkController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/nearest")
-    public ResponseEntity<NearestParkDto> getNearestPark(@RequestParam Double x, @RequestParam Double y){
+    public ResponseEntity<NearestParkDto> getNearestPark(@RequestParam Double x, @RequestParam Double y) {
         return new ResponseEntity<>(parkService.findNearestPark(x, y), HttpStatus.OK);
     }
 

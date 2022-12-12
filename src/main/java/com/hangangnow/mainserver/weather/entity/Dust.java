@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Dust {
+
     private int dust25Grade;
     private int dust10Grade;
     private int badderDustGrade;

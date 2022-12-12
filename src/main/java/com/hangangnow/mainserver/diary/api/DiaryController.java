@@ -29,7 +29,7 @@ public class DiaryController {
     private final ConversionService conversionService;
     private final DiaryService diaryService;
 
-    
+
     @GetMapping("/{diaryid}")
     @Operation(summary = "단일 일기 조회", description = "일기id를 이용해 일기를 상세 조회할 수 있습니다.")
     @ApiResponses({
@@ -38,7 +38,7 @@ public class DiaryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public DiaryDto DiaryOne(@PathVariable("diaryid") Long diaryid){
+    public DiaryDto DiaryOne(@PathVariable("diaryid") Long diaryid) {
         return diaryService.findOne(diaryid);
     }
 
@@ -50,10 +50,9 @@ public class DiaryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public GenericResponseDto Diaries(){
+    public GenericResponseDto Diaries() {
         return new GenericResponseDto(diaryService.findAllMemberDiary());
     }
-
 
 
     @GetMapping("/years/{year}/months/{month}")
@@ -71,7 +70,6 @@ public class DiaryController {
     }
 
 
-
     @Operation(summary = "멤버 일자 일기 조회(해당 일자 일기 모아보기)", description = "일자로 멤버의 달력 일기 리스트를 조회할 수 있습니다.  " +
             "\ndate string form: 20xx-xx-xx  " +
             "정규식: ^(20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$")
@@ -81,10 +79,9 @@ public class DiaryController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
     @PostMapping("/date")
-    public GenericResponseDto DateDiaries(@Valid @RequestBody DiaryDateRequestDto diaryDateRequestDto){
+    public GenericResponseDto DateDiaries(@Valid @RequestBody DiaryDateRequestDto diaryDateRequestDto) {
         return new GenericResponseDto(diaryService.findAllDateDiary(diaryDateRequestDto));
     }
-
 
 
     @PostMapping("")
@@ -109,7 +106,6 @@ public class DiaryController {
     }
 
 
-
     @PutMapping("/{diaryid}")
     @Operation(summary = "일기 수정", description = "일기를 수정할 수 있습니다.  " +
             "\nform-data key-value형식으로 데이터를 요청, 수정 성공 여부를 Boolean으로 응답  " +
@@ -125,13 +121,12 @@ public class DiaryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public Boolean ModifyDiary( @PathVariable("diaryid") Long diaryid,
-                                @Valid @RequestPart(value = "jsonData") String jsonStringRequest,
-                                @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
+    public Boolean ModifyDiary(@PathVariable("diaryid") Long diaryid,
+                               @Valid @RequestPart(value = "jsonData") String jsonStringRequest,
+                               @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
         DiaryDto diaryDto = conversionService.convert(jsonStringRequest, DiaryDto.class);
         return diaryService.modifyDiary(diaryid, diaryDto, imageRequest);
     }
-
 
 
     @DeleteMapping("/{diaryid}")

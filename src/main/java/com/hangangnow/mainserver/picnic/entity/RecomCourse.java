@@ -34,17 +34,17 @@ public class RecomCourse {
     private List<RecomCourseScrap> recomCourseScraps = new ArrayList<>();
 
 
-    public Double getDistance(Double x_pos, Double y_pos){
-        return sqrt(pow(this.startPlaceLocal.getX_pos()-x_pos, 2) + pow(this.startPlaceLocal.getY_pos()-y_pos, 2));
+    public Double getDistance(Double x_pos, Double y_pos) {
+        return sqrt(pow(this.startPlaceLocal.getX_pos() - x_pos, 2) + pow(this.startPlaceLocal.getY_pos() - y_pos, 2));
     }
 
 
-    public void addRecomCourseScrap(RecomCourseScrap recomCourseScrap){
+    public void addRecomCourseScrap(RecomCourseScrap recomCourseScrap) {
         this.recomCourseScraps.add(recomCourseScrap);
     }
 
 
-    public void deleteRecomCourseScrap(RecomCourseScrap recomCourseScrap){
+    public void deleteRecomCourseScrap(RecomCourseScrap recomCourseScrap) {
         this.recomCourseScraps.remove(recomCourseScrap);
     }
 }

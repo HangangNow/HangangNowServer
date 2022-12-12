@@ -19,15 +19,15 @@ public class DiaryRepository {
 
     private final EntityManager em;
 
-    public void save(Diary diary){
+    public void save(Diary diary) {
         em.persist(diary);
     }
 
-    public Optional<Diary> findById(Long id){
+    public Optional<Diary> findById(Long id) {
         return Optional.ofNullable(em.find(Diary.class, id));
     }
 
-    public List<Diary> findByMember(Member member){
+    public List<Diary> findByMember(Member member) {
         return em.createQuery("select d from Diary d where d.member =: member", Diary.class)
                 .setParameter("member", member)
                 .getResultList();
@@ -46,7 +46,7 @@ public class DiaryRepository {
                 .getResultList();
     }
 
-    public List<Diary> findAllByMemberAndDate(Member member, int year, int month, int day){
+    public List<Diary> findAllByMemberAndDate(Member member, int year, int month, int day) {
         String jpql = "select d from Diary d " +
                 "where d.member =: member " +
                 "and FUNCTION('year',d.diaryDate) =: year " +
@@ -60,12 +60,12 @@ public class DiaryRepository {
                 .getResultList();
     }
 
-    public LocalDateTime update(Diary diary, DiaryDto diaryDto){
+    public LocalDateTime update(Diary diary, DiaryDto diaryDto) {
         diary.update(diaryDto);
         return diary.getLastModifiedTime();
     }
 
-    public void remove(Diary diary){
+    public void remove(Diary diary) {
         em.remove(diary);
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ResponseDto {
+
     // TODO: GenericResponseDto와 통일하기
     private String response;
 }

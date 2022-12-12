@@ -59,7 +59,7 @@ public class DiaryService {
 
         Diary diary = Diary.of(diaryDto, findMember);
 
-        if(multipartFile != null){
+        if (multipartFile != null) {
             DiaryPhoto diaryPhoto = new DiaryPhoto(s3Uploader.upload(multipartFile, "diary"));
             diary.updateDiaryPhoto(diaryPhoto);
         }
@@ -68,13 +68,13 @@ public class DiaryService {
         return new DiaryDto(diary);
     }
 
-    public DiaryDto findOne(Long id){
+    public DiaryDto findOne(Long id) {
         return diaryRepository.findById(id)
                 .map(DiaryDto::new)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found diary"));
     }
 
-    public List<DiaryDto> findAllMemberDiary(){
+    public List<DiaryDto> findAllMemberDiary() {
         UUID currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findById(currentMemberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail: Not found member"));
@@ -109,31 +109,28 @@ public class DiaryService {
     }
 
     /**
-     *
      * @param id
      * @param diaryDto
      * @param multipartFile
      * @return update success of failure
-     * @throws IOException
-     * current method: 삭제하고 생성해서 다시 매핑하는 구조
-     * improvement plan: s3 file version관리 레퍼런스 참고해서 버전 수정하는 방법
+     * @throws IOException current method: 삭제하고 생성해서 다시 매핑하는 구조
+     *                     improvement plan: s3 file version관리 레퍼런스 참고해서 버전 수정하는 방법
      * @comment: 사진이 있는 일기를 수정하는 경우, request url에 해당 사진 url을 넣지 않으면 사진 삭제되기 때문에 사진을 지우는 게 아니라면 필수로 넣어 줘야함. dto contents 변경
-     *           파라미터로 멀티파트파일이 넘어오면, 기존 사진을 지우고 새로운 사진으로 수정 or 기존 사진이 없다면 다이어리에 사진 추가
+     * 파라미터로 멀티파트파일이 넘어오면, 기존 사진을 지우고 새로운 사진으로 수정 or 기존 사진이 없다면 다이어리에 사진 추가
      */
     @Transactional
     public Boolean modifyDiary(Long id, @Valid DiaryDto diaryDto, MultipartFile multipartFile) throws IOException {
         Diary findDiary = diaryRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found diary"));
-        if(multipartFile != null) {
+        if (multipartFile != null) {
             DiaryPhoto diaryPhoto = new DiaryPhoto(s3Uploader.upload(multipartFile, "diary"));
-            if(findDiary.getPhoto() != null) {
+            if (findDiary.getPhoto() != null) {
                 String PreviousKey = findDiary.getPhoto().getS3Key();
                 s3Uploader.delete(PreviousKey);
             }
             findDiary.updateDiaryPhoto(diaryPhoto);
-        }
-        else {
-            if(findDiary.getPhoto() != null && diaryDto.getUrl() == null){
+        } else {
+            if (findDiary.getPhoto() != null && diaryDto.getUrl() == null) {
                 String PreviousKey = findDiary.getPhoto().getS3Key();
                 s3Uploader.delete(PreviousKey);
                 findDiary.updateDiaryPhoto(null);
@@ -147,10 +144,10 @@ public class DiaryService {
     }
 
     @Transactional
-    public Boolean deleteDiary(Long id){
+    public Boolean deleteDiary(Long id) {
         Diary findDiary = diaryRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found diary"));
-        if(findDiary.getPhoto() != null) s3Uploader.delete(findDiary.getPhoto().getS3Key());
+        if (findDiary.getPhoto() != null) s3Uploader.delete(findDiary.getPhoto().getS3Key());
         Member findMember = findDiary.getMember();
         int diariesSize = findMember.removeDiaries(findDiary);
         return diariesSize == 0;

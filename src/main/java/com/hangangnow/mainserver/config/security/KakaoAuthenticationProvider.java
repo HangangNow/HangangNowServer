@@ -17,40 +17,40 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if(authentication == null){
+        if (authentication == null) {
             throw new InternalAuthenticationServiceException("Authentication is null");
         }
 
 
-        if(authentication.getCredentials() == null){
+        if (authentication.getCredentials() == null) {
             throw new AuthenticationCredentialsNotFoundException("Credentials is null");
         }
 
         String email = authentication.getName();
         UserDetails loadedUser = customMemberDetailsService.loadUserByEmail(email);
-        if(loadedUser == null){
+        if (loadedUser == null) {
             throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
         }
 
         /* checker */
-        if(!loadedUser.isAccountNonLocked()){
+        if (!loadedUser.isAccountNonLocked()) {
             throw new LockedException("User account is locked");
         }
-        if(!loadedUser.isEnabled()){
+        if (!loadedUser.isEnabled()) {
             throw new DisabledException("User is disabled");
         }
-        if(!loadedUser.isAccountNonExpired()){
+        if (!loadedUser.isAccountNonExpired()) {
             throw new AccountExpiredException("User account has expired");
         }
 
         /* 실질적인 인증 */
         // loadedUser password email 담겨있음 -> by CustomMemberDetailService
-        if(!email.equals(loadedUser.getPassword())){
+        if (!email.equals(loadedUser.getPassword())) {
             throw new BadCredentialsException("IN KakaoAuthProvider, Email does not match stored value");
         }
 
         /* checker */
-        if(!loadedUser.isCredentialsNonExpired()){
+        if (!loadedUser.isCredentialsNonExpired()) {
             throw new CredentialsExpiredException("User credentials have expired");
         }
         /* 인증 완료 */

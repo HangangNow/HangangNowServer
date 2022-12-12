@@ -23,7 +23,7 @@ public class MailService {
     private final RedisUtil redisUtil;
 
 
-    public EmailAuthDto authEmail(EmailAuthDto emailAuthDto){
+    public EmailAuthDto authEmail(EmailAuthDto emailAuthDto) {
         Random random = new Random();
         String code = String.valueOf(random.nextInt(888888) + 111111);
 
@@ -34,28 +34,26 @@ public class MailService {
     }
 
 
-    public void authLoginId(String email, String name, String loginId){
+    public void authLoginId(String email, String name, String loginId) {
         createLoginIdAuthContent(email, name, loginId);
     }
 
 
-    public boolean checkEmailCode(EmailAuthDto emailAuthDto){
-        if(emailAuthDto.getCode() == null){
+    public boolean checkEmailCode(EmailAuthDto emailAuthDto) {
+        if (emailAuthDto.getCode() == null) {
             throw new IllegalArgumentException("Email 인증 code 값이 비어있습니다. 값을 확인하세요");
         }
 
         String findCode = redisUtil.getDataWithKey(emailAuthDto.getEmail());
 
-        if(findCode == null){
+        if (findCode == null) {
             throw new RuntimeException("코드 인증 시간이 만료되었습니다.");
         }
 
-        if(findCode.equals(emailAuthDto.getCode())){
+        if (findCode.equals(emailAuthDto.getCode())) {
             redisUtil.deleteData(emailAuthDto.getEmail());
             return true;
-        }
-
-        else{
+        } else {
             return false;
         }
     }
@@ -77,7 +75,7 @@ public class MailService {
 
 
     private void send(String email, String subject, String text) {
-        try{
+        try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
             helper.setTo(email);

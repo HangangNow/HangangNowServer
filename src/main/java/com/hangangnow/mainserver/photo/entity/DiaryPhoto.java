@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiaryPhoto extends Photo{
+public class DiaryPhoto extends Photo {
 
     @OneToOne
     @JoinColumn(name = "diary_id")
@@ -32,7 +32,7 @@ public class DiaryPhoto extends Photo{
         this.lastModifiedTime = LocalDateTime.now();
     }
 
-    public DiaryPhoto(S3UploadData s3UploadData){
+    public DiaryPhoto(S3UploadData s3UploadData) {
         this.s3Key = s3UploadData.getFileKey();
         this.url = s3UploadData.getFileUrl();
         this.lastModifiedTime = LocalDateTime.now();

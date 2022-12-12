@@ -35,7 +35,7 @@ public class FlyerService {
 
     @Transactional
     public FlyerResponseDto save(MultipartFile multipartFile, @Valid FlyerRequestDto flyerRequestDto) throws IOException {
-        if (multipartFile == null){
+        if (multipartFile == null) {
             throw new IllegalArgumentException("전단지 이미지 파일이 존재하지 않습니다.");
         }
 
@@ -60,31 +60,31 @@ public class FlyerService {
         Park findPark = parkRepository.findByName(flyerRequestDto.getParkName())
                 .orElseThrow(() -> new IllegalArgumentException("해당 공원이 존재하지 않습니다."));
 
-        if(multipartFile != null){
+        if (multipartFile != null) {
             s3Uploader.delete(findFlyer.getPhoto().getS3Key());
             FlyerPhoto flyerPhoto = new FlyerPhoto(s3Uploader.upload(multipartFile, "flyer"));
             findFlyer.updatePhoto(flyerPhoto);
         }
 
         Address address = new Address(flyerRequestDto.getAddress());
-        findFlyer.update(flyerRequestDto.getName(), address, flyerRequestDto.getContent(),flyerRequestDto.getCall());
+        findFlyer.update(flyerRequestDto.getName(), address, flyerRequestDto.getContent(), flyerRequestDto.getCall());
         findPark.addFlyer(findFlyer);
 
         return new FlyerResponseDto(findFlyer);
     }
 
     @Transactional
-    public ResponseDto delete(Long id){
+    public ResponseDto delete(Long id) {
         Flyer findFlyer = flyerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("전단지가 존재하지 않습니다."));
-        if(findFlyer.getPhoto() != null) s3Uploader.delete(findFlyer.getPhoto().getS3Key());
+        if (findFlyer.getPhoto() != null) s3Uploader.delete(findFlyer.getPhoto().getS3Key());
         flyerRepository.delete(findFlyer);
 
         return new ResponseDto("전단지가 삭제되었습니다.");
     }
 
 
-    public FlyerResponseDto findOneFlyers(Long id){
+    public FlyerResponseDto findOneFlyers(Long id) {
         Flyer findFlyer = flyerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 전단지가 존재하지 않습니다."));
 
@@ -92,10 +92,9 @@ public class FlyerService {
 
         FlyerResponseDto flyerResponseDto = new FlyerResponseDto(findFlyer);
 
-        if(flyerScraps.contains(findFlyer)){
+        if (flyerScraps.contains(findFlyer)) {
             flyerResponseDto.setIsScrap(true);
-        }
-        else{
+        } else {
             flyerResponseDto.setIsScrap(false);
         }
 
@@ -103,7 +102,7 @@ public class FlyerService {
     }
 
 
-    public GenericResponseDto findAllFlyers(){
+    public GenericResponseDto findAllFlyers() {
         List<Flyer> allFlyer = flyerRepository.findAllFlyer();
         List<Flyer> flyerScrap = scrapRepository.findFlyerScrapsByMemberId(SecurityUtil.getCurrentMemberId());
 
@@ -112,10 +111,9 @@ public class FlyerService {
         for (Flyer flyer : allFlyer) {
             FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
 
-            if(flyerScrap.contains(flyer)){
+            if (flyerScrap.contains(flyer)) {
                 flyerResponseDto.setIsScrap(true);
-            }
-            else{
+            } else {
                 flyerResponseDto.setIsScrap(false);
             }
 
@@ -127,7 +125,7 @@ public class FlyerService {
     }
 
 
-    public GenericResponseDto findAllFlyersByPark(Long parkId){
+    public GenericResponseDto findAllFlyersByPark(Long parkId) {
         Park findPark = parkRepository.findById(parkId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공원이 존재하지 않습니다."));
 
@@ -139,10 +137,9 @@ public class FlyerService {
         for (Flyer flyer : allFlyerByPark) {
             FlyerResponseDto flyerResponseDto = new FlyerResponseDto(flyer);
 
-            if(flyerScrap.contains(flyer)){
+            if (flyerScrap.contains(flyer)) {
                 flyerResponseDto.setIsScrap(true);
-            }
-            else{
+            } else {
                 flyerResponseDto.setIsScrap(false);
             }
 

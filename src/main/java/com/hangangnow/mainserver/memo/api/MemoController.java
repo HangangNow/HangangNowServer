@@ -22,7 +22,7 @@ public class MemoController {
 
     private final MemoService memoService;
 
-    @GetMapping("/{memoid}")
+    @GetMapping("/{memoId}")
     @Operation(summary = "단일 메모 조회", description = "메모id를 이용해 메모를 상세 조회할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
@@ -32,8 +32,8 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public MemoDto memoOne(@PathVariable Long memoid){
-       return memoService.findOne(memoid);
+    public MemoDto getOneMemo(@PathVariable Long memoId) {
+        return memoService.findOne(memoId);
     }
 
     @GetMapping("")
@@ -46,7 +46,7 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public GenericResponseDto Memos(){
+    public GenericResponseDto getMemos() {
         return new GenericResponseDto(memoService.findAllMemberMemo());
     }
 
@@ -59,8 +59,8 @@ public class MemoController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public GenericResponseDto CalendarMemos(@PathVariable("year") @Min(2000) @Max(2099) int year,
-                                            @PathVariable("month") @Min(1) @Max(12) int month){
+    public GenericResponseDto getMemosByYearAndMonth(@PathVariable("year") @Min(2000) @Max(2099) int year,
+                                                     @PathVariable("month") @Min(1) @Max(12) int month) {
         return new GenericResponseDto(memoService.findAllCalendarMemo(year, month));
     }
 
@@ -76,13 +76,13 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public MemoDto AddMemo(@RequestBody @Valid MemoDto request){
+    public MemoDto addMemo(@RequestBody @Valid MemoDto request) {
         return memoService.addMemo(request);
     }
 
     @PutMapping("/{memoid}")
     @Operation(summary = "메모 수정", description = "메모를 수정할 수 있습니다.  "
-            +"\n모든 키 값은 필수 값 입니다.")
+            + "\n모든 키 값은 필수 값 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
@@ -91,11 +91,11 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public Boolean ModifyMemo(@PathVariable Long memoid, @RequestBody MemoDto request) {
-        return memoService.modifyMemo(memoid, request);
+    public Boolean modifyMemo(@PathVariable Long memoId, @RequestBody MemoDto request) {
+        return memoService.modifyMemo(memoId, request);
     }
 
-    @DeleteMapping("/{memoid}")
+    @DeleteMapping("/{memoId}")
     @Operation(summary = "메모 삭제", description = "메모를 삭제할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
@@ -105,8 +105,8 @@ public class MemoController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
-    public Boolean DeleteMemo(@PathVariable Long memoid) {
-        return memoService.deleteMemo(memoid);
+    public Boolean deleteMemo(@PathVariable Long memoId) {
+        return memoService.deleteMemo(memoId);
     }
 
 }

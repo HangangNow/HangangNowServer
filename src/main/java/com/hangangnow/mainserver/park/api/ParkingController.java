@@ -29,7 +29,7 @@ public class ParkingController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public ParkingResponseDto ParkingOne(@PathVariable("parkingid") Long parkingid){
+    public ParkingResponseDto ParkingOne(@PathVariable("parkingid") Long parkingid) {
         return parkingService.findOne(parkingid);
     }
 
@@ -42,7 +42,7 @@ public class ParkingController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public GenericResponseDto ParkParkings(@PathVariable("parkid") Long parkid){
+    public GenericResponseDto ParkParkings(@PathVariable("parkid") Long parkid) {
         return new GenericResponseDto(parkingService.findParkParking(parkid));
     }
 
@@ -53,7 +53,7 @@ public class ParkingController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public GenericResponseDto MapParkings(){
+    public GenericResponseDto MapParkings() {
         return new GenericResponseDto(parkingService.findMapParking());
     }
 
@@ -64,7 +64,7 @@ public class ParkingController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public GenericResponseDto Parkings(){
+    public GenericResponseDto Parkings() {
         return new GenericResponseDto(parkingService.findAllParking());
     }
 }

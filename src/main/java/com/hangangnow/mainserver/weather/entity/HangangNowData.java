@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HangangNowData {
+
     @Id
     private Long id;
     private LocalDateTime lastModifiedTime;

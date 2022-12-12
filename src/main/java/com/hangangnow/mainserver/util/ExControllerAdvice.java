@@ -31,7 +31,7 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public MethodArgsException methodValidExceptionHandle(MethodArgumentNotValidException e){
+    public MethodArgsException methodValidExceptionHandle(MethodArgumentNotValidException e) {
         LinkedHashMap<String, String> errors = new LinkedHashMap<>();
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
 
@@ -78,5 +78,4 @@ public class ExControllerAdvice {
         e.printStackTrace();
         return new GeneralException("BAD", e.getMessage());
     }
-
 }

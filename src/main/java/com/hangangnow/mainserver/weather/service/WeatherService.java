@@ -15,7 +15,7 @@ public class WeatherService {
 
     private final EntityManager em;
 
-    public HangangNowData getHangangnowData(){
+    public HangangNowData getHangangnowData() {
         return Optional.ofNullable(em.find(HangangNowData.class, FIRST_INDEX))
                 .orElseThrow(() -> new NullPointerException("Failed: Not found hangangNowData"));
     }

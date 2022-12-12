@@ -24,12 +24,12 @@ public class RefreshToken {
     private String value;
 
     @Builder
-    public RefreshToken(UUID key, String value){
+    public RefreshToken(UUID key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public RefreshToken updateValue(String value){
+    public RefreshToken updateValue(String value) {
         this.value = value;
         return this;
     }

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @PropertySource("classpath:/application-secret.properties")
-public class TokenProvider{
+public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
@@ -59,9 +59,7 @@ public class TokenProvider{
 
         if (autoLogin) {
             refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_AUTO_LOGIN_EXPIRE_TIME);
-        }
-
-        else {
+        } else {
             refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
         }
 

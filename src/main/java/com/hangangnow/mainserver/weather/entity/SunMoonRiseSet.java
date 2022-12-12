@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SunMoonRiseSet {
+
     private String SunRise;
     private String SunSet;
     private String moonRise;

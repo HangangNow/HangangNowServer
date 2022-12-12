@@ -13,7 +13,7 @@ public class Address {
     private String gu;
     private String detail;
 
-    public Address(){
+    public Address() {
     }
 
     public Address(String address) {
@@ -22,23 +22,20 @@ public class Address {
         String gu = addresses[1];
         String detail = "";
 
-        for(int i=2; i< addresses.length; i++){
-            if (i == addresses.length - 1){
+        for (int i = 2; i < addresses.length; i++) {
+            if (i == addresses.length - 1) {
                 detail += addresses[i];
-            }
-            else{
+            } else {
                 detail += addresses[i] + " ";
             }
         }
-
-
         this.sido = si;
         this.gu = gu;
         this.detail = detail;
     }
 
 
-    public String fullAddress(){
+    public String fullAddress() {
         return this.getSido() + " " + this.getGu() + " " + this.getDetail();
     }
 
@@ -47,7 +44,6 @@ public class Address {
         this.sido = sido;
         this.gu = gu;
     }
-
 
     public Address(String sido, String gu, String gil, String detail) {
         this.sido = sido;

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NearestParkDto {
+
     public Long id;
     public String name;
     public Double x_pos;

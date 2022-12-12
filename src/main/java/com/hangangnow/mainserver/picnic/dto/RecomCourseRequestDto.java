@@ -21,9 +21,9 @@ public class RecomCourseRequestDto {
     private List<String> places = new ArrayList<>();
     private List<String> themes = new ArrayList<>();
 
-    public void updateThemeByCompainon(){
+    public void updateThemeByCompainon() {
         this.themes = new ArrayList<>();
-        switch(this.companion){
+        switch (this.companion) {
             case "혼자": {
                 this.themes.add("산책");
                 this.themes.add("자전거");

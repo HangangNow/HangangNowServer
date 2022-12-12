@@ -13,9 +13,8 @@ public class Weather {
     private Integer skyMode;
     private Integer maxRainPercent;
 
-    public Weather(Integer skyMode, Integer maxRainPercent){
+    public Weather(Integer skyMode, Integer maxRainPercent) {
         this.skyMode = skyMode;
         this.maxRainPercent = maxRainPercent;
     }
-
 }

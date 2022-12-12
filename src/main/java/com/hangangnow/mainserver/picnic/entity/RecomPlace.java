@@ -31,18 +31,16 @@ public class RecomPlace {
     private List<RecomPlaceScrap> recomPlaceScraps = new ArrayList<>();
 
 
-    public Double getDistance(Double x_pos, Double y_pos){
-        return sqrt(pow(this.local.getX_pos()-x_pos, 2) + pow(this.local.getY_pos()-y_pos, 2));
+    public Double getDistance(Double x_pos, Double y_pos) {
+        return sqrt(pow(this.local.getX_pos() - x_pos, 2) + pow(this.local.getY_pos() - y_pos, 2));
     }
 
-
-    public void addRecomPlaceScrap(RecomPlaceScrap recomPlaceScrap){
+    public void addRecomPlaceScrap(RecomPlaceScrap recomPlaceScrap) {
         this.recomPlaceScraps.add(recomPlaceScrap);
     }
 
 
-    public void deleteRecomPlaceScrap(RecomPlaceScrap recomPlaceScrap){
+    public void deleteRecomPlaceScrap(RecomPlaceScrap recomPlaceScrap) {
         this.recomPlaceScraps.remove(recomPlaceScrap);
     }
-
 }

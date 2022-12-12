@@ -41,7 +41,7 @@ public class FlyerController {
             "\t\"address\": \"서울시 영등포구 국제금융로7길 32\",\n" +
             "\t\"call\" : \"0504-3142-1881\"\n" +
             "}\n"
-           )
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "CREATED"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
@@ -53,7 +53,7 @@ public class FlyerController {
     @PostMapping("/api/v1/flyers")
     public ResponseEntity<FlyerResponseDto> registerFlyer(
             @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest,
-            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest) throws Exception{
+            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest) throws Exception {
         FlyerRequestDto flyerRequestDto = conversionService.convert(jsonStringRequest, FlyerRequestDto.class);
         return new ResponseEntity<>(flyerService.save(imageRequest, flyerRequestDto), HttpStatus.CREATED);
     }
@@ -68,7 +68,7 @@ public class FlyerController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/api/v1/flyers")
-    public ResponseEntity<GenericResponseDto> getAllFlyers(){
+    public ResponseEntity<GenericResponseDto> getAllFlyers() {
         return new ResponseEntity<>(flyerService.findAllFlyers(), HttpStatus.OK);
     }
 
@@ -82,7 +82,7 @@ public class FlyerController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/api/v1/flyers/{flyerId}")
-    public ResponseEntity<FlyerResponseDto> getOneFlyer(@PathVariable Long flyerId){
+    public ResponseEntity<FlyerResponseDto> getOneFlyer(@PathVariable Long flyerId) {
         return new ResponseEntity<>(flyerService.findOneFlyers(flyerId), HttpStatus.OK);
     }
 
@@ -95,10 +95,10 @@ public class FlyerController {
             "\n 5: 반포한강공원  " +
             "\n 6: 이촌한강공원  " +
             "\n 7: 망원한강공원  " +
-            "\n 8: 여의도한강공원  "   +
+            "\n 8: 여의도한강공원  " +
             "\n 9: 난지한강공원  " +
             "\n 10: 강서한강공원  " +
-            "\n 11: 양화한강공원  " )
+            "\n 11: 양화한강공원  ")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -107,7 +107,7 @@ public class FlyerController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @GetMapping("/api/v1/flyers/parks/{parkId}")
-    public ResponseEntity<GenericResponseDto> getFlyerByParkId(@PathVariable Long parkId){
+    public ResponseEntity<GenericResponseDto> getFlyerByParkId(@PathVariable Long parkId) {
         return new ResponseEntity<>(flyerService.findAllFlyersByPark(parkId), HttpStatus.OK);
     }
 
@@ -136,8 +136,8 @@ public class FlyerController {
     })
     @PutMapping("/api/v1/flyers/{flyerId}")
     public ResponseEntity<FlyerResponseDto> modifyFlyer(@PathVariable Long flyerId,
-            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest,
-            @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest) throws IOException {
+                                                        @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest,
+                                                        @NotBlank @RequestPart(value = "jsonData") String jsonStringRequest) throws IOException {
         FlyerRequestDto flyerRequestDto = conversionService.convert(jsonStringRequest, FlyerRequestDto.class);
         return new ResponseEntity<>(flyerService.update(flyerId, imageRequest, flyerRequestDto), HttpStatus.OK);
     }
@@ -152,7 +152,7 @@ public class FlyerController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @DeleteMapping("/api/v1/flyers/{flyerId}")
-    public ResponseEntity<ResponseDto> deleteFlyer(@PathVariable Long flyerId){
+    public ResponseEntity<ResponseDto> deleteFlyer(@PathVariable Long flyerId) {
         return new ResponseEntity<>(flyerService.delete(flyerId), HttpStatus.OK);
     }
 

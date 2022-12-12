@@ -13,11 +13,11 @@ import java.util.Optional;
 public class ParkingRepository {
     private final EntityManager em;
 
-    public Optional<Parking> findById(Long id){
+    public Optional<Parking> findById(Long id) {
         return Optional.ofNullable(em.find(Parking.class, id));
     }
 
-    public List<Parking> findAll(){
+    public List<Parking> findAll() {
         return em.createQuery("select p from Parking p", Parking.class)
                 .getResultList();
     }

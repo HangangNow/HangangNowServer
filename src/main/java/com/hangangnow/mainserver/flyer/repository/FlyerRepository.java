@@ -14,16 +14,16 @@ import java.util.Optional;
 public class FlyerRepository {
     private final EntityManager em;
 
-    public Flyer save(Flyer flyer){
+    public Flyer save(Flyer flyer) {
         em.persist(flyer);
         return flyer;
     }
 
-    public Optional<Flyer> findById(Long id){
+    public Optional<Flyer> findById(Long id) {
         return Optional.ofNullable(em.find(Flyer.class, id));
     }
 
-    public List<Flyer> findAllFlyerByPark(Park park){
+    public List<Flyer> findAllFlyerByPark(Park park) {
         return em.createQuery("select f from Flyer f " +
                         " join fetch f.park fp" +
                         " join fetch f.photo fph" +
@@ -32,14 +32,14 @@ public class FlyerRepository {
                 .getResultList();
     }
 
-    public List<Flyer> findAllFlyer(){
+    public List<Flyer> findAllFlyer() {
         return em.createQuery("select f from Flyer f" +
                         " join fetch f.photo ph" +
                         " join fetch f.park p", Flyer.class)
                 .getResultList();
     }
 
-    public void delete(Flyer flyer){
+    public void delete(Flyer flyer) {
         em.remove(flyer);
     }
 }

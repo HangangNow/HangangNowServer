@@ -16,7 +16,6 @@ public class RecomPlaceScrapDto {
     private Double x_pos;
     private Double y_pos;
 
-
     public RecomPlaceScrapDto(RecomPlace recomPlace) {
         this.id = recomPlace.getId();
         this.name = recomPlace.getName();

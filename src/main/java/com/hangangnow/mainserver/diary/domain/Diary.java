@@ -50,7 +50,7 @@ public class Diary {
     @Enumerated(EnumType.STRING)
     private DiaryWeather diaryWeather;
 
-    static public Diary of(DiaryDto diaryDto, Member member){
+    static public Diary of(DiaryDto diaryDto, Member member) {
         return Diary.builder()
                 .member(member)
                 .title(diaryDto.getTitle())
@@ -62,12 +62,12 @@ public class Diary {
                 .build();
     }
 
-    public void updateDiaryPhoto(DiaryPhoto diaryPhoto){
+    public void updateDiaryPhoto(DiaryPhoto diaryPhoto) {
         this.photo = diaryPhoto;
-        if(diaryPhoto != null) diaryPhoto.updateDiary(this); // 굳이 필요하진 않지만 List라면 필요하다!
+        if (diaryPhoto != null) diaryPhoto.updateDiary(this); // 굳이 필요하진 않지만 List라면 필요하다!
     }
 
-    public void update(DiaryDto diaryDto){
+    public void update(DiaryDto diaryDto) {
         this.title = diaryDto.getTitle();
         this.content = diaryDto.getContent();
         this.emotion = FromStringToEmotion(diaryDto.getEmotion());
@@ -75,33 +75,51 @@ public class Diary {
         this.lastModifiedTime = LocalDateTime.now();
     }
 
-    static public Emotion FromStringToEmotion(String stringEmotion){
-        if(stringEmotion == null) return null;
-        switch (stringEmotion){
-            case "EXCITED" : return Emotion.EXCITED;
-            case "BIG_SMILE" : return Emotion.BIG_SMILE;
-            case "FUNNY" : return Emotion.FUNNY;
-            case "PEACEFUL" : return Emotion.PEACEFUL;
-            case "LOVELY" : return Emotion.LOVELY;
-            case "SAD" : return Emotion.SAD;
-            case "ANGRY" : return Emotion.ANGRY;
-            case "FROWNING" : return Emotion.FROWNING;
-            case "DIZZY" : return Emotion.DIZZY;
-            default: return Emotion.SMILE;
+    static public Emotion FromStringToEmotion(String stringEmotion) {
+        if (stringEmotion == null) return null;
+        switch (stringEmotion) {
+            case "EXCITED":
+                return Emotion.EXCITED;
+            case "BIG_SMILE":
+                return Emotion.BIG_SMILE;
+            case "FUNNY":
+                return Emotion.FUNNY;
+            case "PEACEFUL":
+                return Emotion.PEACEFUL;
+            case "LOVELY":
+                return Emotion.LOVELY;
+            case "SAD":
+                return Emotion.SAD;
+            case "ANGRY":
+                return Emotion.ANGRY;
+            case "FROWNING":
+                return Emotion.FROWNING;
+            case "DIZZY":
+                return Emotion.DIZZY;
+            default:
+                return Emotion.SMILE;
         }
     }
 
-    static public DiaryWeather FromStringToDiaryWeather(String stringDiaryWeather){
-        if(stringDiaryWeather == null) return null;
-        switch (stringDiaryWeather){
-            case "SUN_CLOUD" : return DiaryWeather.SUN_CLOUD;
-            case "CLOUD" : return DiaryWeather.CLOUD;
-            case "CLOUD_RAIN" : return DiaryWeather.CLOUD_RAIN;
-            case "CLOUD_SNOW" : return DiaryWeather.CLOUD_SNOW;
-            case "SNOWMAN" : return DiaryWeather.SNOWMAN;
-            case "UMBRELLA" : return DiaryWeather.UMBRELLA;
-            case "WIND" : return DiaryWeather.WIND;
-            default: return DiaryWeather.SUN;
+    static public DiaryWeather FromStringToDiaryWeather(String stringDiaryWeather) {
+        if (stringDiaryWeather == null) return null;
+        switch (stringDiaryWeather) {
+            case "SUN_CLOUD":
+                return DiaryWeather.SUN_CLOUD;
+            case "CLOUD":
+                return DiaryWeather.CLOUD;
+            case "CLOUD_RAIN":
+                return DiaryWeather.CLOUD_RAIN;
+            case "CLOUD_SNOW":
+                return DiaryWeather.CLOUD_SNOW;
+            case "SNOWMAN":
+                return DiaryWeather.SNOWMAN;
+            case "UMBRELLA":
+                return DiaryWeather.UMBRELLA;
+            case "WIND":
+                return DiaryWeather.WIND;
+            default:
+                return DiaryWeather.SUN;
         }
     }
 }

@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class FacilityResponseDto {
+
     private String name;
     private String address;
     private Double x_pos;
     private Double y_pos;
 
-    public FacilityResponseDto (SideFacility sideFacility){
+    public FacilityResponseDto(SideFacility sideFacility) {
         this.name = sideFacility.getLocal().getLocalname();
         this.address = sideFacility.getAddress().fullAddress();
         this.x_pos = sideFacility.getLocal().getX_pos();

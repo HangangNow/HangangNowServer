@@ -38,11 +38,11 @@ public class EventService {
 
     @Transactional
     public EventResponseDto save(@Valid EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
-        if (thumbnail == null){
+        if (thumbnail == null) {
             throw new IllegalArgumentException("이벤트 썸네일 이미지는 필수입니다.");
         }
 
-        if (multipartFile == null){
+        if (multipartFile == null) {
             throw new IllegalArgumentException("행사 이미지는 필수입니다.");
         }
 
@@ -62,7 +62,7 @@ public class EventService {
     }
 
     @Transactional
-    public ResponseDto delete(Long id){
+    public ResponseDto delete(Long id) {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다"));
 
@@ -77,13 +77,13 @@ public class EventService {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다"));
 
-        if (thumbnail != null){
+        if (thumbnail != null) {
             s3Uploader.delete(findEvent.getThumbnailPhoto().getS3Key());
             ThumbnailPhoto thumbnailPhoto = new ThumbnailPhoto(s3Uploader.upload(thumbnail, "thumbnail"));
             findEvent.updateThumbnailPhoto(thumbnailPhoto);
         }
 
-        if(multipartFile != null){
+        if (multipartFile != null) {
             s3Uploader.delete(findEvent.getPhoto().getS3Key());
             EventPhoto eventPhoto = new EventPhoto(s3Uploader.upload(multipartFile, "event"));
             findEvent.updateEventPhoto(eventPhoto);
@@ -98,7 +98,7 @@ public class EventService {
     }
 
 
-    public EventResponseDto findOne(Long id){
+    public EventResponseDto findOne(Long id) {
         Event findEvent = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다."));
 
@@ -106,11 +106,9 @@ public class EventService {
 
         List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
 
-        if(eventScraps.contains(findEvent)){
+        if (eventScraps.contains(findEvent)) {
             eventResponseDto.setIsScrap(true);
-        }
-
-        else{
+        } else {
             eventResponseDto.setIsScrap(false);
         }
 
@@ -118,7 +116,7 @@ public class EventService {
     }
 
 
-    public GenericResponseDto findAllEvents(){
+    public GenericResponseDto findAllEvents() {
         List<Event> allEvents = eventRepository.findAllEvents();
         List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
 
@@ -127,10 +125,9 @@ public class EventService {
         for (Event event : allEvents) {
             EventResponseDto eventResponseDto = new EventResponseDto(event);
 
-            if(eventScraps.contains(event)){
+            if (eventScraps.contains(event)) {
                 eventResponseDto.setIsScrap(true);
-            }
-            else{
+            } else {
                 eventResponseDto.setIsScrap(false);
             }
 

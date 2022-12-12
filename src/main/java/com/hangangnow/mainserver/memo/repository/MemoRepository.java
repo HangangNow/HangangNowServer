@@ -16,19 +16,15 @@ public class MemoRepository {
 
     private final EntityManager em;
 
-    public void save(Memo memo){ em.persist(memo); }
+    public void save(Memo memo) {
+        em.persist(memo);
+    }
 
-    public Optional<Memo> findById(Long id){
+    public Optional<Memo> findById(Long id) {
         return Optional.ofNullable(em.find(Memo.class, id));
     }
 
-//    public List<Memo> findAllByMember(Member member){
-//        return em.createQuery("select m from Memo m where m.member =: member", Memo.class)
-//                .setParameter("member", member)
-//                .getResultList();
-//    }
-
-    public List<Memo> findAllByMemberAndYearAndMonth(Member member,int year, int month){
+    public List<Memo> findAllByMemberAndYearAndMonth(Member member, int year, int month) {
         String jpql = "select m from Memo m where m.member =: member " +
                 "and FUNCTION('year',m.memoDate) =: year " +
                 "and FUNCTION('month',m.memoDate) =: month ";
@@ -40,12 +36,12 @@ public class MemoRepository {
                 .getResultList();
     }
 
-    public LocalDateTime update(Memo memo, String content, String memoColor){
+    public LocalDateTime update(Memo memo, String content, String memoColor) {
         memo.update(content, memoColor);
         return memo.getLastModifiedTime();
     }
 
-    public void remove(Memo memo){
+    public void remove(Memo memo) {
         em.remove(memo);
     }
 }

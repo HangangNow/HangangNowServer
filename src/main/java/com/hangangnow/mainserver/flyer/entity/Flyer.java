@@ -52,20 +52,20 @@ public class Flyer {
     }
 
 
-    public void update(String name, Address address, String content, String call){
+    public void update(String name, Address address, String content, String call) {
         this.name = name;
         this.address = address;
         this.callNumber = call;
         this.content = content;
     }
 
-    public void updatePhoto(FlyerPhoto flyerPhoto){
+    public void updatePhoto(FlyerPhoto flyerPhoto) {
         this.photo = flyerPhoto;
     }
 
 
-    public void setPark(Park park){
-        if(this.park != null){
+    public void setPark(Park park) {
+        if (this.park != null) {
             this.park.getFlyers().remove(this);
         }
 
@@ -73,12 +73,12 @@ public class Flyer {
     }
 
 
-    public void addFlyerScrap(FlyerScrap flyerScrap){
+    public void addFlyerScrap(FlyerScrap flyerScrap) {
         this.flyerScraps.add(flyerScrap);
     }
 
 
-    public void deleteFlyerScrap(FlyerScrap flyerScrap){
+    public void deleteFlyerScrap(FlyerScrap flyerScrap) {
         this.flyerScraps.remove(flyerScrap);
     }
 }

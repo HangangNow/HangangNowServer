@@ -56,7 +56,6 @@ public class Park {
     private List<Parking> parkings = new ArrayList<>();
 
 
-
     public Park(String name, Local local, Address address, String content, LocalDateTime lastModifiedTime) {
         this.name = name;
         this.local = local;
@@ -66,7 +65,7 @@ public class Park {
     }
 
 
-    public void addFlyer(Flyer flyer){
+    public void addFlyer(Flyer flyer) {
         this.flyers.add(flyer);
         flyer.setPark(this);
     }

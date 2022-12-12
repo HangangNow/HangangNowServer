@@ -39,7 +39,7 @@ public class MemberController {
 
     })
     @GetMapping("/api/v1/members")
-    public ResponseEntity<MemberResponseDto> getMyMemberInfo(){
+    public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
         return new ResponseEntity<>(memberService.getLoginMemberInfo(), HttpStatus.OK);
     }
 
@@ -54,7 +54,7 @@ public class MemberController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     @PostMapping("/api/v1/members/logout")
-    public ResponseEntity<ResponseDto> logout(){
+    public ResponseEntity<ResponseDto> logout() {
         return new ResponseEntity<>(memberService.logout(), HttpStatus.OK);
     }
 
@@ -72,7 +72,7 @@ public class MemberController {
 
     })
     @PutMapping("/api/v1/members/password")
-    public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid PasswordRequestDto passwordRequestDto){
+    public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid PasswordRequestDto passwordRequestDto) {
         return new ResponseEntity<>(memberService.changePassword(passwordRequestDto), HttpStatus.OK);
     }
 
@@ -90,7 +90,7 @@ public class MemberController {
 
     })
     @DeleteMapping("api/v1/members")
-    public ResponseEntity<ResponseDto> deleteMember(){
+    public ResponseEntity<ResponseDto> deleteMember() {
         return new ResponseEntity<>(memberService.deleteMember(), HttpStatus.OK);
     }
 
@@ -106,7 +106,7 @@ public class MemberController {
 
     })
     @GetMapping("/api/v1/members/{email}")
-    public ResponseEntity<MemberResponseDto> getMemberInfoByEmail(@PathVariable String email){
+    public ResponseEntity<MemberResponseDto> getMemberInfoByEmail(@PathVariable String email) {
         return new ResponseEntity<>(memberService.getMemberInfoByEmail(email), HttpStatus.OK);
     }
 
@@ -126,12 +126,12 @@ public class MemberController {
 
     })
     @PutMapping("/api/v1/members/mbti")
-    public ResponseEntity<ResponseDto> changeMemberMbti(@RequestParam String mbti){
+    public ResponseEntity<ResponseDto> changeMemberMbti(@RequestParam String mbti) {
         return new ResponseEntity<>(memberService.changeMemberMbti(mbti), HttpStatus.OK);
     }
 
     @Operation(summary = "멤버 MBTI 삭제", description = "멤버 MBTI 삭제 URL." +
-            "\n### 요청변수 X" )
+            "\n### 요청변수 X")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
@@ -142,13 +142,13 @@ public class MemberController {
 
     })
     @DeleteMapping("/api/v1/members/mbti")
-    public ResponseEntity<ResponseDto> deleteMemberMbti(){
+    public ResponseEntity<ResponseDto> deleteMemberMbti() {
         return new ResponseEntity<>(memberService.deleteMemberMbti(), HttpStatus.OK);
     }
 
     @Operation(summary = "프로필 추가 및 수정", description = "회원 프로필을 추가할 수 있습니다.  " +
             "\nform-data key-value형식으로 데이터를 요청  " +
-            "\nkey: multipartData(필수)  "+
+            "\nkey: multipartData(필수)  " +
             "\n정상적으로 변경된 경우 URL이 반환됩니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK!"),
@@ -160,7 +160,7 @@ public class MemberController {
     })
     @PutMapping("/api/v1/members/photos")
     public ResponseEntity<ResponseDto> changeMemberProfile(
-            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception{
+            @Valid @RequestPart(value = "multipartData", required = false) MultipartFile imageRequest) throws Exception {
         return new ResponseEntity<>(memberService.changePhoto(imageRequest), HttpStatus.OK);
     }
 
@@ -195,10 +195,9 @@ public class MemberController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     @PostMapping("/api/v1/members/agree/marketing")
-    public ResponseEntity<ResponseDto> updateMarketingAgree(@RequestParam Boolean flag){
+    public ResponseEntity<ResponseDto> updateMarketingAgree(@RequestParam Boolean flag) {
         return new ResponseEntity<>(memberService.updateMarketingAgree(flag), HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "알람 설정 변경", description = "회원 알람 설정 변경 요청 URL.  " +
@@ -214,10 +213,9 @@ public class MemberController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed"),
     })
     @PostMapping("/api/v1/members/agree/alarm")
-    public ResponseEntity<ResponseDto> updateAlarmAgree(@RequestParam Boolean flag){
+    public ResponseEntity<ResponseDto> updateAlarmAgree(@RequestParam Boolean flag) {
         return new ResponseEntity<>(memberService.updateAlarmAgree(flag), HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "회원탈퇴 사유 등록", description = "회원탈퇴 사유 등록 URL.  " +
@@ -240,7 +238,7 @@ public class MemberController {
 
     })
     @PostMapping("/api/v1/members/withdraw/reasons")
-    public ResponseEntity<ResponseDto> registerWithdrawReasons(@RequestBody WithdrawDto withdrawDto){
+    public ResponseEntity<ResponseDto> registerWithdrawReasons(@RequestBody WithdrawDto withdrawDto) {
         return new ResponseEntity<>(memberService.createWithdrawReason(withdrawDto), HttpStatus.OK);
     }
 

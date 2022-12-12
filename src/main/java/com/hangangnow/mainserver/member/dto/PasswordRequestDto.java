@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class PasswordRequestDto {
+
     private String email;
 
     @NotBlank(message = "비밀번호는 필수 값 입니다.")

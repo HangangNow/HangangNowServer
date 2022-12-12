@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class FlyerRequestDto {
+
     @NotBlank
     private String name;
     @NotBlank

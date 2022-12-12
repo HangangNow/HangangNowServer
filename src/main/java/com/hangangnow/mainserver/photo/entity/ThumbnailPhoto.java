@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class ThumbnailPhoto extends Photo{
+public class ThumbnailPhoto extends Photo {
 
     @Column(nullable = false)
     protected String s3Key;

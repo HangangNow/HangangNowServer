@@ -22,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member{
+public class Member {
 
     @Id
     @Column(columnDefinition = "BINARY(16)", name = "member_id")
@@ -89,7 +89,7 @@ public class Member{
         this.memberProvider = memberProvider;
     }
 
-    public void createMemberByKakao(String loginId, String email, String password, String name){
+    public void createMemberByKakao(String loginId, String email, String password, String name) {
         this.loginId = loginId;
         this.email = email;
         this.password = password;
@@ -99,34 +99,34 @@ public class Member{
     }
 
 
-    public void updatePassword(String password){
+    public void updatePassword(String password) {
         this.password = password;
     }
 
 
-    public void updateMbti(String mbti){
+    public void updateMbti(String mbti) {
         this.memberMBTI = fromStringToEmotion(mbti);
     }
 
 
-    public void updatePhoto(MemberPhoto memberPhoto){
+    public void updatePhoto(MemberPhoto memberPhoto) {
         this.photo = memberPhoto;
     }
 
-    public void updateAlarmAgree(Boolean alarm_agree){
+    public void updateAlarmAgree(Boolean alarm_agree) {
         this.alarm_agree = alarm_agree;
     }
 
 
-    public void updateMarketingAgree(Boolean marketing_agree){
+    public void updateMarketingAgree(Boolean marketing_agree) {
         this.marketing_agree = marketing_agree;
     }
 
-    public void addScarp(Scrap scrap){
+    public void addScarp(Scrap scrap) {
         this.scraps.add(scrap);
     }
 
-    public void deleteScarp(Scrap scrap){
+    public void deleteScarp(Scrap scrap) {
         this.scraps.remove(scrap);
     }
 
@@ -135,7 +135,7 @@ public class Member{
         //sequential uuid 생성
         UUID uuid = Generators.timeBasedGenerator().generate();
         String[] uuidArr = uuid.toString().split("-");
-        String uuidStr = uuidArr[2]+uuidArr[1]+uuidArr[0]+uuidArr[3]+uuidArr[4];
+        String uuidStr = uuidArr[2] + uuidArr[1] + uuidArr[0] + uuidArr[3] + uuidArr[4];
         StringBuffer sb = new StringBuffer(uuidStr);
         sb.insert(8, "-");
         sb.insert(13, "-");
@@ -147,25 +147,34 @@ public class Member{
 
     // "INFLUENCER", "EXCITED", "ARTIST", "SOCIAL_DISTANCING",
     // "ACTIVIST", "PLANNER", "EXPLORER", "STARGAZER"
-    static public MemberMBTI fromStringToEmotion(String mbti){
-        if(mbti == null){
+    static public MemberMBTI fromStringToEmotion(String mbti) {
+        if (mbti == null) {
             return null;
         }
 
-        switch (mbti){
-            case "INFLUENCER": return MemberMBTI.INFLUENCER;
-            case "EXCITED": return MemberMBTI.EXCITED;
-            case "ARTIST": return MemberMBTI.ARTIST;
-            case "SOCIAL_DISTANCING": return MemberMBTI.SOCIAL_DISTANCING;
-            case "ACTIVIST": return MemberMBTI.ACTIVIST;
-            case "PLANNER": return MemberMBTI.PLANNER;
-            case "EXPLORER": return MemberMBTI.EXPLORER;
-            case "STARGAZER": return MemberMBTI.STARGAZER;
-            default: return null;
+        switch (mbti) {
+            case "INFLUENCER":
+                return MemberMBTI.INFLUENCER;
+            case "EXCITED":
+                return MemberMBTI.EXCITED;
+            case "ARTIST":
+                return MemberMBTI.ARTIST;
+            case "SOCIAL_DISTANCING":
+                return MemberMBTI.SOCIAL_DISTANCING;
+            case "ACTIVIST":
+                return MemberMBTI.ACTIVIST;
+            case "PLANNER":
+                return MemberMBTI.PLANNER;
+            case "EXPLORER":
+                return MemberMBTI.EXPLORER;
+            case "STARGAZER":
+                return MemberMBTI.STARGAZER;
+            default:
+                return null;
         }
     }
 
-    public int removeDiaries(Diary diary){
+    public int removeDiaries(Diary diary) {
         this.diaries.remove(diary);
         return this.diaries.size();
     }

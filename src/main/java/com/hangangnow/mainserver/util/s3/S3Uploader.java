@@ -38,12 +38,12 @@ public class S3Uploader {
 
     private S3UploadData upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-        try{
+        try {
             String uploadImageUrl = putS3(uploadFile, fileName);
             return new S3UploadData(fileName, uploadImageUrl);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
-        }finally{
+        } finally {
             removeNewFile(uploadFile);
         }
     }
@@ -63,7 +63,7 @@ public class S3Uploader {
 
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(file.getOriginalFilename());
-        if(convertFile.createNewFile()) {
+        if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             }

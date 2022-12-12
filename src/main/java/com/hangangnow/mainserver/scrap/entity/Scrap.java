@@ -19,7 +19,4 @@ public class Scrap {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     protected Member member;
-
-
-
 }

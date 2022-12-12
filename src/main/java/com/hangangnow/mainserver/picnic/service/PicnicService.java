@@ -26,24 +26,19 @@ public class PicnicService {
     private final PicnicRepository picnicRepository;
     private final ScrapRepository scrapRepository;
 
-    public RecomPlaceResponseDto placeOne(Long id){
+    public RecomPlaceResponseDto getOnePlace(Long id) {
         List<RecomPlace> scrapPlaces = scrapRepository.findRecomPlaceByMemberId(SecurityUtil.getCurrentMemberId());
 
         RecomPlace recomPlace = picnicRepository.findPlaceById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found Place"));
 
         RecomPlaceResponseDto recomPlaceResponseDto = new RecomPlaceResponseDto(recomPlace);
-        if(scrapPlaces.contains(recomPlace)){
-            recomPlaceResponseDto.setIsScrap(true);
-        }
-        else{
-            recomPlaceResponseDto.setIsScrap(false);
-        }
+        checkRecomPlaceScrap(scrapPlaces, recomPlace, recomPlaceResponseDto);
 
         return recomPlaceResponseDto;
     }
 
-    public List<RecomPlaceResponseDto> recomPlaces (Double x_pos, Double y_pos, Long limitSize){
+    public List<RecomPlaceResponseDto> getRecomPlaces(Double x_pos, Double y_pos, Long limitSize) {
         List<RecomPlace> scrapPlaces = scrapRepository.findRecomPlaceByMemberId(SecurityUtil.getCurrentMemberId());
 
         List<RecomPlace> recomPlaces = picnicRepository.findAllPlace()
@@ -54,49 +49,45 @@ public class PicnicService {
 
         List<RecomPlaceResponseDto> results = new ArrayList<>();
 
-
         for (RecomPlace recomPlace : recomPlaces) {
             RecomPlaceResponseDto recomPlaceResponseDto = new RecomPlaceResponseDto(recomPlace);
-            if (scrapPlaces.contains(recomPlace)){
-                recomPlaceResponseDto.setIsScrap(true);
-            }
-            else{
-                recomPlaceResponseDto.setIsScrap(false);
-            }
+            checkRecomPlaceScrap(scrapPlaces, recomPlace, recomPlaceResponseDto);
             results.add(recomPlaceResponseDto);
         }
 
         return results;
     }
 
-    public RecomCourseDto courseOne(Long id){
+    private void checkRecomPlaceScrap(List<RecomPlace> scrapPlaces, RecomPlace recomPlace, RecomPlaceResponseDto recomPlaceResponseDto) {
+        if (scrapPlaces.contains(recomPlace)) {
+            recomPlaceResponseDto.setIsScrap(true);
+        } else {
+            recomPlaceResponseDto.setIsScrap(false);
+        }
+    }
+
+    public RecomCourseDto getOneCourse(Long id) {
         List<RecomCourse> scrapCourses = scrapRepository.findRecomCourseByMemberId(SecurityUtil.getCurrentMemberId());
 
         RecomCourse findRecomCourse = picnicRepository.findCourseById(id)
                 .orElseThrow(() -> new NullPointerException("Failed: Not found Course"));
 
         RecomCourseDto recomCourseDto = new RecomCourseDto(findRecomCourse);
-
-        if(scrapCourses.contains(findRecomCourse)){
-            recomCourseDto.setIsScrap(true);
-        }
-        else{
-            recomCourseDto.setIsScrap(false);
-        }
+        checkRecomCourseScrap(scrapCourses, findRecomCourse, recomCourseDto);
 
         return recomCourseDto;
     }
 
-    public List<RecomCourseDto> recomCoursesWithoutPlace(RecomCourseRequestDto recomCourseRequestDto, List<RecomCourse> scrapCourses){
+    public List<RecomCourseDto> getRecomCoursesWithoutPlace(RecomCourseRequestDto recomCourseRequestDto, List<RecomCourse> scrapCourses) {
         List<RecomCourse> courses;
-        if(recomCourseRequestDto.getThemes().isEmpty()) recomCourseRequestDto.updateThemeByCompainon();
+        if (recomCourseRequestDto.getThemes().isEmpty()) recomCourseRequestDto.updateThemeByCompainon();
 
-        if(recomCourseRequestDto.getPlaces().isEmpty()){
+        if (recomCourseRequestDto.getPlaces().isEmpty()) {
             courses = picnicRepository.findAllCourseByTheme(recomCourseRequestDto.getThemes())
                     .stream()
                     .distinct()
                     .collect(Collectors.toList());
-        }else{
+        } else {
             courses = picnicRepository.findAllCourseByPlaceAndTheme(recomCourseRequestDto.getPlaces(), recomCourseRequestDto.getThemes())
                     .stream()
                     .distinct()
@@ -111,12 +102,7 @@ public class PicnicService {
 
         for (RecomCourse optimizeCourse : optimizeCourses) {
             RecomCourseDto recomCourseDto = new RecomCourseDto(optimizeCourse);
-            if(scrapCourses.contains(optimizeCourse)){
-                recomCourseDto.setIsScrap(true);
-            }
-            else{
-                recomCourseDto.setIsScrap(false);
-            }
+            checkRecomCourseScrap(scrapCourses, optimizeCourse, recomCourseDto);
 
             results.add(recomCourseDto);
         }
@@ -124,13 +110,13 @@ public class PicnicService {
         return results;
     }
 
-    public RecomCourseResponseDto recomCourses(RecomCourseRequestDto recomCourseRequestDto){
+    public RecomCourseResponseDto getRecomCourses(RecomCourseRequestDto recomCourseRequestDto) {
         List<RecomCourse> scrapCourses = scrapRepository.findRecomCourseByMemberId(SecurityUtil.getCurrentMemberId());
 
-        List<RecomPlaceResponseDto> recomPlaces = recomPlaces(recomCourseRequestDto.getX_pos(), recomCourseRequestDto.getY_pos(), 2L);
+        List<RecomPlaceResponseDto> recomPlaces = getRecomPlaces(recomCourseRequestDto.getX_pos(), recomCourseRequestDto.getY_pos(), 2L);
 
-        List<RecomCourseDto> recomCourses = recomCoursesWithoutPlace(recomCourseRequestDto, scrapCourses);
-        if(recomCourses.isEmpty()){
+        List<RecomCourseDto> recomCourses = getRecomCoursesWithoutPlace(recomCourseRequestDto, scrapCourses);
+        if (recomCourses.isEmpty()) {
             List<RecomCourse> recomCourseList = picnicRepository.findAllCourseByTheme(recomCourseRequestDto.getThemes())
                     .stream()
                     .distinct()
@@ -140,17 +126,20 @@ public class PicnicService {
             List<RecomCourseDto> results = new ArrayList<>();
             for (RecomCourse recomCourse : recomCourseList) {
                 RecomCourseDto recomCourseDto = new RecomCourseDto(recomCourse);
-                if(scrapCourses.contains(recomCourse)){
-                    recomCourseDto.setIsScrap(true);
-                }
-                else {
-                    recomCourseDto.setIsScrap(false);
-                }
+                checkRecomCourseScrap(scrapCourses, recomCourse, recomCourseDto);
                 results.add(recomCourseDto);
             }
             recomCourses = results;
-            if(recomCourses.isEmpty()) throw new NullPointerException("Failed: Not Found Course");
+            if (recomCourses.isEmpty()) throw new NullPointerException("Failed: Not Found Course");
         }
         return new RecomCourseResponseDto(true, recomCourses, recomPlaces);
+    }
+
+    private void checkRecomCourseScrap(List<RecomCourse> scrapCourses, RecomCourse findRecomCourse, RecomCourseDto recomCourseDto) {
+        if (scrapCourses.contains(findRecomCourse)) {
+            recomCourseDto.setIsScrap(true);
+        } else {
+            recomCourseDto.setIsScrap(false);
+        }
     }
 }

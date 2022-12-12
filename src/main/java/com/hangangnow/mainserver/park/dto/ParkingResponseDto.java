@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParkingResponseDto {
+
     private Long id;
     private String name;
     private Address address;
@@ -23,7 +24,7 @@ public class ParkingResponseDto {
     private String intervalCharge;
     private String fulldayCharge;
 
-    public ParkingResponseDto(Parking parking){
+    public ParkingResponseDto(Parking parking) {
         this.id = parking.getId();
         this.name = parking.getName();
         this.address = parking.getAddress();

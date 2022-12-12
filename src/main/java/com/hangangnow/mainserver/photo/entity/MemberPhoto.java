@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberPhoto extends Photo{
+public class MemberPhoto extends Photo {
 
     @Column(nullable = false)
     protected String s3Key;

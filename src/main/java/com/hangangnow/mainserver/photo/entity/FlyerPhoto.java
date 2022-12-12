@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor
-public class FlyerPhoto extends Photo{
+public class FlyerPhoto extends Photo {
 
     @Column(nullable = false)
     protected String s3Key;

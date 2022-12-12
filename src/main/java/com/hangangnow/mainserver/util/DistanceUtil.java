@@ -2,7 +2,6 @@ package com.hangangnow.mainserver.util;
 
 public class DistanceUtil {
 
-    // meter 반환
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
 
         double theta = lon1 - lon2;
@@ -15,18 +14,13 @@ public class DistanceUtil {
         // meter 변환
         dist = dist * 1609.344;
 
-
         return (dist);
     }
 
-
-    // This function converts decimal degrees to radians
     private static double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
     }
 
-
-    // This function converts radians to decimal degrees
     private static double rad2deg(double rad) {
         return (rad * 180 / Math.PI);
     }

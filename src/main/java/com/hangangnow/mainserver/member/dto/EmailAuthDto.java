@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmailAuthDto {
+
     @Email(message = "올바른 이메일 형식을 입력하세요.")
     private String email;
     private String code;

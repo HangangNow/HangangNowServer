@@ -42,7 +42,7 @@ public class Parking {
 
     private LocalDateTime lastModifiedTime;
 
-    public void setPark(Park park){
+    public void setPark(Park park) {
         this.park = park;
     }
 

@@ -32,8 +32,8 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public RecomCourseDto CourseOne(@PathVariable("courseid") Long courseid){
-        return picnicService.courseOne(courseid);
+    public RecomCourseDto getOneCourse(@PathVariable("courseid") Long courseId) {
+        return picnicService.getOneCourse(courseId);
     }
 
     @GetMapping("/place/{placeid}")
@@ -44,8 +44,8 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public RecomPlaceResponseDto PlaceOne(@PathVariable("placeid") Long placeid){
-        return picnicService.placeOne(placeid);
+    public RecomPlaceResponseDto getOnePlace(@PathVariable("placeid") Long placeId) {
+        return picnicService.getOnePlace(placeId);
     }
 
     @GetMapping("/recom/place")
@@ -55,9 +55,9 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public List<RecomPlaceResponseDto> RecomCourse(@RequestParam("x_pos") @Min(-180) @Max(180) Double x_pos,
-                                        @RequestParam("y_pos") @Min(-90) @Max(90) Double y_pos){
-        return picnicService.recomPlaces(x_pos, y_pos, 10L);
+    public List<RecomPlaceResponseDto> getRecomPlaces(@RequestParam("x_pos") @Min(-180) @Max(180) Double x_pos,
+                                                      @RequestParam("y_pos") @Min(-90) @Max(90) Double y_pos) {
+        return picnicService.getRecomPlaces(x_pos, y_pos, 10L);
     }
 
     @PostMapping("/recom/course")
@@ -73,7 +73,7 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public RecomCourseResponseDto RecomCourse(@Valid @RequestBody RecomCourseRequestDto recomCourseRequestDto){
-        return picnicService.recomCourses(recomCourseRequestDto);
+    public RecomCourseResponseDto getRecomCourses(@Valid @RequestBody RecomCourseRequestDto recomCourseRequestDto) {
+        return picnicService.getRecomCourses(recomCourseRequestDto);
     }
 }

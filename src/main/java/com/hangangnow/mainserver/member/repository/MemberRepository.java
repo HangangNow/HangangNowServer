@@ -17,30 +17,30 @@ public class MemberRepository {
 
     private final EntityManager em;
 
-    public Member save(Member member){
+    public Member save(Member member) {
         em.persist(member);
         return member;
     }
 
 
-    public void delete(Member member){
+    public void delete(Member member) {
         em.remove(member);
     }
 
-    
-    public List<Member> findAll(){
+
+    public List<Member> findAll() {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
     }
 
-    public Optional<Member> findById(UUID id){
+    public Optional<Member> findById(UUID id) {
         List<Member> members = em.createQuery("select m from Member m where m.id =:id", Member.class)
                 .setParameter("id", id)
                 .getResultList();
         return members.stream().findAny();
     }
 
-    public Optional<Member> findByLoginId(String loginId){
+    public Optional<Member> findByLoginId(String loginId) {
         List<Member> members = em.createQuery("select m from Member m where m.loginId =:loginId", Member.class)
                 .setParameter("loginId", loginId)
                 .getResultList();
@@ -48,14 +48,14 @@ public class MemberRepository {
     }
 
 
-    public Optional<Member> findByEmail(String email){
+    public Optional<Member> findByEmail(String email) {
         List<Member> members = em.createQuery("select m from Member m where m.email =:email", Member.class)
                 .setParameter("email", email)
                 .getResultList();
         return members.stream().findAny();
     }
 
-    public Optional<Member> findByIdWithScrap(UUID id){
+    public Optional<Member> findByIdWithScrap(UUID id) {
         List<Member> members = em.createQuery("select m from Member m" +
                         " join fetch m.scraps" +
                         " where m.id =:id", Member.class)

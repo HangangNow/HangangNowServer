@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberKakaoTokenDto {
+
     private String provider;
     private String email;
     private String name;

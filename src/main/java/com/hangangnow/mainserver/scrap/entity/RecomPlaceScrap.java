@@ -14,7 +14,7 @@ public class RecomPlaceScrap extends Scrap {
     @JoinColumn(name = "recom_place_id", nullable = false)
     private RecomPlace recomPlace;
 
-    public void addMemberAndRecomPlace(Member member, RecomPlace recomPlace){
+    public void addMemberAndRecomPlace(Member member, RecomPlace recomPlace) {
         this.member = member;
         member.addScarp(this);
 
@@ -22,8 +22,7 @@ public class RecomPlaceScrap extends Scrap {
         recomPlace.addRecomPlaceScrap(this);
     }
 
-
-    public void cancelMemberAndRecomPlace(Member member, RecomPlace recomPlace){
+    public void cancelMemberAndRecomPlace(Member member, RecomPlace recomPlace) {
         this.member = null;
         member.deleteScarp(this);
 

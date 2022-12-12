@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GeneralException {
+
     private String code;
     private String message;
 }

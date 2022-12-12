@@ -47,7 +47,7 @@ public class EventResponseDto {
         this.lastModifiedTime = event.getLastModifiedTime();
     }
 
-    public void setIsScrap(Boolean isScrap){
+    public void setIsScrap(Boolean isScrap) {
         this.isScrap = isScrap;
     }
 

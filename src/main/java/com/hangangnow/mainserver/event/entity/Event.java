@@ -73,31 +73,31 @@ public class Event {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public void updateThumbnailPhoto(ThumbnailPhoto thumbnailPhoto){
+    public void updateThumbnailPhoto(ThumbnailPhoto thumbnailPhoto) {
         this.thumbnailPhoto = thumbnailPhoto;
     }
 
 
-    public void updateEventPhoto(EventPhoto eventPhoto){
+    public void updateEventPhoto(EventPhoto eventPhoto) {
         this.photo = eventPhoto;
     }
 
 
-    public void addEventScrap(EventScrap eventScrap){
+    public void addEventScrap(EventScrap eventScrap) {
         this.eventScraps.add(eventScrap);
     }
 
-    public void deleteEventScrap(EventScrap eventScrap){
+    public void deleteEventScrap(EventScrap eventScrap) {
         this.eventScraps.remove(eventScrap);
     }
 
 
-    public void update(EventRequestDto eventRequestDto, Local local, Address address){
+    public void update(EventRequestDto eventRequestDto, Local local, Address address) {
         this.title = eventRequestDto.getTitle();
         this.local = local;
         this.address = address;
-        this.startDate = LocalDate.parse(eventRequestDto.getStartDate(),DateTimeFormatter.ISO_DATE);
-        this.endDate = LocalDate.parse(eventRequestDto.getEndDate(),DateTimeFormatter.ISO_DATE);
+        this.startDate = LocalDate.parse(eventRequestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
+        this.endDate = LocalDate.parse(eventRequestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
         this.eventTime = eventRequestDto.getEventTime();
         this.price = eventRequestDto.getPrice();
         this.host = eventRequestDto.getHost();

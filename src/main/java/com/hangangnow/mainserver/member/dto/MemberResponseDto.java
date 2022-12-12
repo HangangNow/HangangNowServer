@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
+
     private UUID id;
     private String loginId;
     private String email;
@@ -23,7 +24,7 @@ public class MemberResponseDto {
     private Boolean marketing_agree;
     private Boolean alarm_agree;
 
-    public void setMemberResponseDto(Member member){
+    public void setMemberResponseDto(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
         this.email = member.getEmail();
@@ -33,10 +34,9 @@ public class MemberResponseDto {
         this.marketing_agree = member.getMarketing_agree();
         this.alarm_agree = member.getAlarm_agree();
 
-        if (member.getPhoto() == null){
+        if (member.getPhoto() == null) {
             this.photoUrl = null;
-        }
-        else{
+        } else {
             this.photoUrl = member.getPhoto().getUrl();
         }
 

@@ -29,7 +29,6 @@ public class ScrapRepository {
         return resultList.stream().findAny();
     }
 
-
     public Optional<FlyerScrap> findFlyerScrapByMemberAndFlyer(Long flyerId, UUID memberId) {
 
         List<FlyerScrap> resultList = em.createQuery("select fs from FlyerScrap fs" +
@@ -52,7 +51,6 @@ public class ScrapRepository {
         return resultList.stream().findAny();
     }
 
-
     public Optional<RecomPlaceScrap> findRecomPlaceScrapByMemberAndEvent(Long recomPlaceId, UUID memberId) {
 
         List<RecomPlaceScrap> resultList = em.createQuery("select rps from RecomPlaceScrap rps" +
@@ -64,7 +62,6 @@ public class ScrapRepository {
         return resultList.stream().findAny();
     }
 
-
     public List<Event> findEventScrapsByMemberId(UUID memberId) {
         return em.createQuery("select es.event from EventScrap es " +
                         " join fetch es.event.photo" +
@@ -73,7 +70,6 @@ public class ScrapRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
-
 
     public List<Flyer> findFlyerScrapsByMemberId(UUID memberId) {
         return em.createQuery("select fs.flyer From FlyerScrap fs" +
@@ -84,7 +80,6 @@ public class ScrapRepository {
                 .getResultList();
     }
 
-
     public List<RecomCourse> findRecomCourseByMemberId(UUID memberId) {
         return em.createQuery("select rcs.recomCourse from RecomCourseScrap rcs" +
                         " where rcs.member.id =:memberId", RecomCourse.class)
@@ -92,14 +87,12 @@ public class ScrapRepository {
                 .getResultList();
     }
 
-
     public List<RecomPlace> findRecomPlaceByMemberId(UUID memberId) {
         return em.createQuery("select rps.recomPlace from RecomPlaceScrap rps" +
                         " where rps.member.id =:memberId", RecomPlace.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
-
 
     public void delete(Scrap scrap) {
         em.remove(scrap);
