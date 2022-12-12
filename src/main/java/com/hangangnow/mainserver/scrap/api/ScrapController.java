@@ -30,7 +30,7 @@ public class ScrapController {
 
     })
     @GetMapping("/api/v1/scraps/events")
-    public ResponseEntity<GenericResponseDto> getEventScrapInfo(){
+    public ResponseEntity<GenericResponseDto> getEventScrapInfo() {
         return new ResponseEntity<>(scrapService.getEventScraps(), HttpStatus.OK);
     }
 
@@ -46,7 +46,7 @@ public class ScrapController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @PostMapping("/api/v1/scraps/events/{eventId}")
-    public ResponseEntity<ResponseDto> createScarpEvent(@PathVariable Long eventId){
+    public ResponseEntity<ResponseDto> createScarpEvent(@PathVariable Long eventId) {
         return new ResponseEntity<>(scrapService.updateEventScrap(eventId), HttpStatus.OK);
     }
 
@@ -61,7 +61,7 @@ public class ScrapController {
 
     })
     @GetMapping("/api/v1/scraps/flyers")
-    public ResponseEntity<GenericResponseDto> getFlyerScrapInfo(){
+    public ResponseEntity<GenericResponseDto> getFlyerScrapInfo() {
         return new ResponseEntity<>(scrapService.getFlyerScraps(), HttpStatus.OK);
     }
 
@@ -77,7 +77,7 @@ public class ScrapController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @PostMapping("/api/v1/scraps/flyers/{flyerId}")
-    public ResponseEntity<ResponseDto> scrapFlyer(@PathVariable Long flyerId){
+    public ResponseEntity<ResponseDto> scrapFlyer(@PathVariable Long flyerId) {
         return new ResponseEntity<>(scrapService.updateFlyerScrap(flyerId), HttpStatus.OK);
     }
 
@@ -92,7 +92,7 @@ public class ScrapController {
 
     })
     @GetMapping("/api/v1/scraps/recomCourses")
-    public ResponseEntity<GenericResponseDto> getRecomCourseScrapInfo(){
+    public ResponseEntity<GenericResponseDto> getRecomCourseScrapInfo() {
         return new ResponseEntity<>(scrapService.getRecomCourseScraps(), HttpStatus.OK);
     }
 
@@ -108,7 +108,7 @@ public class ScrapController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @PostMapping("/api/v1/scraps/recomCourses/{recomCourseId}")
-    public ResponseEntity<ResponseDto> scrapRecomCourse(@PathVariable Long recomCourseId){
+    public ResponseEntity<ResponseDto> scrapRecomCourse(@PathVariable Long recomCourseId) {
         return new ResponseEntity<>(scrapService.updateRecomCourseScrap(recomCourseId), HttpStatus.OK);
     }
 
@@ -123,7 +123,7 @@ public class ScrapController {
 
     })
     @GetMapping("/api/v1/scraps/recomPlaces")
-    public ResponseEntity<GenericResponseDto> getRecomPlaceScrapInfo(){
+    public ResponseEntity<GenericResponseDto> getRecomPlaceScrapInfo() {
         return new ResponseEntity<>(scrapService.getRecomPlaceScraps(), HttpStatus.OK);
     }
 
@@ -139,7 +139,7 @@ public class ScrapController {
             @ApiResponse(responseCode = "405", description = "METHOD NOT Allowed")
     })
     @PostMapping("/api/v1/scraps/recomPlaces/{recomPlaceId}")
-    public ResponseEntity<ResponseDto> scrapRecomPlace(@PathVariable Long recomPlaceId){
+    public ResponseEntity<ResponseDto> scrapRecomPlace(@PathVariable Long recomPlaceId) {
         return new ResponseEntity<>(scrapService.updateRecomPlaceScrap(recomPlaceId), HttpStatus.OK);
     }
 }
