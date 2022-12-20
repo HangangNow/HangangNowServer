@@ -1,5 +1,6 @@
 package com.hangangnow.mainserver.member.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hangangnow.mainserver.common.dto.ResponseDto;
 import com.hangangnow.mainserver.config.security.SecurityConfig;
 
@@ -14,7 +15,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -42,7 +46,7 @@ class MemberControllerTest {
     @MockBean
     MemberService memberService;
 
-    @WithMockUser()
+    @WithMockUser
     @Test
     void 현재_로그인된_멤버_정보를_조회한다() throws Exception {
         // given
@@ -124,5 +128,26 @@ class MemberControllerTest {
         // then
         resultActions.andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @WithMockUser
+    @Test
+    void 프로필_등록_테스트() throws Exception {
+        // given
+        MockMultipartFile multipartFile = createMultipartFile("files", "image.jpeg", "image/jpeg", "<<jpeg data>>");
+
+        ResultActions resultActions = mockMvc.perform(multipart("/api/v1/members/photos")
+                .file(multipartFile)
+                .with(csrf())
+                .with(request -> {
+                    request.setMethod("PUT");
+                    return request;
+                }));
+
+        resultActions.andExpect(status().isOk());
+    }
+
+    private MockMultipartFile createMultipartFile(String requestPart, String filename, String contentType, String originalContent) {
+        return new MockMultipartFile(requestPart, filename, contentType, originalContent.getBytes());
     }
 }
