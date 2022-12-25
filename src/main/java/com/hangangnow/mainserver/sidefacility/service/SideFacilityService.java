@@ -33,13 +33,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static lombok.AccessLevel.*;
+
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = PROTECTED)
 @Transactional(readOnly = true)
 @PropertySource("classpath:/application-secret.properties")
 public class SideFacilityService {
