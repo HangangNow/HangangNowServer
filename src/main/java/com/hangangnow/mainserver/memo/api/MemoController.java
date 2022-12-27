@@ -80,7 +80,7 @@ public class MemoController {
         return memoService.addMemo(request);
     }
 
-    @PutMapping("/{memoid}")
+    @PutMapping("/{memoId}")
     @Operation(summary = "메모 수정", description = "메모를 수정할 수 있습니다.  "
             + "\n모든 키 값은 필수 값 입니다.")
     @ApiResponses({
