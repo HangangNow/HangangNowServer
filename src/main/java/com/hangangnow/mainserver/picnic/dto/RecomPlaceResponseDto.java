@@ -3,11 +3,13 @@ package com.hangangnow.mainserver.picnic.dto;
 import com.hangangnow.mainserver.common.entity.Address;
 import com.hangangnow.mainserver.common.entity.Local;
 import com.hangangnow.mainserver.picnic.entity.RecomPlace;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
 @Data
 @Getter
+@AllArgsConstructor
 public class RecomPlaceResponseDto {
 
     private Long id;

@@ -1,6 +1,7 @@
 package com.hangangnow.mainserver.picnic.dto;
 
 import com.hangangnow.mainserver.picnic.entity.RecomCourse;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Getter
+@AllArgsConstructor
 public class RecomCourseDto {
 
     @NotNull
@@ -24,7 +26,7 @@ public class RecomCourseDto {
     private String startPlaceName;
 
     @NotNull
-    private List<String> course = new ArrayList<>();
+    private List<String> course;
 
     @NotNull
     private Double length;

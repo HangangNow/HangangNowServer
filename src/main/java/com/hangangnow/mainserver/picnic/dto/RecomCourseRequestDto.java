@@ -2,6 +2,7 @@ package com.hangangnow.mainserver.picnic.dto;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @Getter
+@NoArgsConstructor
 public class RecomCourseRequestDto {
 
     @NotNull
@@ -42,5 +44,11 @@ public class RecomCourseRequestDto {
                 break;
             }
         }
+    }
+
+    public RecomCourseRequestDto(Double x_pos, Double y_pos, String companion) {
+        this.x_pos = x_pos;
+        this.y_pos = y_pos;
+        this.companion = companion;
     }
 }
