@@ -24,7 +24,7 @@ import java.util.List;
 public class PicnicController {
     private final PicnicService picnicService;
 
-    @GetMapping("/course/{courseid}")
+    @GetMapping("/course/{courseId}")
     @Operation(summary = "단일 추천 코스 조회", description = "코스 id를 이용해 코스를 상세 조회할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
@@ -32,11 +32,11 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public RecomCourseDto getOneCourse(@PathVariable("courseid") Long courseId) {
+    public RecomCourseDto getOneCourse(@PathVariable("courseId") Long courseId) {
         return picnicService.getOneCourse(courseId);
     }
 
-    @GetMapping("/place/{placeid}")
+    @GetMapping("/place/{placeId}")
     @Operation(summary = "단일 추천 장소 조회", description = "장소 id를 이용해 장소를 상세 조회할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
@@ -44,7 +44,7 @@ public class PicnicController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public RecomPlaceResponseDto getOnePlace(@PathVariable("placeid") Long placeId) {
+    public RecomPlaceResponseDto getOnePlace(@PathVariable("placeId") Long placeId) {
         return picnicService.getOnePlace(placeId);
     }
 
