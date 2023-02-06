@@ -6,6 +6,8 @@ import com.hangangnow.mainserver.event.dto.EventRequestDto;
 import com.hangangnow.mainserver.scrap.entity.EventScrap;
 import com.hangangnow.mainserver.photo.entity.EventPhoto;
 import com.hangangnow.mainserver.photo.entity.ThumbnailPhoto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +21,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Event {
 
     @Id
@@ -54,7 +58,7 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventScrap> eventScraps = new ArrayList<>();
 
-
+    @Builder
     public Event(String title, Local local, Address address, LocalDate startDate, LocalDate endDate, String eventTime,
                  String price, String host, String management, String content,
                  ThumbnailPhoto thumbnailPhoto, EventPhoto photo, LocalDateTime lastModifiedTime) {
@@ -77,11 +81,9 @@ public class Event {
         this.thumbnailPhoto = thumbnailPhoto;
     }
 
-
     public void updateEventPhoto(EventPhoto eventPhoto) {
         this.photo = eventPhoto;
     }
-
 
     public void addEventScrap(EventScrap eventScrap) {
         this.eventScraps.add(eventScrap);
@@ -104,5 +106,4 @@ public class Event {
         this.management = eventRequestDto.getManagement();
         this.content = eventRequestDto.getContent();
     }
-
 }

@@ -35,7 +35,6 @@ public class EventService {
     private final ScrapRepository scrapRepository;
     private final S3Uploader s3Uploader;
 
-
     @Transactional
     public EventResponseDto save(@Valid EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
         if (thumbnail == null) {
@@ -46,19 +45,28 @@ public class EventService {
             throw new IllegalArgumentException("행사 이미지는 필수입니다.");
         }
 
-        ThumbnailPhoto thumbnailPhoto = new ThumbnailPhoto(s3Uploader.upload(thumbnail, "thumbnail"));
-        EventPhoto eventPhoto = new EventPhoto(s3Uploader.upload(multipartFile, "event"));
-        Address address = new Address(eventRequestDto.getAddress());
-        Local local = new Local(eventRequestDto.getTitle(), eventRequestDto.getX_pos(), eventRequestDto.getY_pos());
-
-        LocalDate startDate = LocalDate.parse(eventRequestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
-        LocalDate endDate = LocalDate.parse(eventRequestDto.getEndDate(), DateTimeFormatter.ISO_DATE);
-        Event event = new Event(eventRequestDto.getTitle(), local, address, startDate, endDate, eventRequestDto.getEventTime(), eventRequestDto.getPrice(),
-                eventRequestDto.getHost(), eventRequestDto.getManagement(), eventRequestDto.getContent(), thumbnailPhoto, eventPhoto, LocalDateTime.now());
+        Event event = createEvent(eventRequestDto, thumbnail, multipartFile);
 
         eventRepository.save(event);
-
         return new EventResponseDto(event);
+    }
+
+    private Event createEvent(EventRequestDto eventRequestDto, MultipartFile thumbnail, MultipartFile multipartFile) throws IOException {
+        return Event.builder()
+                .title(eventRequestDto.getTitle())
+                .local(new Local(eventRequestDto.getTitle(), eventRequestDto.getX_pos(), eventRequestDto.getY_pos()))
+                .address(new Address(eventRequestDto.getAddress()))
+                .startDate(LocalDate.parse(eventRequestDto.getStartDate(), DateTimeFormatter.ISO_DATE))
+                .endDate(LocalDate.parse(eventRequestDto.getEndDate(), DateTimeFormatter.ISO_DATE))
+                .eventTime(eventRequestDto.getEventTime())
+                .price(eventRequestDto.getPrice())
+                .host(eventRequestDto.getHost())
+                .management(eventRequestDto.getManagement())
+                .content(eventRequestDto.getContent())
+                .thumbnailPhoto(new ThumbnailPhoto(s3Uploader.upload(thumbnail, "thumbnail")))
+                .photo(new EventPhoto(s3Uploader.upload(multipartFile, "event")))
+                .lastModifiedTime(LocalDateTime.now())
+                .build();
     }
 
     @Transactional
@@ -103,18 +111,11 @@ public class EventService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 이벤트를 찾을 수 없습니다."));
 
         EventResponseDto eventResponseDto = new EventResponseDto(findEvent);
-
         List<Event> eventScraps = scrapRepository.findEventScrapsByMemberId(SecurityUtil.getCurrentMemberId());
 
-        if (eventScraps.contains(findEvent)) {
-            eventResponseDto.setIsScrap(true);
-        } else {
-            eventResponseDto.setIsScrap(false);
-        }
-
+        eventResponseDto.setIsScrap(isScraped(eventScraps, findEvent));
         return eventResponseDto;
     }
-
 
     public GenericResponseDto findAllEvents() {
         List<Event> allEvents = eventRepository.findAllEvents();
@@ -124,18 +125,16 @@ public class EventService {
 
         for (Event event : allEvents) {
             EventResponseDto eventResponseDto = new EventResponseDto(event);
-
-            if (eventScraps.contains(event)) {
-                eventResponseDto.setIsScrap(true);
-            } else {
-                eventResponseDto.setIsScrap(false);
-            }
-
+            eventResponseDto.setIsScrap(isScraped(eventScraps, event));
             results.add(eventResponseDto);
         }
-
         return new GenericResponseDto(results);
     }
 
-
+    private boolean isScraped(List<Event> events, Event findEvent) {
+        if (events.contains(findEvent)) {
+            return true;
+        }
+        return false;
+    }
 }
