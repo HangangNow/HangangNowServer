@@ -75,7 +75,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scrap> scraps = new ArrayList<>();
 
-
     @Builder
     public Member(String loginId, String email, String password, String name,
                   LocalDate birthday, Gender gender, Authority authority, MemberProvider memberProvider) {
@@ -89,25 +88,13 @@ public class Member {
         this.memberProvider = memberProvider;
     }
 
-    public void createMemberByKakao(String loginId, String email, String password, String name) {
-        this.loginId = loginId;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.authority = Authority.ROLE_USER;
-        this.memberProvider = MemberProvider.KAKAO;
-    }
-
-
     public void updatePassword(String password) {
         this.password = password;
     }
 
-
     public void updateMbti(String mbti) {
         this.memberMBTI = fromStringToEmotion(mbti);
     }
-
 
     public void updatePhoto(MemberPhoto memberPhoto) {
         this.photo = memberPhoto;
@@ -116,7 +103,6 @@ public class Member {
     public void updateAlarmAgree(Boolean alarm_agree) {
         this.alarm_agree = alarm_agree;
     }
-
 
     public void updateMarketingAgree(Boolean marketing_agree) {
         this.marketing_agree = marketing_agree;
@@ -145,33 +131,12 @@ public class Member {
         this.id = uuid;
     }
 
-    // "INFLUENCER", "EXCITED", "ARTIST", "SOCIAL_DISTANCING",
-    // "ACTIVIST", "PLANNER", "EXPLORER", "STARGAZER"
-    static public MemberMBTI fromStringToEmotion(String mbti) {
+    public static MemberMBTI fromStringToEmotion(String mbti) {
         if (mbti == null) {
             return null;
         }
 
-        switch (mbti) {
-            case "INFLUENCER":
-                return MemberMBTI.INFLUENCER;
-            case "EXCITED":
-                return MemberMBTI.EXCITED;
-            case "ARTIST":
-                return MemberMBTI.ARTIST;
-            case "SOCIAL_DISTANCING":
-                return MemberMBTI.SOCIAL_DISTANCING;
-            case "ACTIVIST":
-                return MemberMBTI.ACTIVIST;
-            case "PLANNER":
-                return MemberMBTI.PLANNER;
-            case "EXPLORER":
-                return MemberMBTI.EXPLORER;
-            case "STARGAZER":
-                return MemberMBTI.STARGAZER;
-            default:
-                return null;
-        }
+        return MemberMBTI.getMemberMBTI(mbti);
     }
 
     public int removeDiaries(Diary diary) {
